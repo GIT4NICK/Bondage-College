@@ -167,6 +167,7 @@ function GameLARPClickOption(Name) {
 	if (Name == "RestrainLegs") return GameLARPBuildInventory("ItemFeet");
 	if ((Name == "RestrainMouth") || (Name == "Silence")) return GameLARPBuildInventory("ItemMouth");
 	if ((Name == "RestrainArms") || (Name == "Detain")) return GameLARPBuildInventory("ItemArms");
+	if ((Name == "Costume") || (Name == "Dress")) return GameLARPBuildInventory("Cloth");
 	ServerSend("ChatRoomGame", { GameProgress: "Action", Action: Name, Target: GameLARPTurnFocusCharacter.MemberNumber });
 }
 
@@ -376,10 +377,11 @@ function GameLARPBuildOptionAbility(Source, Target, Option, Ability) {
 		if ((GameLARPProgress[P].Sender == Source.MemberNumber) && (GameLARPProgress[P].Data.GameProgress == "Action") && (GameLARPProgress[P].Data.Action == Ability))
 			return;
 
-	// If "Control" is in progress for this cycle, no class abilities can be used
-	for (var P = ((GameLARPProgress.length - GameLARPPlayer.length * 2 + 1 > 0) ? GameLARPProgress.length - GameLARPPlayer.length * 2 + 1 : 0); P < GameLARPProgress.length; P++)
-		if ((GameLARPProgress[P].Success != null) && (GameLARPProgress[P].Data.GameProgress == "Action") && (GameLARPProgress[P].Data.Action == "Control"))
-			return;
+	// If "Control" or "Confuse" is in progress for this cycle, no class abilities can be used
+	for (var P = ((GameLARPProgress.length - GameLARPPlayer.length * 2 + 1 > 0) ? GameLARPProgress.length - GameLARPPlayer.length * 2 + 1 : 0); P < GameLARPProgress.length; P++) {
+		if ((GameLARPProgress[P].Success != null) && (GameLARPProgress[P].Data.GameProgress == "Action") && (GameLARPProgress[P].Data.Action == "Control")) return;
+		if ((GameLARPProgress[P].Success != null) && (GameLARPProgress[P].Data.GameProgress == "Action") && (GameLARPProgress[P].Data.Action == "Confuse") && (GameLARPProgress[P].Data.Target == Source.MemberNumber)) return;
+	}
 
 	// If the player targets herself
 	if (Source.MemberNumber == Target.MemberNumber) {
@@ -479,12 +481,13 @@ function GameLARPProcessAction(Action, ItemName, Source, Target, RNG) {
 	if ((Source == null) || (Target == null)) return;
 
 	// Gets the item description in the user language
-	var ItemDesc = "";
+	var ItemDesc = "N/A";
 	if (ItemName != "") {
 		var A;
 		if (Action == "RestrainLegs") A = AssetGet(Target.AssetFamily, "ItemLegs", ItemName);
 		if ((Action == "RestrainArms") || (Action == "Detain")) A = AssetGet(Target.AssetFamily, "ItemArms", ItemName);
 		if ((Action == "RestrainMouth") || (Action == "Silence")) A = AssetGet(Target.AssetFamily, "ItemMouth", ItemName);
+		if ((Action == "Dress") || (Action == "Costume")) A = AssetGet(Target.AssetFamily, "Cloth", ItemName);
 		if ((A != null) && (A.Description != null)) ItemDesc = A.Description;
 	}
 
@@ -496,6 +499,7 @@ function GameLARPProcessAction(Action, ItemName, Source, Target, RNG) {
 		if (Action == "RestrainLegs") InventoryWear(Target, ItemName, "ItemFeet", null, 6);
 		if ((Action == "RestrainArms") || (Action == "Detain")) InventoryWear(Target, ItemName, "ItemArms", null, 6);
 		if ((Action == "RestrainMouth") || (Action == "Silence")) InventoryWear(Target, ItemName, "ItemMouth", null, 6);
+		if ((Action == "Dress") || (Action == "Costume")) InventoryWear(Target, ItemName, "Cloth");
 		if (Action == "Struggle") InventoryRemove(Target, "ItemArms", null, 5);
 
 		// Strip / Expose removes the cloth items
