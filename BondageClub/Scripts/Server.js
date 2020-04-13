@@ -408,7 +408,7 @@ function ServerAppearanceLoadFromBundle(C, AssetFamily, Bundle, SourceMemberNumb
 function ServerPlayerAppearanceSync() {
 
 	// Creates a big parameter string of every appearance items and sends it to the server
-	if ((Player.AccountName != "") && (CurrentScreen != "Photographic")) {
+	if (Player.AccountName != "") {
 		var D = {};
 		D.AssetFamily = Player.AssetFamily;
 		D.Appearance = ServerAppearanceBundle(Player.Appearance);

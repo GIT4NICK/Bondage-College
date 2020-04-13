@@ -13,15 +13,21 @@ const HempRopeArmsOptions = [
 		Expression: [{ Group: "Blush", Name: "Low", Timer: 5 }],
 		ArmsOnly: true
 	}, {
-        Name: "RopeCuffs",
-        RequiredBondageLevel: null,
-        Property: { Type: "RopeCuffs", Effect: ["Block", "Prone"], SetPose: ["BackCuffs"], Difficulty: 1 },
-        Expression: [{ Group: "Blush", Name: "Low", Timer: 5 }],
-        ArmsOnly: true
+		Name: "RopeCuffs",
+		RequiredBondageLevel: null,
+		Property: { Type: "RopeCuffs", Effect: ["Block", "Prone"], SetPose: ["BackCuffs"], Difficulty: 1, OverridePriority: 30 },
+		Expression: [{ Group: "Blush", Name: "Low", Timer: 5 }],
+		ArmsOnly: true
 	}, {
 		Name: "WristElbowTie",
 		RequiredBondageLevel: 2,
 		Property: { Type: "WristElbowTie", Effect: ["Block", "Prone"], SetPose: ["BackElbowTouch"], Difficulty: 2 },
+		Expression: [{ Group: "Blush", Name: "Medium", Timer: 5 }],
+		ArmsOnly: true
+	}, {
+		Name: "WristElbowHarnessTie",
+		RequiredBondageLevel: 3,
+		Property: { Type: "WristElbowHarnessTie", Effect: ["Block", "Prone"], SetPose: ["BackElbowTouch"], Difficulty: 3 },
 		Expression: [{ Group: "Blush", Name: "Medium", Timer: 5 }],
 		ArmsOnly: true
 	}, {

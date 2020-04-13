@@ -160,7 +160,7 @@ What an unrestrained beast.
 A first step.
 Первый шаг.
 ###_PLAYER
-I go to the closet.
+I'll go to the closet.
 Я иду в шкаф.
 ###_NPC
 If you say so.

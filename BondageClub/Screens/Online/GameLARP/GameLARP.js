@@ -372,10 +372,16 @@ function GameLARPGetOdds(Action, Source, Target) {
 // Adds all available class abilities to the valid options
 function GameLARPBuildOptionAbility(Source, Target, Option, Ability) {
 
-	// If the ability was already used in that battle, it cannot be used anymore
-	for (var P = 0; P < GameLARPProgress.length; P++) 
-		if ((GameLARPProgress[P].Sender == Source.MemberNumber) && (GameLARPProgress[P].Data.GameProgress == "Action") && (GameLARPProgress[P].Data.Action == Ability))
-			return;
+	// Only the "Evasion" special ability can be used when arms are restrained
+	if ((Ability != "Evasion") && (InventoryGet(Source, "ItemArms") != null)) return;
+
+	// If the ability was already used in that battle, it cannot be used again, the ability "Inspire" makes it usable once again
+	var AlreadyUsed = false;
+	for (var P = 0; P < GameLARPProgress.length; P++) {
+		if ((GameLARPProgress[P].Sender == Source.MemberNumber) && (GameLARPProgress[P].Data.GameProgress == "Action") && (GameLARPProgress[P].Data.Action == Ability)) AlreadyUsed = true;
+		if ((GameLARPProgress[P].Success != null) && GameLARPProgress[P].Success && (GameLARPProgress[P].Data.GameProgress == "Action") && (GameLARPProgress[P].Data.Action == "Inspire") && (GameLARPProgress[P].Data.Target == Source.MemberNumber)) AlreadyUsed = false;
+	}
+	if (AlreadyUsed) return;
 
 	// If "Control" or "Confuse" is in progress for this cycle, no class abilities can be used
 	for (var P = ((GameLARPProgress.length - GameLARPPlayer.length * 2 + 1 > 0) ? GameLARPProgress.length - GameLARPPlayer.length * 2 + 1 : 0); P < GameLARPProgress.length; P++) {
@@ -392,7 +398,7 @@ function GameLARPBuildOptionAbility(Source, Target, Option, Ability) {
 		if (Ability == "Control") Option.push({ Name: Ability, Odds: Odds });
 		if (Ability == "Gamble") Option.push({ Name: Ability, Odds: Odds });
 		if (Ability == "Hide") Option.push({ Name: Ability, Odds: Odds });
-		if (Ability == "Evasion") Option.push({ Name: Ability, Odds: Odds });
+		if ((Ability == "Evasion") && ((InventoryGet(Source, "ItemFeet") != null) || (InventoryGet(Source, "ItemArms") != null))) Option.push({ Name: Ability, Odds: Odds });
 		if ((Ability == "Support") && (InventoryGet(Source, "ItemMouth") == null)) Option.push({ Name: Ability, Odds: Odds });
 		if (Ability == "Sacrifice") Option.push({ Name: Ability, Odds: Odds });
 		if (Ability == "Dress") Option.push({ Name: Ability, Odds: Odds });
@@ -432,20 +438,26 @@ function GameLARPBuildOption(Source, Target) {
 	// If the source clicks on herself, she can always pass her turn and do nothing
 	var Option = [];
 	if (Source.MemberNumber == Target.MemberNumber) Option.push({ Name: "Pass", Odds: GameLARPGetOdds("Pass", Source, Source) });
+	
+	// If seduce is in progress on the source, all she can do is pass her turn
+	var PassTurn = false;
+	for (var P = ((GameLARPProgress.length - GameLARPPlayer.length * 2 + 1 > 0) ? GameLARPProgress.length - GameLARPPlayer.length * 2 + 1 : 0); P < GameLARPProgress.length; P++) {
+		if ((GameLARPProgress[P].Success != null) && GameLARPProgress[P].Success && (GameLARPProgress[P].Data.GameProgress == "Action") && (GameLARPProgress[P].Data.Action == "Seduce") && (GameLARPProgress[P].Data.Target == Source.MemberNumber)) PassTurn = true;
+		if ((GameLARPProgress[P].Data.GameProgress == "Action") && (GameLARPProgress[P].Data.Action == "Pass") && (GameLARPProgress[P].Sender == Source.MemberNumber)) PassTurn = false;
+	}
+	if (PassTurn) return Option;
 
 	// If the source is restrained, she only has the struggle option on herself
 	if ((InventoryGet(Source, "ItemArms") != null) && (Source.MemberNumber == Target.MemberNumber))
 		Option.push({ Name: "Struggle", Odds: GameLARPGetOdds("Struggle", Source, Source) });
 
 	// Gets all abilities for the class and assigns which one can be used
-	if (InventoryGet(Source, "ItemArms") == null) {
-		var Ability = [];
-		for (var C = 0; C < GameLARPClass.length; C++)
-			if (Source.Game.LARP.Class == GameLARPClass[C].Name)
-				Ability = GameLARPClass[C].Ability;
-		for (var A = 0; A < Ability.length; A++)
-			GameLARPBuildOptionAbility(Source, Target, Option, Ability[A]);
-	}
+	var Ability = [];
+	for (var C = 0; C < GameLARPClass.length; C++)
+		if (Source.Game.LARP.Class == GameLARPClass[C].Name)
+			Ability = GameLARPClass[C].Ability;
+	for (var A = 0; A < Ability.length; A++)
+		GameLARPBuildOptionAbility(Source, Target, Option, Ability[A]);
 
 	// Builds the "Strip" & "Restrain" options if the target isn't in the source team
 	if ((Target.Game.LARP.Team != Source.Game.LARP.Team) && (InventoryGet(Source, "ItemArms") == null)) {
@@ -500,7 +512,13 @@ function GameLARPProcessAction(Action, ItemName, Source, Target, RNG) {
 		if ((Action == "RestrainArms") || (Action == "Detain")) InventoryWear(Target, ItemName, "ItemArms", null, 6);
 		if ((Action == "RestrainMouth") || (Action == "Silence")) InventoryWear(Target, ItemName, "ItemMouth", null, 6);
 		if ((Action == "Dress") || (Action == "Costume")) InventoryWear(Target, ItemName, "Cloth");
-		if (Action == "Struggle") InventoryRemove(Target, "ItemArms", null, 5);
+		
+		// Struggle and evasion can remove some restraints
+		if (Action == "Struggle") InventoryRemove(Target, "ItemArms");
+		if (Action == "Evasion") {
+			if (InventoryGet(Target, "ItemArms") != null) InventoryRemove(Target, "ItemArms");
+			else InventoryRemove(Target, "ItemFeet");
+		}
 
 		// Strip / Expose removes the cloth items
 		if ((Action == "Strip") || (Action == "Expose")) {

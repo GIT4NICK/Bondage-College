@@ -474,8 +474,8 @@ function ChatRoomSendChat() {
 		else if (m.indexOf("/help") == 0) ServerSend("ChatRoomChat", { Content: "ChatRoomHelp", Type: "Action", Target: Player.MemberNumber});
 		else if (m.indexOf("/friendlistadd ") == 0) ChatRoomListManipulation(Player.FriendList, null, msg);
 		else if (m.indexOf("/friendlistremove ") == 0) ChatRoomListManipulation(null, Player.FriendList, msg);
-		else if (m.indexOf("/ghostadd ") == 0) ChatRoomListManipulation(Player.GhostList, null, msg);
-		else if (m.indexOf("/ghostremove ") == 0) ChatRoomListManipulation(null, Player.GhostList, msg);
+		else if (m.indexOf("/ghostadd ") == 0) { ChatRoomListManipulation(Player.GhostList, null, msg); ChatRoomListManipulation(Player.BlackList, Player.WhiteList, msg); }
+		else if (m.indexOf("/ghostremove ") == 0) { ChatRoomListManipulation(null, Player.GhostList, msg); ChatRoomListManipulation(null, Player.BlackList, msg); }
 		else if (m.indexOf("/whitelistadd ") == 0) ChatRoomListManipulation(Player.WhiteList, Player.BlackList, msg);
 		else if (m.indexOf("/whitelistremove ") == 0) ChatRoomListManipulation(null, Player.WhiteList, msg);
 		else if (m.indexOf("/blacklistadd ") == 0) ChatRoomListManipulation(Player.BlackList, Player.WhiteList, msg);
@@ -885,6 +885,7 @@ function ChatRoomListManage(Operation, ListType) {
 		data[ListType] = Player[ListType];
 		ServerSend("AccountUpdate", data);
 	}
+	if (ListType == "GhostList") ChatRoomListManage(Operation, "BlackList");
 }
 
 // Modify the player FriendList/GhostList/WhiteList/BlackList based on typed message

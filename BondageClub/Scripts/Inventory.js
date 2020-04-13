@@ -252,10 +252,8 @@ function InventoryRemove(C, AssetGroup) {
 // Returns TRUE if the group for a character is blocked and cannot be used
 function InventoryGroupIsBlocked(C, GroupName = null) {
 
-	if (GroupName == null) {
-		// Default to characters focused group
-		GroupName = C.FocusGroup.Name;
-	}
+	// Default to characters focused group
+	if (GroupName == null) GroupName = C.FocusGroup.Name;
 
 	// Items can block each other (hoods blocks gags, belts blocks eggs, etc.)
 	for (var E = 0; E < C.Appearance.length; E++) {

@@ -30,6 +30,9 @@ function PhotographicSubCanAskForPhoto() {return Player.CanTalk() && !Photograph
 function PhotographicSubCanWinkForPhoto() {return !Player.CanTalk() && !PhotographicSub.IsRestrained()}
 function PhotographicSubCanKeel() {return PhotographicSub.CanKneel()}
 
+function PhotographicIsRestrainedWithLock() { return (Player.IsRestrained() && InventoryCharacterHasLockedRestraint(Player)) };
+function PhotographicIsRestrainedWithoutLock() { return (Player.IsRestrained() && !InventoryCharacterHasLockedRestraint(Player)) };
+
 function PhotographicLoad() {
 	if (PhotographicSub == null) {
 		PhotographicSub = CharacterLoadNPC("NPC_Photographic_Sub");

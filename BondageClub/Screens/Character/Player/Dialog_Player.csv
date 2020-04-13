@@ -168,6 +168,15 @@ ShipDeck,,,Ship's Deck
 Shipwreck,,,Ship Wreck
 CaptainCabin,,,Captain Cabin
 UnderwaterOne,,,Underwater One
+BeachHotel,,,Beach Hotel
+DystopianCity,,,Dystopian City
+ForestCave,,,Forest Cave
+Kennels,,,Kennels
+LockerRoom,,,Locker Room
+SciFiCell,,,Sci Fi Cell
+SpaceCaptainBedroom,,,Space Station Captain Bedroom
+TiledBathroom,,,Tiled Bathroom
+WoodenCabin,,,Wooden Cabin
 MedinaMarket,,,Medina Market
 ThroneRoom,,,Throne Room
 Dungeon,,,Dungeon
@@ -182,7 +191,7 @@ DungeonRuin,,,Ruined Dungeon
 SlipperyClassroom,,,Slippery Classroom
 MiddletownSchool,,,Middletown School
 SchoolHospital,,,School Hospital
-SchoolRuins,,,Abanoned School
+SchoolRuins,,,Abandoned School
 SecretChamber,,,Secret Chamber
 VaultCorridor,,,Vault Corridor
 AncientRuins,,,Ancient Ruins
@@ -227,7 +236,6 @@ ServerMessageOwnerRuleRemoteAllowSelf,,,Your owner is now allowing you to use re
 ServerMessageOwnerRuleRemoteConfiscate,,,Your owner has confiscated your remotes.  All your remotes are lost.
 ServerMessageOwnerRuleRemoteBlock,,,Your owner is now preventing you from getting new remotes.  The club shop will not sell remotes to you anymore.
 ServerMessageOwnerRuleRemoteBlockSelf,,,Your owner is now preventing you from using remotes on yourself.
-ServerMessageWhisperBlocked,,,You're on SourceCharacter blacklist.  Your message was blocked by the server.
 ServerMessageOfferBeginDating,,,"SourceCharacter is asking you to be her girlfriend.  Click on her and manage your relationship to accept, don't do anything to refuse."
 ServerMessageBeginDating,,,The Bondage Club is pleased to announce that SourceCharacter and TargetCharacter are starting a 7 days minimum period as lovers.
 ServerMessageOfferBeginEngagement,,,"SourceCharacter is asking you to become her fiancée.  Click on her and manage your relationship to accept, don't do anything to refuse."
@@ -467,6 +475,7 @@ RopeBondageSuspensionHogtied,,,Suspension Hogtie
 RopeBondageWristElbowTie,,,Wrist and Elbow Tie
 RopeBondageWristTie,,,Wrist Tie
 RopeBondageRopeCuffs,,,Rope Cuffs
+RopeBondageWristElbowHarnessTie,,,Wrist and Elbow Harness Tie
 RopeBondageAllFours,,,All Fours
 RopeBondageCrotch,,,Crotch Rope
 RopeBondageHarness,,,Body Harness
@@ -485,6 +494,7 @@ ArmsRopeSetSuspensionHogtied,,,SourceCharacter uses the rope on TargetCharacter 
 ArmsRopeSetWristElbowTie,,,SourceCharacter uses the rope on TargetCharacter to tie her wrists and elbows together behind her back.
 ArmsRopeSetWristTie,,,SourceCharacter uses the rope on TargetCharacter to tie her wrists together behind her back.
 ArmsRopeSetRopeCuffs,,,SourceCharacter uses the rope on TargetCharacter to tie rope cuffs on her wrists
+ArmsRopeSetWristElbowHarnessTie,,,SourceCharacter uses the rope on TargetCharacter to tie her wrists and elbows in a harness behind her back.
 ArmsRopeSetAllFours,,,SourceCharacter uses the rope on TargetCharacter to have her crawling on all fours.
 Intensity-1,,,Item intensity: Disabled
 Intensity0,,,Item intensity: Low

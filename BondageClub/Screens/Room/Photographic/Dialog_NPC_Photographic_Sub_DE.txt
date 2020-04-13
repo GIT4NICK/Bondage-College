@@ -160,7 +160,7 @@ Welch ein unbändiges Tier.
 A first step.
 Es ist ein Anfang.
 ###_PLAYER
-I go to the closet.
+I'll go to the closet.
 ich gehe zum Kleiderschrank.
 ###_NPC
 If you say so.

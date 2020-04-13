@@ -45,7 +45,9 @@ LARPOptionDetainSuccess,SourceName (SourceNumber) detrains TargetName (TargetNum
 LARPOptionExpose,Expose (OptionOdds %)
 LARPOptionExposeSuccess,SourceName (SourceNumber) exposes TargetName (TargetNumber) and removes her clothes.
 LARPOptionInspire,Inspire (OptionOdds %)
+LARPOptionInspireSuccess,"SourceName (SourceNumber) inspires TargetName (TargetNumber), allowing her to use her special abilities again."
 LARPOptionSeduce,Seduce (OptionOdds %)
+LARPOptionSeduceSuccess,"SourceName (SourceNumber) seduces TargetName (TargetNumber), preventing her from acting in her next turn."
 LARPOptionConfuse,Confuse (OptionOdds %)
 LARPOptionConfuseSuccess,"SourceName (SourceNumber) confuses TargetName (TargetNumber), preventing her from using special abilities for a full cycle."
 LARPOptionGamble,Gamble (OptionOdds %)
@@ -55,6 +57,7 @@ LARPOptionCheerSuccess,"SourceName (SourceNumber) cheers for TargetName (TargetN
 LARPOptionCostume,Costume (OptionOdds %)
 LARPOptionCostumeSuccess,SourceName (SourceNumber) costumes TargetName (TargetNumber) using: ItemDesc.
 LARPOptionEvasion,Evasion (OptionOdds %)
+LARPOptionEvasionSuccess,SourceName (SourceNumber) uses her evasion abilities to remove her restraint.
 LARPOptionRescue,Rescue (OptionOdds %)
 LARPOptionSilence,Silence (OptionOdds %)
 LARPOptionSilenceSuccess,SourceName (SourceNumber) silences TargetName (TargetNumber) and gag her using: ItemDesc.
