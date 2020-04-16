@@ -473,9 +473,6 @@ function DialogMenuButtonClick() {
 
 			// Exit Icon - Go back to the character dialog
 			if (DialogMenuButton[I] == "Exit") {
-				// May need to reset the character back to the normal position if they have been moved up
-				if (CurrentCharacter.HeightModifier == 0) CharacterSetHeightModifier(CurrentCharacter);
-
 				DialogLeaveItemMenu();
 				return;
 			}
@@ -750,7 +747,8 @@ function DialogItemClick(ClickItem) {
 function DialogClick() {
 
 	// If the user clicked the Up button, move the character up to the top of the screen
-	if ((CurrentCharacter.HeightModifier < -90) && (MouseX >= 510) && (MouseX < 600) && (MouseY >= 25) && (MouseY < 115)) {
+	if ((CurrentCharacter.HeightModifier < -90) && (CurrentCharacter.FocusGroup != null) && (MouseX >= 510) && (MouseX < 600) && (MouseY >= 25) && (MouseY < 115)) {
+		CharacterAppearanceForceTopPosition = true;
 		CurrentCharacter.HeightModifier = 0;
 		return;
 	}
@@ -778,6 +776,12 @@ function DialogClick() {
 					}
 	}
 
+	// If the user clicked anywhere outside the current character item zones, ensure the position is corrected
+	if (CharacterAppearanceForceTopPosition == true && ((MouseX < 500) || (MouseX > 1000) || (CurrentCharacter.FocusGroup == null))) {
+		CharacterAppearanceForceTopPosition = false;
+		CharacterApperanceSetHeightModifier(CurrentCharacter);
+	}
+
 	// In activity mode, we check if the user clicked on an activity box
 	if (DialogActivityMode && (DialogProgress < 0) && (DialogColor == null) && ((Player.FocusGroup != null) || ((CurrentCharacter.FocusGroup != null) && CurrentCharacter.AllowItem)))
 		if ((MouseX >= 1000) && (MouseX <= 1975) && (MouseY >= 125) && (MouseY <= 1000) && !InventoryGroupIsBlocked((Player.FocusGroup != null) ? Player : CurrentCharacter)) {
@@ -790,9 +794,6 @@ function DialogClick() {
 				// If this specific activity is clicked, we run it
 				if ((MouseX >= X) && (MouseX < X + 225) && (MouseY >= Y) && (MouseY < Y + 275)) {
 					ActivityRun((Player.FocusGroup != null) ? Player : CurrentCharacter, DialogActivity[A]);
-
-					// May need to reset the character back to the normal position if they have been moved up
-					if (CurrentCharacter.HeightModifier == 0) CharacterSetHeightModifier(CurrentCharacter);
 					return;
 				}
 
@@ -980,7 +981,8 @@ function DialogChangeItemColor(C, Color) {
 function DialogDrawActivityMenu(C) {
 
 	// Gets the default text that will reset after 5 seconds
-	if (DialogTextDefault == "") DialogTextDefault = DialogFind(Player, "SelectActivity");
+	var SelectedGroup = (Player.FocusGroup != null) ? Player.FocusGroup.Description : CurrentCharacter.FocusGroup.Description;
+	if (DialogTextDefault == "") DialogTextDefault = DialogFind(Player, "SelectActivityGroup").replace("GroupName", SelectedGroup.toLowerCase());
 	if (DialogTextDefaultTimer < CommonTime()) DialogText = DialogTextDefault;
 
 	// Draws the top menu text & icons
@@ -1011,7 +1013,8 @@ function DialogDrawActivityMenu(C) {
 function DialogDrawItemMenu(C) {
 
 	// Gets the default text that will reset after 5 seconds
-	if (DialogTextDefault == "") DialogTextDefault = DialogFind(Player, "SelectItem");
+	var SelectedGroup = (Player.FocusGroup != null) ? Player.FocusGroup.Description : CurrentCharacter.FocusGroup.Description;
+	if (DialogTextDefault == "") DialogTextDefault = DialogFind(Player, "SelectItemGroup").replace("GroupName", SelectedGroup.toLowerCase());
 	if (DialogTextDefaultTimer < CommonTime()) DialogText = DialogTextDefault;
 
 	// Draws the top menu text & icons
@@ -1177,7 +1180,7 @@ function DialogDraw() {
 		}
 
 		// Draw the 'Up' reposition button if some zones are offscreen
-		if (CurrentCharacter != null && CurrentCharacter.HeightModifier != null && CurrentCharacter.HeightModifier < -90) {
+		if (CurrentCharacter != null && CurrentCharacter.HeightModifier != null && CurrentCharacter.HeightModifier < -90 && CurrentCharacter.FocusGroup != null) {
 			DrawButton(510, 25, 90, 90, "", "White", "Icons/Up.png", DialogFind(Player, "UpPosition"));
 		}
 
