@@ -25,6 +25,12 @@ const ChainsArmsOptions = [
 		Expression: [{ Group: "Blush", Name: "Medium", Timer: 5 }],
 		ArmsOnly: true
 	}, {
+		Name: "WristElbowHarnessTie",
+		RequiredBondageLevel: 3,
+		Property: { Type: "WristElbowHarnessTie", Effect: ["Block", "Prone"], SetPose: ["BackElbowTouch"], Difficulty: 3 },
+		Expression: [{ Group: "Blush", Name: "Medium", Timer: 5 }],
+		ArmsOnly: true
+	}, {
 		Name: "Hogtied",
 		RequiredBondageLevel: 4,
 		Property: { Type: "Hogtied", Effect: ["Block", "Freeze", "Prone"], Block: ["ItemHands", "ItemLegs", "ItemFeet", "ItemBoots", "ItemMisc"], SetPose: ["Hogtied"], Difficulty: 3 },
@@ -46,13 +52,13 @@ const ChainsArmsOptions = [
 	}
 ];
 
-var ChainsOptionOffset = 0;
+var ChainsArmsOptionOffset = 0;
 
 // Loads the item extension properties
 function InventoryItemArmsChainsLoad() {
 	if (DialogFocusItem.Property == null) DialogFocusItem.Property = ChainsArmsOptions[0].Property;
 	DialogExtendedMessage = DialogFind(Player, "SelectChainBondage");
-	ChainsOptionOffset = 0;
+	ChainsArmsOptionOffset = 0;
 }
 
 // Draw the item extension screen
@@ -66,8 +72,8 @@ function InventoryItemArmsChainsDraw() {
 	DrawText(DialogExtendedMessage, 1500, 375, "white", "gray");
 
 	// Draw the possible positions and their requirements, 4 at a time in a 2x2 grid
-	for (var I = ChainsOptionOffset; (I < ChainsArmsOptions.length) && (I < ChainsOptionOffset + 4); I++) {
-		var offset = I - ChainsOptionOffset;
+	for (var I = ChainsArmsOptionOffset; (I < ChainsArmsOptions.length) && (I < ChainsArmsOptionOffset + 4); I++) {
+		var offset = I - ChainsArmsOptionOffset;
 		var X = 1200 + (offset % 2 * 387);
 		var Y = 450 + (Math.floor(offset / 2) * 300);
 		var FailSkillCheck = (ChainsArmsOptions[I].RequiredBondageLevel != null && SkillGetLevelReal(Player, "Bondage") < ChainsArmsOptions[I].RequiredBondageLevel);
@@ -83,12 +89,12 @@ function InventoryItemArmsChainsClick() {
 
 	// Menu buttons
 	if ((MouseX >= 1885) && (MouseX <= 1975) && (MouseY >= 25) && (MouseY <= 110)) DialogFocusItem = null;
-	if ((MouseX >= 1775) && (MouseX <= 1865) && (MouseY >= 25) && (MouseY <= 110)) ChainsOptionOffset += 4;
-	if (ChainsOptionOffset > ChainsArmsOptions.length) ChainsOptionOffset = 0;
+	if ((MouseX >= 1775) && (MouseX <= 1865) && (MouseY >= 25) && (MouseY <= 110)) ChainsArmsOptionOffset += 4;
+	if (ChainsArmsOptionOffset >= ChainsArmsOptions.length) ChainsArmsOptionOffset = 0;
 
 	// Item buttons
-	for (var I = ChainsOptionOffset; (I < ChainsArmsOptions.length) && (I < ChainsOptionOffset + 4); I++) {
-		var offset = I - ChainsOptionOffset;
+	for (var I = ChainsArmsOptionOffset; (I < ChainsArmsOptions.length) && (I < ChainsArmsOptionOffset + 4); I++) {
+		var offset = I - ChainsArmsOptionOffset;
 		var X = 1200 + (offset % 2 * 387);
 		var Y = 450 + (Math.floor(offset / 2) * 300);
 
