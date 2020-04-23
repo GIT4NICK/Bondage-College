@@ -569,3 +569,35 @@ function CharacterResetFacialExpression(C) {
 function CharacterGetCurrent() {
 	return (Player.FocusGroup != null) ? Player : CurrentCharacter;
 }
+
+// Compress a character wardrobe into an array and then into a LZ string to save space on the server
+function CharacterCompressWardrobe(Wardrobe) {
+	if (Array.isArray(Wardrobe) && (Wardrobe.length > 0)) {
+		var CompressedWardrobe = [];
+		for (var W = 0; W < Wardrobe.length; W++) {
+			var Arr = [];
+			for (var A = 0; A < Wardrobe[W].length; A++)			
+				Arr.push([Wardrobe[W][A].Name, Wardrobe[W][A].Group, Wardrobe[W][A].Color]);
+			CompressedWardrobe.push(Arr);
+		}
+		return LZString.compressToUTF16(JSON.stringify(CompressedWardrobe));
+	} else return "";
+}
+
+// Decompress a character wardrobe from a LZ String and then from an array
+function CharacterDecompressWardrobe(Wardrobe) {
+	if (typeof Wardrobe === "string") {
+		var CompressedWardrobe = JSON.parse(LZString.decompressFromUTF16(Wardrobe));
+		var DecompressedWardrobe = [];
+		if (CompressedWardrobe != null) {
+			for (var W = 0; W < CompressedWardrobe.length; W++) {
+				var Arr = [];
+				for (var A = 0; A < CompressedWardrobe[W].length; A++)
+					Arr.push({ Name: CompressedWardrobe[W][A][0], Group: CompressedWardrobe[W][A][1], Color: CompressedWardrobe[W][A][2] });
+				DecompressedWardrobe.push(Arr);
+			}
+		}
+		return DecompressedWardrobe;
+	}
+	return Wardrobe;
+}

@@ -659,12 +659,12 @@ function GameLARPContinue() {
 
 	// See if there's at least 2 teams in which players have free arms, return TRUE if that's the case
 	var Team = "";
-	for (var C = 0; C < ChatRoomCharacter.length; C++)
-		if ((ChatRoomCharacter[C].Game.LARP.Team != "") && (ChatRoomCharacter[C].Game.LARP.Team != "None") && (InventoryGet(ChatRoomCharacter[C], "ItemArms") == null)) {
+	for (var C = 0; C < GameLARPPlayer.length; C++)
+		if ((GameLARPPlayer[C].Game.LARP.Team != "") && (GameLARPPlayer[C].Game.LARP.Team != "None") && (InventoryGet(GameLARPPlayer[C], "ItemArms") == null)) {
 			if (Team == "")
-				Team = ChatRoomCharacter[C].Game.LARP.Team;
+				Team = GameLARPPlayer[C].Game.LARP.Team;
 			else
-				if (Team != ChatRoomCharacter[C].Game.LARP.Team)
+				if (Team != GameLARPPlayer[C].Game.LARP.Team)
 					return true;
 		}
 
@@ -678,9 +678,22 @@ function GameLARPContinue() {
 		ServerSend("AccountUpdate", { Game: Player.Game });
 
 		// Calculate the reputation gained, the longer the game took, the higher it will rise the rep, times 2 if the player team won
-		var RepGain = Math.round(GameLARPProgress.length / GameLARPPlayer.length * ((Player.Game.LARP.Team == Team) ? 0.6 : 0.3));
+		var RepGain = Math.round(GameLARPProgress.length / GameLARPPlayer.length * ((Player.Game.LARP.Team == Team) ? 0.5 : 0.25));
+		if (RepGain > 10) RepGain = 10;
 		if (RepGain > 0) DialogChangeReputation("LARP", RepGain);
 		ChatRoomCharacterUpdate(Player);
+
+		// If the player is one the winning team, she earns some money based on game length, split by the number of winners
+		if ((Player.Game.LARP.Team == Team) && (GameLARPProgress.length >= 5)) {
+			var PlayersInWinningTeam = 0;
+			for (var C = 0; C < GameLARPPlayer.length; C++)
+				if (GameLARPPlayer[C].Game.LARP.Team == Team)
+					PlayersInWinningTeam++;
+			var MoneyGain = Math.round(GameLARPPlayer.length * Math.sqrt(GameLARPProgress.length) / PlayersInWinningTeam);
+			if (MoneyGain > 30) MoneyGain = 30;
+			if (MoneyGain > 0) CharacterChangeMoney(Player, MoneyGain);
+		}
+
 		return false;
 
 	} else return true;

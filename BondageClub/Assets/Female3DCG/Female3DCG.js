@@ -122,6 +122,25 @@ var AssetFemale3DCG = [
 			{ Name: "FrillyApron", Value: -1, BuyGroup: "Maid", Left: 135, Top: 179, AllowPose: ["TapedHands", "BackBoxTie", "BackCuffs", "BackElbowTouch", "Bolero", "Yoked", "Hogtied"] }
 		]
 	},
+	{
+		Group: "Necklace",
+		Priority: 32,
+		ParentGroup: "BodyUpper",
+		Default: false,
+		Random: false,
+		Clothing: true,
+		Color: ["Default", "#202020", "#808080", "#bbbbbb", "#aa8080", "#80aa80", "#8080aa", "#aaaa80", "#80aaaa", "#aa80aa", "#cc3333", "#33cc33", "#3333cc", "#cccc33", "#33cccc", "#cc33cc"],
+		Asset: [
+			 { Name: "Necklace1", Value: 40, Left: 148, Top: 70, IgnoreParentGroup: true},
+			 { Name: "Necklace2", Left: 147, Top: 90, IgnoreParentGroup: true},
+			 { Name: "Necklace3", Left: 147, Top: 110, IgnoreParentGroup: true},
+			 { Name: "Necklace4", Value: 30, Left: 147, Top: 110, IgnoreParentGroup: true}
+
+
+		]
+	},
+
+
 
 	{
 	    Group: "Suit",
@@ -940,6 +959,13 @@ var AssetFemale3DCG = [
 			Layer: [
 					{ Name: "Belt", AllowColorize: true },
 					{ Name: "Crotch", AllowColorize: false }
+				]
+			},
+			{
+				Name: "HempRopeBelt", BuyGroup: ["HempRope"], Effect: ["Egged"], DefaultColor: "#956B1C", Block: ["ItemPelvis"], Value: 60, Prerequisite: ["CannotHaveWand"], Time: 15, ExpressionTrigger: [{ Group: "Blush", Name: "Medium", Timer: 10 }] , AllowEffect: ["Egged", "Vibrating"], HideItem: ["ClothLowerPajama1", "ClothLowerMistressBottom"],
+				Layer: [
+					{ Name: "Rope", AllowColorize: true },
+					{ Name: "Wand", AllowColorize: false }
 				]
 			},
 			AssetSpankingToys
@@ -1968,7 +1994,7 @@ var AssetFemale3DCG = [
 			{ Name: "SmallDisplayCase", RemoveAtLogin: true, Alpha: [[1, 1, 70, 999], [420, 1, 80, 999]], SetPose: ["Kneel"], Effect: ["ForceKneel", "Prone", "Enclose", "DeafLight", "GagLight", "Freeze"], Value: 40, Time: 15, RemoveTime: 10, Difficulty: -2, AllowLock: true, Prerequisite: ["NotSuspended", "NotHogtied", "NotMounted", "NotKneelingSpread", "NoFeetSpreader"] },
 			{ Name: "WoodenBoxOpenHead", AllowBlock: ["ItemHands"], SelfBondage: false, Extended: true, AllowPose: ["Yoked"], RemoveAtLogin: true, Alpha: [[1, 220, 70, 999], [420, 220, 80, 999]], Effect: ["Prone", "Freeze", "Block"], Value: 60, Time: 15, RemoveTime: 10, Difficulty: -2, AllowLock: true, Prerequisite: ["NotSuspended", "NotHogtied"], Block: ["ItemArms", "ItemBreast", "ItemButt", "ItemFeet", "ItemLegs", "ItemMisc", "ItemNipples", "ItemNipplesPiercings", "ItemPelvis", "ItemTorso", "ItemVulva", "ItemVulvaPiercings", "ItemBoots"], Hide: ["Wings"] },
 			{ Name: "SmallWoodenBoxOpenHead", AllowBlock: ["ItemHands"], SelfBondage: false, Extended: true, AllowPose: ["Yoked"] , RemoveAtLogin: true, Alpha: [[1, 220, 70, 999], [420, 220, 80, 999]], SetPose: ["Kneel"],  Effect: ["ForceKneel", "Prone", "Freeze", "Block"], Value: 40, Time: 15, RemoveTime: 10, Difficulty: -2, AllowLock: true, Prerequisite: ["NotSuspended", "NotHogtied", "NotMounted", "NotKneelingSpread", "NoFeetSpreader", "NotYoked"], Block: ["ItemArms", "ItemBreast", "ItemButt", "ItemFeet", "ItemLegs", "ItemMisc", "ItemNipples", "ItemNipplesPiercings", "ItemPelvis", "ItemTorso", "ItemVulva", "ItemVulvaPiercings", "ItemBoots"], SetPose: ["Kneel"], Hide: ["Wings"]  },
-			{ Name: "WoodenStocks", RemoveAtLogin: true, Value: 150, Time: 10, Difficulty: 50, AllowLock: true, SetPose: ["Yoked"], Effect: ["Prone", "Freeze", "Block", "Mounted"], Prerequisite: ["AllFours", "NotSuspended", "NotHogtied", "NotKneelingSpread", "NoItemArms", "LegsOpen"], Block: ["ItemArms", "ItemFeet", "ItemLegs", "ItemBoots"]}
+			{ Name: "WoodenStocks", RemoveAtLogin: true, Value: 150, Time: 10, Difficulty: 50, AllowLock: true, SetPose: ["Yoked"], Effect: ["Prone", "Freeze", "Block", "Mounted"], Prerequisite: ["NotKneeling", "AllFours", "NotSuspended", "NotHogtied", "NotKneelingSpread", "NoItemArms", "LegsOpen"], Block: ["ItemArms", "ItemFeet", "ItemLegs", "ItemBoots"]}
 		]
 	},
 	

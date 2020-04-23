@@ -11,8 +11,8 @@ PlayerGagged,,,"Let me guess, you've lost your last battle?   (She laughs.)",,
 0,40,I'd like to join the LARP battles.,"This is great news!  First, we need to review the rules and you'll need to accept them.",,"DialogReputationLess(""LARP"", 0)"
 0,50,I'd like to select a new class.,Very good.  Which class would you like to select?,,"DialogReputationGreater(""LARP"", 1)"
 0,,"I'm fine, thanks.  (Leave her.)",,DialogLeave(),
-10,,What is LARP?,LARP stands for Live Action Role Playing.  Everyone picks a class with special abilities and we battle each other.  There's no fee to play.,,
-10,30,Tell me about the classes.,Which class interests you?  I can give you some details.,,
+10,,What is LARP?,LARP stands for Live Action Role Playing.  Everyone picks a class with special abilities and we battle each other.  The winners get paid.,,
+10,,How much money do winners get?,The battles bring lots of customers.  The money amount split by the winners increase with long battles and the number of participants.,,
 10,,There's no cheating?,"For a fun LARP, it's mandatory that everyone plays fair.  When someone loses a battle, they need to submit and go along with it.",,
 10,,How do I join?,"You first need to agree to the rules and select a class.  After that, just join the battles from this room or create a new match.",,
 10,,Can I team up with my friends?,"Of course, you can make teams however you want it.  Simply select a color to pick a team.  You need at least two teams to play.",,
