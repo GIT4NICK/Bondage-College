@@ -499,6 +499,16 @@ function CharacterRelease(C) {
 	CharacterRefresh(C);
 }
 
+// Removes any binding item from the character if there's no specific padlock on it
+function CharacterReleaseNoLock(C) {
+	for (var E = 0; E < C.Appearance.length; E++)
+		if (C.Appearance[E].Asset.IsRestraint && ((C.Appearance[E].Property == null) || (C.Appearance[E].Property.LockedBy == null))) {
+			C.Appearance.splice(E, 1);
+			E--;
+		}
+	CharacterRefresh(C);
+}
+
 // Returns the best bonus factor available
 function CharacterGetBonus(C, BonusType) {
 	var Bonus = 0;
@@ -548,8 +558,11 @@ function CharacterSetFacialExpression(C, AssetGroup, Expression, Timer) {
 				if (!C.Appearance[A].Property) C.Appearance[A].Property = {};
 				if (C.Appearance[A].Property.Expression != Expression) {
 					C.Appearance[A].Property.Expression = Expression;
-					CharacterRefresh(C);
-					ChatRoomCharacterUpdate(C);
+					CharacterRefresh(C, false);
+					if (CurrentScreen == "ChatRoom") {
+						if (C.ID == 0) ServerSend("ChatRoomCharacterExpressionUpdate", { Name: Expression, Group: AssetGroup, Appearance: ServerAppearanceBundle(C.Appearance) });
+						else ChatRoomCharacterUpdate(C);
+					}
 				}
 				if (Timer != null) TimerInventoryRemoveSet(C, AssetGroup, Timer);
 				return;
