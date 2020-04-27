@@ -39,8 +39,6 @@ function InventoryItemHiddenLeatherArmbinderWrapStrapSetType(NewType) {
 
 	// Refreshes the character and chatroom
 	CharacterRefresh(C);
-	ChatRoomCharacterUpdate(C);
-
 	var msg = "LeatherArmbinderStrapSet" + ((NewType) ? NewType : "None");
 	var Dictionary = [];
 	Dictionary.push({Tag: "SourceCharacter", Text: Player.Name, MemberNumber: Player.MemberNumber});

@@ -61,11 +61,8 @@ function InventoryItemArmsLeatherArmbinderSetType(NewType) {
 		DialogFocusItem = InventoryGet(C, "ItemHidden");
 	}
 
-	// Refreshes the current character
-	CharacterRefresh(C);
-	ChatRoomCharacterUpdate(C);
-
 	// Pushes the change to the chatroom
+	CharacterRefresh(C);
 	var msg = "LeatherArmbinderSet" + ((NewType == null) ? "Strap" : NewType);
 	var Dictionary = [];
 	Dictionary.push({Tag: "SourceCharacter", Text: Player.Name, MemberNumber: Player.MemberNumber});
@@ -77,4 +74,3 @@ function InventoryItemArmsLeatherArmbinderSetType(NewType) {
 	}
 
 }
-
