@@ -667,7 +667,7 @@ function DialogPublishAction(C, ClickItem) {
 	}
 
 	// Publishes the item result
-	if (CurrentScreen == "ChatRoom" && !InventoryItemHasEffect(ClickItem)) {
+	if ((CurrentScreen == "ChatRoom") && !InventoryItemHasEffect(ClickItem)) {
 		InventoryExpressionTrigger(C, ClickItem);
 		ChatRoomPublishAction(C, null, ClickItem, true);
 	}
@@ -710,10 +710,11 @@ function DialogItemClick(ClickItem) {
 	// If the item is limited for that character, based on item permissions
 	if (!InventoryCheckLimitedPermission(C, ClickItem)) return;
 
-	// If we must apply a lock to an item
+	// If we must apply a lock to an item (can trigger a daily job)
 	if (DialogItemToLock != null) {
 		if ((CurrentItem != null) && CurrentItem.Asset.AllowLock) {
 			InventoryLock(C, CurrentItem, ClickItem, Player.MemberNumber);
+			IntroductionJobProgress("DomLock", ClickItem.Asset.Name, true);
 			DialogItemToLock = null;
 			DialogInventoryBuild(C);
 			ChatRoomPublishAction(C, CurrentItem, ClickItem, true);
@@ -771,7 +772,7 @@ function DialogClick() {
 
 	// If the user clicked the Up button, move the character up to the top of the screen
 	if ((CurrentCharacter.HeightModifier < -90) && (CurrentCharacter.FocusGroup != null) && (MouseX >= 510) && (MouseX < 600) && (MouseY >= 25) && (MouseY < 115)) {
-		CharacterAppearanceForceTopPosition = true;
+		CharacterAppearanceForceUpCharacter = CurrentCharacter.MemberNumber;
 		CurrentCharacter.HeightModifier = 0;
 		return;
 	}
@@ -801,8 +802,8 @@ function DialogClick() {
 	}
 
 	// If the user clicked anywhere outside the current character item zones, ensure the position is corrected
-	if (CharacterAppearanceForceTopPosition == true && ((MouseX < 500) || (MouseX > 1000) || (CurrentCharacter.FocusGroup == null))) {
-		CharacterAppearanceForceTopPosition = false;
+	if (CharacterAppearanceForceUpCharacter == CurrentCharacter.MemberNumber && ((MouseX < 500) || (MouseX > 1000) || (CurrentCharacter.FocusGroup == null))) {
+		CharacterAppearanceForceUpCharacter = 0;
 		CharacterApperanceSetHeightModifier(CurrentCharacter);
 	}
 
@@ -817,6 +818,7 @@ function DialogClick() {
 
 				// If this specific activity is clicked, we run it
 				if ((MouseX >= X) && (MouseX < X + 225) && (MouseY >= Y) && (MouseY < Y + 275)) {
+					IntroductionJobProgress("SubActivity", DialogActivity[A].MaxProgress.toString(), true);
 					ActivityRun((Player.FocusGroup != null) ? Player : CurrentCharacter, DialogActivity[A]);
 					return;
 				}
@@ -1141,8 +1143,8 @@ function DialogDrawItemMenu(C) {
 			} else ChatRoomPublishAction(C, DialogProgressPrevItem, DialogProgressNextItem, true);
 
 			// Reset the the character's position
-			if (CharacterAppearanceForceTopPosition == true) {
-				CharacterAppearanceForceTopPosition = false;
+			if (CharacterAppearanceForceUpCharacter == C.MemberNumber) {
+				CharacterAppearanceForceUpCharacter = 0;
 				CharacterApperanceSetHeightModifier(C);
 			}
 
