@@ -44,6 +44,8 @@ function PrisonPlayerIsOTMGag()     {return PrisonCharacterAppearanceAvailable(P
 function PrisonPlayerIsStriped()    {return !(PrisonCharacterAppearanceGroupAvailable(Player, "Cloth"));}
 function PrisonPlayerIsBadGirl()    {return LogQuery("Joined", "BadGirl");}
 function PrisonPlayerIsBadGirlThief()	{return (LogQuery("Joined", "BadGirl") && (LogQuery("Stolen", "BadGirl") || LogQuery("Hide", "BadGirl")));}
+function PrisonPlayerDiceStolen()		{return (LogQuery("Stolen", "BadGirl"));}
+function PrisonPlayerDiceHide()		{return (LogQuery("Hide", "BadGirl"));}
 function PrisonPlayerHasSleepingPills()	{return (InventoryAvailable(Player, "RegularSleepingPill", "ItemMouth"));}
 function PrisonPlayerHasSpankingToys() {return (InventoryAvailable(Player, "SpankingToys", "ItemHands"));}
 function PrisonPlayerHasKeys() {return (InventoryAvailable(Player, "MetalPadlockKey", "ItemMisc") || InventoryAvailable(Player, "IntricatePadlockKey", "ItemMisc") ||  InventoryAvailable(Player, "MetalCuffsKey", "ItemMisc"));}
@@ -621,6 +623,7 @@ function PrisonFightPoliceEnd() {
 	if (!KidnapVictory) {
 		CharacterRelease(PrisonPolice);
 		InventoryRemove(PrisonPolice, "ItemNeck");
+		InventoryRemove(Player, "ItemMouth");
 		PrisonWearPoliceEquipment(PrisonPolice);
 		PrisonPolice.CurrentDialog = DialogFind(PrisonPolice, "CatchDefeat");
 		PrisonPolice.Stage = "Catch";
@@ -654,7 +657,12 @@ function PrisonCatchByPolice() {
 
 //Change the Prison Bahaver >0 Good, <0 Bad
 function PrisonSetBehavior(Behavior) {
-	PrisonBehavior = PrisonBehavior + Behavior;
+	PrisonBehavior = PrisonBehavior + parseInt(Behavior);
+}
+
+function PrisonSetDiceHide(DiceHide) {
+	//ToDo search the hide
+	PrisonSetBehavior(1);
 }
 
 function PrisonArrestHandoverDices() {

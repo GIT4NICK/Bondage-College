@@ -6,11 +6,12 @@ CatchVictoryIntro,,,We'll get you next time.,,
 CatchVictory,,(Leave her.),,FightPoliceOutro(),
 CatchDefeat,,,"Follow me, I'm serious.",,
 ArrestIntro,,,Someone saw you steal the dice at the arcade.,,
-Arrest0,Arrest1,"Yes, I did.","Well, that saves us a lot of work. Where are the dice now?",SetBehavior(3),
+Arrest0,Arrest1,"Yes, I did.","Well, that saves us a lot of work. Where are the dice now?",SetBehavior(2),
 Arrest0,Arrest1,(Silence.),We'll find out the truth.  Where are the dice now?,,
 Arrest0,Arrest1,"No, it wasn't me.",We'll find out the truth. So again where are the dice?,SetBehavior(-1),
-Arrest1,Arrest2,I have them here.,Then hand them over.,SetBehavior(1),
-Arrest1,Arrest3,I hid them in the Stable.,"We'll check this out carefully later. Until then, you're under arrest.",SetBehavior(1),
+Arrest1,Arrest2,I have them here.,Then hand them over.,SetBehavior(2),PrisonPlayerDiceStolen()
+Arrest1,Arrest3,I hid them in the Stable.,"We'll check this out carefully later. Until then, you're under arrest.","SetDiceHide(""Stable"")",PrisonPlayerDiceHide()
+Arrest1,Arrest3,I hid them in the Photostudio.,"We'll check this out carefully later. Until then, you're under arrest.","SetDiceHide(""Photo"")",PrisonPlayerDiceHide()
 Arrest1,Arrest3,I won't tell.,"You'll tell us. Until then, you're under arrest.",SetBehavior(-2),
 Arrest1,Arrest3,(Silence.),You are under arrest as a suspect.,SetBehavior(-1),
 Arrest2,Arrest3,(Give her the dice.),(She takes the dice.) You're under arrest until further notice.,ArrestHandoverDices(),
@@ -22,6 +23,7 @@ Arrest4,Arrest4,Here are my keys.,Anything else?,ArrestHandoverKeys(),PrisonPlay
 Arrest4,Arrest4,Here are my sleeping pills.,Anything else?,ArrestHandoverSleepingPills(),PrisonPlayerHasSleepingPills()
 Arrest4,Arrest4,Here are my spanking toys.,Anything else?,ArrestHandoverSpankingToys(),PrisonPlayerHasSpankingToys()
 Arrest4,Arrest5,I don't have that.,"Well, let's get you strip-searched. Undress to check.",,
+Arrest4,Arrest5,(Silence.),"Well, let's get you strip-searched. Undress to check.",SetBehavior(-1),
 Arrest5,Arrest7,(Take off all your clothes.),There you go. Spread your legs and bend over.,ArrestStripUnderware(),
 Arrest5,Arrest6,(Take off your outer clothing.),Completely undress.,ArrestStripOuterCloth(),
 Arrest5,Arrest6,(Refuse and wait and see.),Will it be soon? We can do it differently!,SetBehavior(-2),
