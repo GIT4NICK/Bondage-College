@@ -528,17 +528,30 @@ function ServerAccountLovership(data) {
 		if ((CurrentCharacter != null) && (CurrentCharacter.MemberNumber == data.MemberNumber))
 			ChatRoomLovershipOption = data.Result;
 
-	// If we must update the character lovership data
-	if ((data != null) && (typeof data === "object") && !Array.isArray(data) && (data.Lover != null) && (typeof data.Lover === "string") && (data.Lovership != null) && (typeof data.Lovership === "object")) {
-		Player.Lover = data.Lover;
-		Player.Lovership = data.Lovership;
-	}
-
-	// If we must clear the character lovership data
-	if ((data != null) && (typeof data === "object") && !Array.isArray(data) && (data.ClearLovership != null) && (typeof data.ClearLovership === "boolean") && (data.ClearLovership == true)) {
-		Player.Lover = "";
-		Player.Lovership = null;
+	// If we must update the character lovership data as an array
+	if ((data != null) && (typeof data === "object") && !Array.isArray(data) && (data.Lovership != null) && (Array.isArray(data.Lovership))) {
+		if (data.Lovership.length > 0) {
+			Player.Lovership = data.Lovership[0];
+		}
+		else {
+			Player.Lover = "";
+			Player.Lovership = null;
+		}
 		LoginLoversItems();
+	}
+	else {
+		// If we must update the character lovership data
+		if ((data != null) && (typeof data === "object") && !Array.isArray(data) && (data.Lover != null) && (typeof data.Lover === "string") && (data.Lovership != null) && (typeof data.Lovership === "object")) {
+			Player.Lover = data.Lover;
+			Player.Lovership = data.Lovership;
+		}
+
+		// If we must clear the character lovership data
+		if ((data != null) && (typeof data === "object") && !Array.isArray(data) && (data.ClearLovership != null) && (typeof data.ClearLovership === "boolean") && (data.ClearLovership == true)) {
+			Player.Lover = "";
+			Player.Lovership = null;
+			LoginLoversItems();
+		}
 	}
 
 }
