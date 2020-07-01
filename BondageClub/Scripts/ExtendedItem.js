@@ -114,25 +114,31 @@ function ExtendedItemSetType(Options, Option) {
 		return;
 	}
 
+	DialogFocusItem = InventoryGet(C, C.FocusGroup.Name);
 	if (CurrentScreen == "ChatRoom") {
-		DialogFocusItem = InventoryGet(C, C.FocusGroup.Name);
 		// Call the item's load function
 		CommonCallFunctionByName(FunctionPrefix + "Load");
 	}
+	var PreviousType = DialogFocusItem.Property.Type;
 
 	DialogFocusItem.Property = Option.Property;
 	CharacterRefresh(C);
 	ChatRoomCharacterUpdate(C);
 
+	var PreviousOption = Options.find(O => O.Property.Type === PreviousType);
 	if (CurrentScreen === "ChatRoom") {
 		// If we're in a chatroom, call the item's publish function to publish a message to the chatroom
-		var PreviousOption = Options.find(Option => Option.Property.Type === DialogFocusItem.Property.Type);
-		CommonCallFunctionByName(FunctionPrefix + "PublishAction", Option, PreviousOption);
-	}
-
-	if (DialogInventory) {
+		CommonCallFunctionByName(FunctionPrefix + "PublishAction", C, Option, PreviousOption);
+	} else {
 		DialogFocusItem = null;
-		DialogMenuButtonBuild(C);
+		if (C.ID === 0) {
+			// Player is using the item on herself
+			DialogMenuButtonBuild(C);
+		} else {
+			// Otherwise, call the item's NPC dialog function, if one exists
+			CommonCallFunctionByName(FunctionPrefix + "NpcDialog", C, Option, PreviousOption);
+			C.FocusGroup = null;
+		}
 	}
 }
 

@@ -56,6 +56,8 @@ function DialogCanInteract(C) { return ((C.toUpperCase().trim() == "PLAYER") ? P
 function DialogSetPose(C, NewPose) { CharacterSetActivePose((C.toUpperCase().trim() == "PLAYER") ? Player : CurrentCharacter, ((NewPose != null) && (NewPose != "")) ? NewPose : null) }
 function DialogSkillGreater(SkillType, Value) { return (parseInt(SkillGetLevel(Player, SkillType)) >= parseInt(Value)) } // Returns TRUE if a specific reputation type is less or equal than a given value
 function DialogInventoryAvailable(InventoryName, InventoryGroup) { return InventoryAvailable(Player, InventoryName, InventoryGroup) }
+function DialogChatRoomPlayerIsAdmin() { return (ChatRoomPlayerIsAdmin() && (CurrentScreen == "ChatRoom")) }
+function DialogChatRoomCanSafeword() { return (CurrentScreen == "ChatRoom") }
 
 // Returns TRUE if the dialog prerequisite condition is met
 function DialogPrerequisite(D) {
@@ -182,6 +184,9 @@ function DialogLeaveItemMenu() {
 	DialogTextDefault = "";
 	DialogTextDefaultTimer = 0;
 	ElementRemove("InputColor");
+	AudioDialogStop();
+	ColorPickerEndPick();
+	ColorPickerRemoveEventListener();
 }
 
 // Leaves the item menu of the focused item
@@ -201,13 +206,13 @@ function DialogInventoryAdd(C, NewInv, NewInvWorn, SortOrder) {
 
 	// Make sure we do not add owner/lover only items for invalid characters, owner/lover locks can be applied on the player by the player for self-bondage
 	if (NewInv.Asset.OwnerOnly && !NewInvWorn && !C.IsOwnedByPlayer())
-		if ((C.ID != 0) || ((C.Owner == "") && (C.Ownership == null)) || !NewInv.Asset.IsLock)
+		if ((C.ID != 0) || ((C.Owner == "") && (C.Ownership == null)) || !NewInv.Asset.IsLock || ((C.ID == 0) && LogQuery("BlockOwnerLockSelf", "OwnerRule")))
 			return;
 	if (NewInv.Asset.LoverOnly && !NewInvWorn && !C.IsLoverOfPlayer())
-		if ((C.ID != 0) || ((C.Lover == "") && (C.Lovership == null)) || !NewInv.Asset.IsLock)
+		if ((C.ID != 0) || (C.Lovership.length < 0) || !NewInv.Asset.IsLock)
 			return;
 
-	// Do not show keys if they are in the depoist
+	// Do not show keys if they are in the deposit
 	if (LogQuery("KeyDeposit", "Cell") && InventoryIsKey(NewInv)) return false;
 
 	// Make sure we do not duplicate the non-blocked item
@@ -483,9 +488,6 @@ function DialogMenuButtonClick() {
 	for (var I = 0; I < DialogMenuButton.length; I++)
 		if ((MouseX >= 1885 - I * 110) && (MouseX <= 1975 - I * 110)) {
 			
-			// Stops the dialog sounds
-			AudioDialogStop();
-
 			// Gets the current character and item
 			var C = (Player.FocusGroup != null) ? Player : CurrentCharacter;
 			var Item = InventoryGet(C, C.FocusGroup.Name);
@@ -1279,4 +1281,20 @@ function DialogDrawExpressionMenu() {
 // Sets the skill ratio for the player, will be a % of effectiveness applied to the skill when using it
 function DialogSetSkillRatio(SkillType, NewRatio) {
 	SkillSetRatio(SkillType, parseInt(NewRatio) / 100);
+}
+
+// Sends an administrative command to the server for the chat room from the player dialog
+function DialogChatRoomAdminAction(ActionType, Publish) {
+	ChatRoomAdminAction(ActionType, Publish);
+}
+
+// Checks if a chat room player swap is in progress
+function DialogChatRoomHasSwapTarget() {
+	return ChatRoomHasSwapTarget();
+}
+
+// When the player uses her safeword
+function DialogChatRoomSafeword() {
+	DialogLeave();
+	ChatRoomSafeword();
 }

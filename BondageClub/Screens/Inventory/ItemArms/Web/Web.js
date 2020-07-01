@@ -9,6 +9,7 @@ var InventoryItemArmsWebOptions = [
 		Name: "Wrapped",
 		BondageLevel: 0,
 		SelfBondageLevel: 4,
+		Prerequisite: ["NoFeetSpreader"],
 		Property: {
 			Type: "Wrapped",
 			Difficulty: 2,
@@ -23,6 +24,7 @@ var InventoryItemArmsWebOptions = [
 		Name: "Cocooned",
 		BondageLevel: 1,
 		SelfBondageLevel: 5,
+		Prerequisite: ["NoFeetSpreader"],
 		Property: {
 			Type: "Cocooned",
 			Difficulty: 4,
@@ -37,26 +39,24 @@ var InventoryItemArmsWebOptions = [
 		Name: "Hogtied",
 		BondageLevel: 3,
 		SelfBondageLevel: 6,
-		RequiresPrerequisites: true,
+		Prerequisite: ["NotSuspended", "NoFeetSpreader", "NotKneeling", "NotChained", "CannotBeHogtiedWithAlphaHood"],
 		Property: {
 			Type: "Hogtied",
 			Difficulty: 4,
-			Prerequisite: ["NoFeetSpreader"],
 			SetPose: ["Hogtied"],
 			Effect: ["Block", "Freeze", "Prone"],
-			Hide: ["Cloth", "ClothLower", "ClothAccessory", "Necklace"],
-			Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt", "ItemPelvis", "ItemTorso", "ItemHands", "ItemLegs", "ItemFeet", "ItemBoots", "ItemNipples", "ItemNipplesPiercings", "ItemBreast"],
+			Hide: ["Cloth", "ClothLower", "ClothAccessory", "Necklace", "Shoes", "Socks"],
+			Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt", "ItemPelvis", "ItemTorso", "ItemHands", "ItemLegs", "ItemFeet", "ItemBoots", "ItemNipples", "ItemNipplesPiercings", "ItemBreast", "ItemDevices"],
 		},
 	},
 	{
 		Name: "Suspended",
 		BondageLevel: 4,
 		SelfBondageLevel: 8,
-		RequiresPrerequisites: true,
+		Prerequisite: ["NoFeetSpreader", "NotKneeling", "NotChained", "CannotBeHogtiedWithAlphaHood"],
 		Property: {
 			Type: "Suspended",
 			Difficulty: 6,
-			Prerequisite: ["NoFeetSpreader"],
 			SetPose: ["LegsClosed", "BackElbowTouch", "Suspension"],
 			Effect: ["Block", "Freeze", "Prone"],
 			Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt", "ItemPelvis", "ItemTorso", "ItemHands", "ItemLegs", "ItemFeet", "ItemBoots", "ItemNipples", "ItemNipplesPiercings", "ItemBreast"],
@@ -66,15 +66,14 @@ var InventoryItemArmsWebOptions = [
 		Name: "SuspensionHogtied",
 		BondageLevel: 5,
 		SelfBondageLevel: 9,
-		RequiresPrerequisites: true,
+		Prerequisite: ["NotSuspended", "NoFeetSpreader", "NotKneeling", "NotChained", "CannotBeHogtiedWithAlphaHood"],
 		Property: {
 			Type: "SuspensionHogtied",
 			Difficulty: 11,
-			Prerequisite: ["NoFeetSpreader"],
 			SetPose: ["Hogtied", "SuspensionHogtied"],
 			Effect: ["Block", "Freeze", "Prone"],
-			Hide: ["Cloth", "ClothLower", "ClothAccessory", "Necklace"],
-			Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt", "ItemPelvis", "ItemTorso", "ItemHands", "ItemLegs", "ItemFeet", "ItemBoots", "ItemNipples", "ItemNipplesPiercings", "ItemBreast"],
+			Hide: ["Cloth", "ClothLower", "ClothAccessory", "Necklace", "Shoes", "Socks"],
+			Block: ["ItemVulva", "ItemVulvaPiercings", "ItemButt", "ItemPelvis", "ItemTorso", "ItemHands", "ItemLegs", "ItemFeet", "ItemBoots", "ItemNipples", "ItemNipplesPiercings", "ItemBreast", "ItemDevices"],
 		},
 	},
 ];
@@ -94,15 +93,32 @@ function InventoryItemArmsWebClick() {
 
 function InventoryItemArmsWebValidate(Option) {
 	var C = CharacterGetCurrent();
+
 	// Validates some prerequisites before allowing more advanced poses
-	if (Option.RequiresPrerequisites && !InventoryAllow(C, ["NotKneeling", "NotChained", "CannotBeHogtiedWithAlphaHood"], true)) {
-		DialogExtendedMessage = DialogText;
-		return false;
+	if (Option.Prerequisite) {
+		var Allowed = true;
+
+		// Remove the web temporarily for prerequisite-checking - we should still be able to change type if the web is the only thing that
+		// fails the prerequisite check
+		var Web = InventoryGet(C, "ItemArms");
+		InventoryRemove(C, "ItemArms");
+
+		if (!InventoryAllow(C, Option.Prerequisite, true)) {
+			DialogExtendedMessage = DialogText;
+			Allowed = false;
+		}
+
+		// Re-add the web
+		var DifficultyFactor = Web.Difficulty - Web.Asset.Difficulty;
+		CharacterAppearanceSetItem(C, "ItemArms", Web.Asset, Web.Color, DifficultyFactor, false);
+		InventoryGet(C, "ItemArms").Property = Web.Property;
+		CharacterRefresh(C);
+
+		return Allowed;
 	}
 }
 
-function InventoryItemArmsWebPublishAction(Option, PreviousOption) {
-	var C = CharacterGetCurrent();
+function InventoryItemArmsWebPublishAction(C, Option, PreviousOption) {
 	var NewIndex = InventoryItemArmsWebOptions.indexOf(Option);
 	var PreviousIndex = InventoryItemArmsWebOptions.indexOf(PreviousOption);
 	var msg = "ArmsWebSet" + Option.Name;
@@ -113,4 +129,8 @@ function InventoryItemArmsWebPublishAction(Option, PreviousOption) {
 		{ Tag: "Action", Text: ActionDialog },
 	];
 	ChatRoomPublishCustomAction(msg, true, Dictionary);
+}
+
+function InventoryItemArmsWebNpcDialog(C, Option) {
+	C.CurrentDialog = DialogFind(C, "ItemArmsWeb" + Option.Name, "ItemArms");
 }

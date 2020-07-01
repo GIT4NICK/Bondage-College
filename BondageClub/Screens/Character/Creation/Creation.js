@@ -69,6 +69,7 @@ function CreationResponse(data) {
 			Player.BlackList = [];
 			Player.FriendList = [];
 			Player.GhostList = [];
+			Player.Lovership = [];
 
 			// Imports logs, inventory and Sarah status from the Bondage College
 			CreationMessage = "";
@@ -126,7 +127,7 @@ function CreationClick() {
 		if (Password1 == Password2) {
 
 			// Makes sure the data is valid
-			var LN = /^[a-zA-Z0-9 ]+$/;
+			var LN = /^[a-zA-Z0-9]+$/;
 			var LS = /^[a-zA-Z ]+$/;
 			var E = /^[a-zA-Z0-9@.!#$%&'*+/=?^_`{|}~-]+$/;
 			if (CharacterName.match(LS) && Name.match(LN) && Password1.match(LN) && (Email.match(E) || Email == "") && (CharacterName.length > 0) && (CharacterName.length <= 20) && (Name.length > 0) && (Name.length <= 20) && (Password1.length > 0) && (Password1.length <= 20) && (Email.length <= 100)) {

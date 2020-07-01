@@ -46,6 +46,7 @@ Cloth,AdmiralTop,Admiral Top
 Cloth,VirginKiller1,Virgin Killer
 Cloth,ReverseBunnySuit,Reverse Bunny Suit Top
 Cloth,LeatherCropTop, Leather Crop Top
+Cloth,CorsetShirt,Corset Shirt
 ClothAccessory,,Cloth Accessory
 ClothAccessory,StudentOutfit3Scarf,Student Scarf
 ClothAccessory,StudentOutfit3Bow1,Student Bow 1
@@ -303,12 +304,13 @@ Glasses,Glasses5,Style 5
 Glasses,Glasses6,Style 6
 Glasses,SunGlasses1,Sunglasses 1
 Glasses,SunGlasses2,Sunglasses 2
-Glasses,Mask1,Venetian Mask
-Glasses,Mask2,Domino Mask
-Glasses,ButterflyMask1,Butterfly Mask
 Glasses,EyePatch1,Eye Patch
-Glasses,ShinobiMask,Shinobi Mask
-Glasses,FoxMask,Fox Mask
+Mask,,Mask
+Mask,VenetianMask,Venetian Mask
+Mask,DominoMask,Domino Mask
+Mask,ButterflyMask,Butterfly Mask
+Mask,ShinobiMask,Shinobi Mask
+Mask,FoxMask,Fox Mask
 TailStraps,,Tail Strap
 TailStraps,TailStrap,Kitty Tail Strap
 TailStraps,HorseTailStrap,Horse Tail Strap
@@ -338,6 +340,7 @@ Wings,DevilWings,Devil Wings
 Wings,FallenAngelWings,Fallen Angel Wings
 Wings,AngelWings,Angel Wings
 Wings,BatWings,Bat Wings
+Wings,FairyWings,Fairy Wings
 Height,,Height
 Height,H0950,165 cm
 Height,H0960,167 cm
@@ -644,6 +647,11 @@ ItemArms,ChainLeashHolding,Holding Chain Leash
 ItemArms,PetCrawler,Pet Crawler
 ItemArms,MermaidSuit,Mermaid Suit
 ItemArms,Web,Web
+ItemArms,LatexArmbinder,Latex Armbinder
+ItemArms,SeamlessLatexArmbinder,Seamless Latex Armbinder
+ItemArms,FullBodyLeatherHarness,Full Body Leather Harness
+ItemArms,UnderBedBondageCuffs,Under Bed Bondage Cuff Set
+ItemArms,TightJacket,Tight Straighjacket
 ItemHands,,Hands
 ItemHands,PaddedMittens,Padded Mittens
 ItemHands,PawMittens,Paw Mittens
@@ -676,6 +684,7 @@ ItemHands,SpankingToysHairbrush,Hairbrush
 ItemHands,SpankingToysSmallDildo,Small Dildo
 ItemHands,SpankingToysElectricToothbrush,Electric Toothbrush
 ItemHands,SpankingToysToothbrush,Toothbrush
+ItemHands,HoofMittens, Hoof Mittens
 ItemNeck,,Neck
 ItemNeck,LeatherCollar,Leather Collar
 ItemNeck,LeatherCollarBell,Bell Collar
@@ -779,6 +788,8 @@ ItemMouth,LatexBallMuzzleGag,Latex Ball Muzzle Gag
 ItemMouth,SockStuffing,Sock Stuffing
 ItemMouth,GasMaskGag,Respirator Mask
 ItemMouth,WebGag,Web
+ItemMouth,RopeGag,Rope Gag
+ItemMouth,MilkBottle,Milk Bottle
 ItemMouth2,,Mouth
 ItemMouth2,ClothGag,Cloth Gag
 ItemMouth2,WiffleGag,Wiffle Ball Gag
@@ -814,6 +825,7 @@ ItemMouth2,StitchedMuzzleGag,Stitched Muzzle Gag
 ItemMouth2,LatexBallMuzzleGag,Latex Ball Muzzle Gag
 ItemMouth2,GasMaskGag,Respirator Mask
 ItemMouth2,WebGag,Web Gag
+ItemMouth2,RopeGag,Rope Gag
 ItemMouth3,,Mouth
 ItemMouth3,ClothGag,Cloth Gag
 ItemMouth3,WiffleGag,Wiffle Ball Gag
@@ -849,6 +861,7 @@ ItemMouth3,StitchedMuzzleGag,Stitched Muzzle Gag
 ItemMouth3,LatexBallMuzzleGag,Latex Ball Muzzle Gag
 ItemMouth3,GasMaskGag,Respirator Mask
 ItemMouth3,WebGag,Web Gag
+ItemMouth3,RopeGag,Rope Gag
 ItemHead,,Head
 ItemHead,ClothBlindfold,Cloth Blindfold
 ItemHead,LeatherBlindfold,Leather Blindfold
@@ -868,14 +881,21 @@ ItemHead,LeatherHoodSensDep,Sensory Deprivation Hood
 ItemHead,LatexHoodOpenHair,Open Hair Latex Hood
 ItemHead,LeatherHoodSealed,Sealed Leather Hood
 ItemHead,PolishedSteelHood,Polished Steel Hood
+ItemHead,NoseRing,Nose Ring
+ItemHead,NoseHook,Nose Hook
+ItemHead,InflatedBallHood,Inflatable Hood
+ItemHead,OldGasMask,Gas Mask
 ItemHead,SackHood,Sack Hood
 ItemHead,LewdBlindfold,Lewd Blindfold
 ItemHead,LatexBlindfold,Latex Blindfold
 ItemHead,DogHood,Dog Hood
 ItemHead,FoxyMask,Foxy Mask
-ItemHead,SleepMask,Sleep Mask
+ItemHead,FrilledSleepMask,Frilled Sleep Mask
 ItemHead,BlackoutLenses,Blackout Lenses
 ItemHead,WebBlindfold,Web
+ItemHead,RopeBlindfold,Rope Blindfold
+ItemHead,PonyHood,Pony Hood
+ItemHead,SleepMask,Smooth Sleep Mask
 ItemEars,,Ears
 ItemEars,LightDutyEarPlugs,Light Duty Ear Plugs
 ItemEars,HeavyDutyEarPlugs,Heavy Duty Ear Plugs
@@ -924,8 +944,19 @@ ItemDevices,WoodenBoxOpenHead,Exposed Head Wooden Box
 ItemDevices,SmallWoodenBoxOpenHead,Exposed Head Small Wooden Box
 ItemDevices,WoodenStocks,Wooden Stocks
 ItemDevices,Vacbed,Vacbed
+ItemDevices,Crib,Crib
+ItemDevices,Bed,Bed
 ItemAddon,,Body
 ItemAddon,BondageBenchStraps,Leather Belt Straps
+ItemAddon,OldGasMaskLenses,Blinding Lenses
+ItemAddon,OldGasMaskTube1,Gas Mask Tube
+ItemAddon,OldGasMaskTube2,Gas Mask Tube
+ItemAddon,OldGasMaskRebreather,Rebreather
+ItemAddon,Covers,Blanket
+ItemAddon,BedRopes,Bed Ropes
+ItemAddon,BedStraps,Bed Straps
+ItemAddon,BedTape,Bed Tape
+ItemAddon,BedChains,Bed Chains
 ItemBoots,,Feet
 ItemBoots,PonyBoots,Pony Boots
 ItemBoots,BalletHeels,Ballet Heels

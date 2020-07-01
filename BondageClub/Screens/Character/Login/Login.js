@@ -4,10 +4,10 @@ var LoginMessage = "";
 var LoginCredits = null;
 var LoginCreditsPosition = 0;
 var LoginThankYou = "";
-var LoginThankYouList = ["Alvin", "Ayezona", "BlueEyedCat", "BlueWiner", "Bryce", "Christian", "Dan", "Dini", "Epona", "Escurse",
-						 "Fluffythewhat", "Greendragon", "John", "Laioken", "Lennart", "Michal", "Mindtie", "Misa", "Mitchell", "MuchyCat",
-						 "Mzklopyu", "Nera", "Nick", "Overlord", "Rashiash", "Ray", "Reire", "Robin", "Rutherford", "Ryner", 
-						 "Samuel", "Setsu", "Shadow", "Sky", "Thomas", "Trent", "William", "Xepherio"];
+var LoginThankYouList = ["Alvin", "Ayezona", "BlueEyedCat", "BlueWiner", "Bryce", "Christian", "Desch", "Dini", "Donna", "Epona",
+						 "Escurse", "Fluffythewhat", "Greendragon", "John", "Laioken", "Michal", "Mindtie", "Misa", "Mzklopyu", "Nera",
+						 "Nick", "Overlord", "Rashiash", "Ray", "Reire", "Robin", "Rutherford", "Ryner", "Samuel", "Setsu",
+						 "Shadow", "Sky", "Tam", "Thomas", "Trent", "William", "Xepherio"];
 var LoginThankYouNext = 0;
 //var LoginLastCT = 0;
 
@@ -120,7 +120,7 @@ function LoginValidCollar() {
 	}
 	if ((InventoryGet(Player, "ItemNeck") == null) && (Player.Owner != "")) {
 		InventoryWear(Player, "SlaveCollar", "ItemNeck");
-		if (CurrentScreen == "ChatRoom") ChatRoomCharacterUpdate(Player);
+		if (CurrentScreen == "ChatRoom") ChatRoomCharacterItemUpdate(Player, "ItemNeck");
 	}
 }
 
@@ -154,28 +154,39 @@ function LoginStableItems() {
 		InventoryAdd(Player, "HarnessPonyBits", "ItemMouth3", false);
 		InventoryAdd(Player, "PonyBoots", "Shoes", false);
 		InventoryAdd(Player, "PonyBoots", "ItemBoots", false);
+		InventoryAdd(Player,"PonyHood", "ItemHead", false);
+		InventoryAdd(Player,"HoofMittens", "ItemHands", false);
 	} else {
 		InventoryDelete(Player, "HarnessPonyBits", "ItemMouth", false);
 		InventoryDelete(Player, "HarnessPonyBits", "ItemMouth2", false);
 		InventoryDelete(Player, "HarnessPonyBits", "ItemMouth3", false);
 		InventoryDelete(Player, "PonyBoots", "Shoes", false);
 		InventoryDelete(Player, "PonyBoots", "ItemBoots", false);
+		InventoryDelete(Player, "PonyHood", "ItemHead",false)
+		InventoryDelete(Player,"HoofMittens", "ItemHands", false);
 	}
 	ServerPlayerInventorySync();
 }
 
 // Make sure a player without lover is not wearing any lovers exclusive items
 function LoginLoversItems() {
-	if (Player.Lovership == null) {
-		for(var A = 0; A < Player.Appearance.length; A++) {
-			if (Player.Appearance[A].Asset.Group.Name == "ItemNeck" && Player.Appearance[A].Property && Player.Appearance[A].Asset.Name == "SlaveCollar" && Player.Appearance[A].Property.Type == "LoveLeatherCollar") {
-				Player.Appearance[A].Property = null;
-				Player.Appearance[A].Color = "Default";
-			}
-			if (Player.Appearance[A].Property && Player.Appearance[A].Property.LockedBy && ((Player.Appearance[A].Property.LockedBy == "LoversPadlock") || (Player.Appearance[A].Property.LockedBy == "LoversTimerPadlock"))) {
-				InventoryRemove(Player, Player.Appearance[A].Asset.Group.Name);
-				A--;
-			}
+	var LoversNumbers = Player.GetLoversNumbers();
+
+	//check to remove love leather collar slave collar if no lover
+	if (LoversNumbers.length < 1) {
+		var Collar = InventoryGet(Player,"ItemNeck");
+		if (Collar && Collar.Property && (Collar.Asset.Name == "SlaveCollar") && (Collar.Property.Type == "LoveLeatherCollar")) {
+			Collar.Property = null;
+			Collar.Color = "Default";
+		}
+	}
+
+	// remove any item that was lover locked if the number on the lock does not match any lover
+	for (var A = 0; A < Player.Appearance.length; A++) {
+		if (Player.Appearance[A].Property && Player.Appearance[A].Property.LockedBy && Player.Appearance[A].Property.LockedBy.startsWith("Lovers")
+			&& Player.Appearance[A].Property.MemberNumber && (LoversNumbers.indexOf(Player.Appearance[A].Property.MemberNumber) < 0)) {
+			InventoryRemove(Player, Player.Appearance[A].Asset.Group.Name);
+			A--;
 		}
 	}
 }
@@ -228,7 +239,6 @@ function LoginResponse(C) {
 			Player.Title = C.Title;
 			if (CommonIsNumeric(C.Money)) Player.Money = C.Money;
 			Player.Owner = ((C.Owner == null) || (C.Owner == "undefined")) ? "" : C.Owner;
-			Player.Lover = ((C.Lover == null) || (C.Lover == "undefined")) ? "" : C.Lover;
 			Player.Game = C.Game;
 			Player.Description = C.Description;
 			Player.Creation = C.Creation;
@@ -246,10 +256,12 @@ function LoginResponse(C) {
 			if ((Player.Ownership != null) && (Player.Ownership.Name != null))
 				Player.Owner = (Player.Ownership.Stage == 1) ? Player.Ownership.Name : "";
 
-			// Loads the lovership data
-			Player.Lovership = Array.isArray(C.Lovership) ? C.Lovership.length > 0 ? C.Lovership[0] : null : C.Lovership;
-			if ((Player.Lovership != null) && (Player.Lovership.Name != null))
-				Player.Lover = Player.Lovership.Name;
+			// Ensures lovership data is compatible and converts lovers to lovership
+			Player.Lovership = Array.isArray(C.Lovership) ? C.Lovership : C.Lovership != undefined ? [C.Lovership] : [];
+			if ((C.Lover != null) && (C.Lover != "undefined") && C.Lover.startsWith("NPC-")) {
+				Player.Lover = C.Lover;
+				ServerPlayerSync();
+			}
 
 			// Gets the online preferences
 			Player.LabelColor = C.LabelColor;
@@ -301,7 +313,6 @@ function LoginResponse(C) {
 			LoginStableItems();
 			LoginLoversItems();
 			LoginValideBuyGroups();
-			ServerPlayerSync();
 			CharacterAppearanceValidate(Player);
 
 			// If the player must log back in the cell
