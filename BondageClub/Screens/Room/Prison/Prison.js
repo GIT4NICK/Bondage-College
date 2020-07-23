@@ -122,7 +122,7 @@ function PrisonRun() {
 			PrisonSubIsPresent = true;
 			PrisonSubIsLeaveOut = false;
 			PrisonNextEvent = false;
-		} else if (PrisonNextEvent == true){
+		} else if (PrisonNextEvent == true) {
 			PrisonNextEvent = false;
 		}
 	} else if (PrisonPlayerCatchedBadGirl == true) {
@@ -145,7 +145,7 @@ function PrisonRun() {
 			PrisonWearPoliceEquipment(PrisonPolice);
 			PrisonNextEvent = false;
 			PrisonPoliceIsPresent = true;
-		} else if (PrisonNextEvent == true){
+		} else if (PrisonNextEvent == true) {
 			PrisonNextEvent = false;
 		}
 		
@@ -172,7 +172,7 @@ function PrisonRun() {
 			PrisonMaidIsPresent = true;
 			PrisonMaidIsAngry = false;
 			PrisonMaid.Stage = "20";
-		} else if (PrisonNextEvent == true){
+		} else if (PrisonNextEvent == true) {
 			PrisonNextEvent = false;
 		}
 	}
@@ -222,43 +222,43 @@ function PrisonCharacterAppearanceGroupAvailable (C, AppearanceGroup) {
 
 /*      Player     */
 //Player going in cell
-function PrisonCellPlayerIn(){
+function PrisonCellPlayerIn() {
 	PrisonMaidIsAngry = true;
 	PrisonPlayerBehindBars = true;
 }
 
 //Player leave in cell
-function PrisonCellPlayerOut(){
+function PrisonCellPlayerOut() {
 	PrisonPlayerBehindBars = false;
-	if (PrisonerMetalCuffsKey != null){
+	if (PrisonerMetalCuffsKey != null) {
 		InventoryAdd(Player, "MetalCuffsKey", "ItemMisc");
 		PrisonerMetalCuffsKey = null;
 	}
-	if (PrisonerMetalPadlockKey != null){
+	if (PrisonerMetalPadlockKey != null) {
 		InventoryAdd(Player, "MetalPadlockKey", "ItemMisc");
 		PrisonerMetalPadlockKey = null;
 	}
-	if (PrisonerIntricatePadlockKey != null){
+	if (PrisonerIntricatePadlockKey != null) {
 		InventoryAdd(Player, "IntricatePadlockKey", "ItemMisc");
 		PrisonerIntricatePadlockKey = null;
 	}
-	if (PrisonerSleepingPills != null){
+	if (PrisonerSleepingPills != null) {
 		InventoryAdd(Player, "RegularSleepingPill", "ItemMouth");
 		PrisonerSleepingPills = null;
 	}
-	if (PrisonerSpankingToys != null){
+	if (PrisonerSpankingToys != null) {
 		InventoryAdd(Player, "SpankingToys", "ItemHands");
 		PrisonerSpankingToys = null;
 	}
 }
 
 //Maid leave the Prison for 5-15 second
-function PrisonMaidLeave(){
+function PrisonMaidLeave() {
 	PrisonMaidIsPresent = false;
 }
 
 //Player releases and get back his Cloth, only if the Maid is not angry
-function PrisonCellRelease(C){
+function PrisonCellRelease(C) {
 	if (PrisonMaidIsAngry) {
 		PrisonMaid.Stage = "20";
 		PrisonMaid.CurrentDialog = DialogFind(PrisonMaid, "PrisonMaidReleaseIsAngry");
@@ -273,8 +273,8 @@ function PrisonCellRelease(C){
 }
 
 // The Strip Search Prozess for the Player
-function PrisonHavySearch(C){
-	if (!PrisonPlayerIsStriped()){
+function PrisonHavySearch(C) {
+	if (!PrisonPlayerIsStriped()) {
 		PrisonMaidIsAngry = true;
 		InventoryRemove(C, "Hat"); 
 		InventoryRemove(C, "Shoes"); 
@@ -297,7 +297,7 @@ function PrisonHavySearch(C){
 }
 
 // The Light Search Prozess for the Player
-function PrisonLightSearch(C){
+function PrisonLightSearch(C) {
 	if (PrisonerMetalCuffsKey == null) {
 		PrisonMaidIsAngry = true;
 		InventoryWear(C, "MetalCuffs", "ItemArms");
@@ -314,7 +314,7 @@ function PrisonLightSearch(C){
 }
 
 // The Cloth Back Prozess for Prisoner
-function PrisonerClothBack(C){
+function PrisonerClothBack(C) {
 	PrisonMaidIsAngry = true;
 	if (PrisonPlayerIsStriped()) {
 		for (var A = 0; A < PrisonPlayerAppearance.length; A++) {
@@ -342,7 +342,7 @@ function PrisonerClothBack(C){
 }
 
 // Remove the Letherbelts from the Prisoner 
-function PrisonCuffsRelief(){
+function PrisonCuffsRelief() {
 	PrisonMaidIsAngry = true;
 	if (PrisonPlayerIsPanelGag() || PrisonPlayerIsLegTied() || PrisonPlayerIsFeetTied()) {
 		PrisonMaidIsAngry = true;
@@ -358,7 +358,7 @@ function PrisonCuffsRelief(){
 }
 
 // Light Torture for the Prison Player
-function PrisonMaidLightTorture(){
+function PrisonMaidLightTorture() {
 	PrisonMaidIsAngry = true;
 	PrisonMaid.Stage = "PrisonerTortured";
 	var torture = Math.random() * 4;
@@ -374,7 +374,7 @@ function PrisonMaidLightTorture(){
 }
 
 // Hevy Torture for the Prison Player
-function PrisonMaidHevyTorture(){
+function PrisonMaidHevyTorture() {
 	PrisonMaidIsAngry = true;
 	PrisonMaid.Stage = "PrisonerTortured";
 	var torture = Math.random() * 5
@@ -409,12 +409,12 @@ function PrisonDisableKey(C) {
 
 /*      Player Dialog     */
 //Player Ask in Dialog
-function PrisonCellPlayerAsk(){
+function PrisonCellPlayerAsk() {
 	if (PrisonMaidCharacter == "Chaotic") PrisonMaidChaotic = Math.random();
-	if (PrisonMaidCharacter == "Friendly" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.33) ){
+	if (PrisonMaidCharacter == "Friendly" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.33)) {
 		InventoryWear(Player, "ClothGag", "ItemMouth");
 		PrisonMaid.CurrentDialog = DialogFind(PrisonMaid, "PrisonMaidLightGag");
-	} else if (PrisonMaidCharacter == "Neutral" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.66) ){
+	} else if (PrisonMaidCharacter == "Neutral" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.66)) {
 		InventoryWear(Player, "HarnessBallGag", "ItemMouth");
 		PrisonMaid.CurrentDialog = DialogFind(PrisonMaid, "PrisonMaidNeutralGag");
 	} else {
@@ -426,11 +426,11 @@ function PrisonCellPlayerAsk(){
 }
 
 //Player Shake the Cellbars
-function PrisonCellPlayerShake(){
+function PrisonCellPlayerShake() {
 	if (PrisonMaidCharacter == "Chaotic") PrisonMaidChaotic = Math.random();
-	if (PrisonMaidCharacter == "Friendly" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.33) ){
+	if (PrisonMaidCharacter == "Friendly" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.33)) {
 		PrisonLightSearch(Player);
-	} else if (PrisonMaidCharacter == "Neutral" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.66) ){
+	} else if (PrisonMaidCharacter == "Neutral" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.66)) {
 		PrisonMaidLightTorture();
 	} else {
 		PrisonHavySearch(Player);
@@ -439,11 +439,11 @@ function PrisonCellPlayerShake(){
 }
 
 //Player try to escape
-function PrisonCellPlayerTry(){
+function PrisonCellPlayerTry() {
 	if (PrisonMaidCharacter == "Chaotic") PrisonMaidChaotic = Math.random();
-	if (PrisonMaidCharacter == "Friendly" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.33) ){
+	if (PrisonMaidCharacter == "Friendly" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.33)) {
 		PrisonCellRelease(Player);
-	} else if (PrisonMaidCharacter == "Neutral" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.66) ){
+	} else if (PrisonMaidCharacter == "Neutral" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.66)) {
 		//ToDo Dialog
 		PrisonMaidLightTorture();
 	} else {
@@ -452,11 +452,11 @@ function PrisonCellPlayerTry(){
 }
 
 //Player Wimper to Maid
-function PrisonCellPlayerWimper(){
+function PrisonCellPlayerWimper() {
 	if (PrisonMaidCharacter == "Chaotic") PrisonMaidChaotic = Math.random();
-	if (PrisonMaidCharacter == "Friendly" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.33) ){
+	if (PrisonMaidCharacter == "Friendly" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.33)) {
 		PrisonerClothBack(Player);
-	} else if (PrisonMaidCharacter == "Neutral" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.66) ){
+	} else if (PrisonMaidCharacter == "Neutral" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.66)) {
 		PrisonCellRelease(Player);
 	} else {
 		PrisonMaidHevyTorture();	
@@ -464,11 +464,11 @@ function PrisonCellPlayerWimper(){
 }
 
 //Player wait for Maids-Action
-function PrisonCellPlayerWait(){
+function PrisonCellPlayerWait() {
 	if (PrisonMaidCharacter == "Chaotic") PrisonMaidChaotic = Math.random();
-	if (PrisonMaidCharacter == "Friendly" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.33) ){
+	if (PrisonMaidCharacter == "Friendly" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.33)) {
 		PrisonCuffsRelief();
-	} else if (PrisonMaidCharacter == "Neutral" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.66) ){
+	} else if (PrisonMaidCharacter == "Neutral" || (PrisonMaidCharacter == "Chaotic" && PrisonMaidChaotic < 0.66)) {
 		PrisonLightSearch(Player);
 	} else {
 		PrisonMaidHevyTorture();
@@ -477,13 +477,13 @@ function PrisonCellPlayerWait(){
 
 /*      NPC     */
 // PrisonSub leave the Room
-function PrisonSubSendAway(){
+function PrisonSubSendAway() {
 	PrisonSubIsPresent = false;
 	DialogLeave();
 }
 
 //Check if Prison NPC Wear Handcuffes
-function PrisonSubHandcuffing(){
+function PrisonSubHandcuffing() {
 	if (Math.random() > 0.5) {
 		InventoryWear(PrisonSub, "MetalCuffs", "ItemArms");
 		PrisonSubSelfCuffed = true;
@@ -495,13 +495,13 @@ function PrisonSubHandcuffing(){
 }
 
 // Shoves NPC in Cell
-function PrisonCellSubIn(){
+function PrisonCellSubIn() {
 	PrisonSubBehindBars = true;
 	PrisonSub.AllowItem = true;
 }
 
 //Strip Search the NPC
-function PrisonSubHavySearch(){
+function PrisonSubHavySearch() {
 	InventoryRemove(PrisonSub, "Hat"); 
 	InventoryRemove(PrisonSub, "Shoes"); 
 	InventoryRemove(PrisonSub, "Gloves"); 
@@ -515,7 +515,7 @@ function PrisonSubHavySearch(){
 }
 
 //Let NPC out of Cell
-function PrisonCellSubOut(){
+function PrisonCellSubOut() {
 	PrisonSubBehindBars = false;
 	PrisonSubIsLeaveOut = true;
 	CharacterRelease(PrisonSub);
@@ -526,7 +526,7 @@ function PrisonCellSubOut(){
 }
 
 //The Prison NPC Leave the Cell
-function PrisonLeaveCell(){
+function PrisonLeaveCell() {
 	if (!PrisonSubBehindBars) {
 		PrisonSubIsPresent = false;
 		PrisonSubSelfCuffed = false;

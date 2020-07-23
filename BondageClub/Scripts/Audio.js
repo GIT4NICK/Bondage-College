@@ -1,7 +1,12 @@
 "use strict";
 var AudioDialog = new Audio();
 
-// Players a sound with a set volume
+/**
+ * Plays a sound at a given volume
+ * @param {string} src - Source of the audio file to play
+ * @param {number} volume - Volume of the audio in percentage (ranges from 0 to 1)
+ * @returns {void} - Nothing
+ */
 function AudioPlayInstantSound(src, volume) {
 	var audio = new Audio();
 	audio.src = src;
@@ -9,7 +14,11 @@ function AudioPlayInstantSound(src, volume) {
 	audio.play();
 }
 
-// Plays a background sound in the dialog for applying/removing an item
+/**
+ * Begins to play a sound when applying/removing an item 
+ * @param {string} SourceFile - Source of the audio file to play
+ * @returns {void} - Nothing
+ */
 function AudioDialogStart(SourceFile) {
 	if (!Player.AudioSettings || !Player.AudioSettings.PlayItem || !Player.AudioSettings.Volume || (Player.AudioSettings.Volume == 0)) return;
 	AudioDialog.pause();
@@ -19,13 +28,20 @@ function AudioDialogStart(SourceFile) {
 	AudioDialog.play();
 }
 
-// Plays the background sound in the dialog for applying/removing an item
+/**
+ * Stops playing the sound when done applying/removing an item 
+ * @returns {void} - Nothing
+ */
 function AudioDialogStop() {
 	AudioDialog.pause();
 	AudioDialog.currentTime = 0;
 }
 
-// Takes a data dictionary content and sends the related audio mp3 to be played
+/**
+ * Takes the received data dictionary content and identifies the audio to be played
+ * @param {object} data - Data received
+ * @returns {void} - Nothing
+ */
 function AudioPlayContent(data) {
 	// Exits right away if we are missing content data
 	if (!Player.AudioSettings || !Player.AudioSettings.PlayItem || (Player.AudioSettings.Volume == 0)) return;
@@ -119,9 +135,9 @@ function AudioPlayContent(data) {
 		}
 	} else {
 		// When the vibrator or inflatable level increases or decreases
-		if(data.Content.includes("pumps") || data.Content.includes("Suctightens") || data.Content.includes("InflatableBodyBagRestrain"))
+		if (data.Content.includes("pumps") || data.Content.includes("Suctightens") || data.Content.includes("InflatableBodyBagRestrain"))
 			audioFile = "Audio/Inflation.mp3";
-		else if(data.Content.includes("deflates") || data.Content.includes("Sucloosens"))
+		else if (data.Content.includes("deflates") || data.Content.includes("Sucloosens"))
 			audioFile = "Audio/Deflation.mp3";
 		else if (data.Content.includes("Decrease") || data.Content.includes("Increase")) { 
 			if (data.Content.endsWith("-1")) return; // special case of turning vibrators off, may be a click sound in the future?
@@ -145,16 +161,16 @@ function AudioPlayContent(data) {
 				case "Sybian": audioFile = "Audio/Sybian.mp3"; break;
 				default: return;
 			}
-		} else if (data.Content.includes("CollarShockUnitTrigger") || data.Content.includes("ShockCollarTrigger") || data.Content.includes("LoveChastityBeltShockTrigger")) {
+		} else if (data.Content.includes("CollarShockUnitTrigger") || data.Content.includes("ShockCollarTrigger") || data.Content.includes("LoveChastityBeltShockTrigger") || data.Content.includes("TriggerShock")) {
 			var shockLevel = parseInt(data.Content.substr(data.Content.length - 1));
 			if (!isNaN(shockLevel)) noiseLevelModifier+= shockLevel * 3;
 			audioFile = "Audio/Shocks.mp3";
-		} else if (data.Content.includes("ShacklesRestrain") || data.Content.includes("Ornate")){
+		} else if (data.Content.includes("ShacklesRestrain") || data.Content.includes("Ornate")) {
 			audioFile = "Audio/CuffsMetal.mp3";
-		} else if (data.Content.includes("RopeSet")){
+		} else if (data.Content.includes("RopeSet")) {
 			audioFile = "Audio/RopeShort.mp3";
 			data.Sender = data.Dictionary.find(function (el) {return el.Tag == "SourceCharacter";}).MemberNumber;
-		} else if (data.Content.includes("ChainSet")){
+		} else if (data.Content.includes("ChainSet")) {
 			audioFile = "Audio/ChainLong.mp3";
 			data.Sender = data.Dictionary.find(function (el) {return el.Tag == "SourceCharacter";}).MemberNumber;
 		}
