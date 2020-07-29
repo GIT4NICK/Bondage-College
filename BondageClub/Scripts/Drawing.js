@@ -158,6 +158,11 @@ function DrawArousalMeter(C, X, Y, Zoom) {
 			if ((C.ID == 0) || (Player.ArousalSettings.ShowOtherMeter == null) || Player.ArousalSettings.ShowOtherMeter) {
 				ActivitySetArousal(C, C.ArousalSettings.Progress);
 				DrawArousalThermometer(X + ((C.ArousalZoom ? 50 : 90) * Zoom), Y + ((C.ArousalZoom ? 200 : 400) * Zoom), C.ArousalZoom ? Zoom : Zoom * 0.2, C.ArousalSettings.Progress, (C.ArousalSettings.Active == "Automatic"), ((C.ArousalSettings.OrgasmTimer != null) && (typeof C.ArousalSettings.OrgasmTimer === "number") && !isNaN(C.ArousalSettings.OrgasmTimer) && (C.ArousalSettings.OrgasmTimer > 0)));
+				if (C.ArousalZoom && (typeof C.ArousalSettings.OrgasmCount === "number") && (C.ArousalSettings.OrgasmCount >= 0) && (C.ArousalSettings.OrgasmCount <= 9999)) {
+					MainCanvas.font = Math.round(36 * Zoom).toString() + "px Arial";
+					DrawText(((C.ArousalSettings.OrgasmCount != null) ? C.ArousalSettings.OrgasmCount : 0).toString(), X + 100 * Zoom, Y + 655 * Zoom, "Black", "Gray");
+					MainCanvas.font = "36px Arial";
+				}
 			}
 }
 

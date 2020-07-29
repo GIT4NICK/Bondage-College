@@ -32,6 +32,8 @@ function AssetGroupAdd(NewAssetFamily, NewAsset) {
 		AllowPose: NewAsset.AllowPose,
 		AllowExpression: NewAsset.AllowExpression,
 		Effect: NewAsset.Effect,
+		MirrorGroup: (NewAsset.MirrorGroup == null) ? "" : NewAsset.MirrorGroup,
+		RemoveItemOnRemove: (NewAsset.RemoveItemOnRemove == null) ? [] : NewAsset.RemoveItemOnRemove,
 		DrawingPriority: (NewAsset.Priority == null) ? AssetGroup.length : NewAsset.Priority,
 		DrawingLeft: (NewAsset.Left == null) ? 0 : NewAsset.Left,
 		DrawingTop: (NewAsset.Top == null) ? 0 : NewAsset.Top,
@@ -91,7 +93,7 @@ function AssetAdd(NewAsset) {
 		LoverOnly: (NewAsset.LoverOnly == null) ? false : NewAsset.LoverOnly,
 		ExpressionTrigger: NewAsset.ExpressionTrigger,
 		Layer: AssetBuildLayer(NewAsset.Layer),
-		RemoveItemOnRemove: (NewAsset.RemoveItemOnRemove == null) ? [] : NewAsset.RemoveItemOnRemove,
+		RemoveItemOnRemove: (NewAsset.RemoveItemOnRemove == null) ? AssetCurrentGroup.RemoveItemOnRemove : AssetCurrentGroup.RemoveItemOnRemove.concat(NewAsset.RemoveItemOnRemove),
 		AllowEffect: NewAsset.AllowEffect,
 		AllowBlock: NewAsset.AllowBlock,
 		AllowType: NewAsset.AllowType,
@@ -101,13 +103,17 @@ function AssetAdd(NewAsset) {
 		IgnoreParentGroup: (NewAsset.IgnoreParentGroup == null) ? false : NewAsset.IgnoreParentGroup,
 		IsRestraint: (NewAsset.IsRestraint == null) ? ((AssetCurrentGroup.IsRestraint == null) ? false : AssetCurrentGroup.IsRestraint) : NewAsset.IsRestraint,
 		BodyCosplay: (NewAsset.BodyCosplay == null) ? ((AssetCurrentGroup.BodyCosplay == null) ? false : AssetCurrentGroup.BodyCosplay) : NewAsset.BodyCosplay,
+		OverrideBlinking: (NewAsset.OverrideBlinking == null) ? false : NewAsset.OverrideBlinking,
+		DialogSortOverride: NewAsset.DialogSortOverride,
 		DynamicDescription: (typeof NewAsset.DynamicDescription === 'function') ? NewAsset.DynamicDescription : function () { return this.Description },
 		DynamicPreviewIcon: (typeof NewAsset.DynamicPreviewIcon === 'function') ? NewAsset.DynamicPreviewIcon : function () { return "" },
 		DynamicAllowInventoryAdd: (typeof NewAsset.DynamicAllowInventoryAdd === 'function') ? NewAsset.DynamicAllowInventoryAdd : function () { return true },
 		DynamicExpressionTrigger: (typeof NewAsset.DynamicExpressionTrigger === 'function') ? NewAsset.DynamicExpressionTrigger : function () { return this.ExpressionTrigger },
 		DynamicName: (typeof NewAsset.DynamicName === 'function') ? NewAsset.DynamicName : function () { return this.Name },
 		DynamicGroupName: (NewAsset.DynamicGroupName || AssetCurrentGroup.Name),
-		DynamicActivity: (typeof NewAsset.DynamicActivity === 'function') ? NewAsset.DynamicActivity : function () { return NewAsset.Activity }
+		DynamicActivity: (typeof NewAsset.DynamicActivity === 'function') ? NewAsset.DynamicActivity : function () { return NewAsset.Activity },
+		CharacterRestricted: typeof NewAsset.CharacterRestricted === 'boolean' ? NewAsset.CharacterRestricted : false,
+		AllowRemoveExclusive: typeof NewAsset.AllowRemoveExclusive === 'boolean' ? NewAsset.CharacterRestricted : false,
 	}
 	// Unwearable assets are not visible but can be overwritten
 	if (!A.Wear && NewAsset.Visible != true) A.Visible = false;

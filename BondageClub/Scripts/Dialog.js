@@ -31,9 +31,10 @@ var DialogExtendedMessage = "";
 var DialogActivityMode = false;
 var DialogActivity = [];
 var DialogSortOrderEnabled = 1;
-var DialogSortOrderUsable = 2;
-var DialogSortOrderUnusable = 3;
-var DialogSortOrderBlocked = 4;
+var DialogSortOrderEquipped = 2;
+var DialogSortOrderUsable = 3;
+var DialogSortOrderUnusable = 4;
+var DialogSortOrderBlocked = 5;
 
 /**
  * Compares the player's reputation with a given value 
@@ -244,7 +245,7 @@ function DialogChatRoomPlayerIsAdmin() { return (ChatRoomPlayerIsAdmin() && (Cur
  * Checks, if a safe word can be used.
  * @returns {boolean} - Returns true, if the player is currently within a chat room
  */
-function DialogChatRoomCanSafeword() { return (CurrentScreen == "ChatRoom") }
+function DialogChatRoomCanSafeword() { return (CurrentScreen == "ChatRoom" && Player.GameplaySettings.EnableSafeword) }
 
 /**
  * Checks the prerequisite for a given dialog
@@ -438,7 +439,7 @@ function DialogInventoryAdd(C, NewInv, NewInvWorn, SortOrder) {
 		if ((C.ID != 0) || ((C.Owner == "") && (C.Ownership == null)) || !NewInv.Asset.IsLock || ((C.ID == 0) && LogQuery("BlockOwnerLockSelf", "OwnerRule")))
 			return;
 	if (NewInv.Asset.LoverOnly && !NewInvWorn && !C.IsLoverOfPlayer())
-		if ((C.ID != 0) || (C.Lovership.length < 0) || !NewInv.Asset.IsLock)
+		if ((C.ID != 0) || (C.Lovership.length == 0) || !NewInv.Asset.IsLock || ((C.ID == 0) && C.GetLoversNumbers(true).length == 0))
 			return;
 
 	// Do not show keys if they are in the deposit
@@ -477,6 +478,27 @@ function DialogAlwaysAllowRestraint() {
 }
 
 /**
+ * Checks whether the player can use a remote on the given character and item
+ * @param {Character} C - the character that the item is equipped on
+ * @param {Item} Item - the item to check for remote usage against
+ * @return {boolean} - Returns true if the player is able to use a remote for the given character and item. Returns false otherwise.
+ */
+function DialogCanUseRemote(C, Item) {
+	// Can't use remotes if there is no item, the item doesn't have the "Egged" effect, or the player cannot interact
+	// with remotes in the first place
+	if (!Item || !InventoryItemHasEffect(Item, "Egged") || !Player.CanInteract()) return false;
+	// Can't use remotes on self if the player is owned and their remotes have been blocked by an owner rule
+	if (C.ID === 0 && Player.Ownership && Player.Ownership.Stage === 1 && LogQuery("BlockRemoteSelf", "OwnerRule")) return false;
+	if (Item.Asset.LoverOnly) {
+		// If the item is lover-only, the player must have the appropriate remote, be a lover of the character, and match the member number on the item
+		return C.IsLoverOfPlayer() && Item.Property && Item.Property.ItemMemberNumber === Player.MemberNumber && InventoryAvailable(Player, "LoversVibratorRemote", "ItemVulva");
+	} else {
+		// Otherwise, the player must have a vibrator remote
+		return InventoryAvailable(Player, "VibratorRemote", "ItemVulva");
+	}
+}
+
+/**
  * Build the buttons in the top menu
  * @param {Character} C - The character for whom the dialog is prepared
  * @returns {void} - Nothing
@@ -510,7 +532,7 @@ function DialogMenuButtonBuild(C) {
 		if ((Item != null) && !IsItemLocked && !InventoryItemHasEffect(Item, "Mounted", true) && !InventoryItemHasEffect(Item, "Enclose", true) && Player.CanInteract() && InventoryAllow(C, Item.Asset.Prerequisite) && !IsGroupBlocked) DialogMenuButton.push("Remove");
 		if ((Item != null) && !IsItemLocked && InventoryItemHasEffect(Item, "Mounted", true) && Player.CanInteract() && InventoryAllow(C, Item.Asset.Prerequisite) && !IsGroupBlocked) DialogMenuButton.push("Dismount");
 		if ((Item != null) && !IsItemLocked && InventoryItemHasEffect(Item, "Enclose", true) && Player.CanInteract() && InventoryAllow(C, Item.Asset.Prerequisite) && !IsGroupBlocked) DialogMenuButton.push("Escape");
-		if (InventoryItemHasEffect(Item, "Egged") && InventoryAvailable(Player, "VibratorRemote", "ItemVulva") && Player.CanInteract() && !(LogQuery("BlockRemoteSelf", "OwnerRule") && (Player.Ownership != null && Player.Ownership.Stage == 1) && (C.ID == 0))) DialogMenuButton.push("Remote");
+		if (DialogCanUseRemote(C, Item)) DialogMenuButton.push("Remote");
 		if ((Item != null) && Item.Asset.Extended && ((Player.CanInteract()) || DialogAlwaysAllowRestraint() || Item.Asset.AlwaysInteract) && (!IsGroupBlocked || Item.Asset.AlwaysExtend) && (!Item.Asset.OwnerOnly || (C.IsOwnedByPlayer())) && (!Item.Asset.LoverOnly || (C.IsLoverOfPlayer()))) DialogMenuButton.push("Use");
 		if ((Player.CanInteract()) || DialogAlwaysAllowRestraint()) DialogMenuButton.push("ColorPick");
 
@@ -580,15 +602,18 @@ function DialogInventoryBuild(C) {
 
 			// Second, we add everything from the victim inventory
 			for (var A = 0; A < C.Inventory.length; A++)
-				if ((C.Inventory[A].Asset != null) && (C.Inventory[A].Asset.Group.Name == C.FocusGroup.Name) && C.Inventory[A].Asset.DynamicAllowInventoryAdd(C))
-					DialogInventoryAdd(C, C.Inventory[A], false, (InventoryAllow(C, C.Inventory[A].Asset.Prerequisite, false)) ? DialogSortOrderUsable : DialogSortOrderUnusable);
+				if ((C.Inventory[A].Asset != null) && (C.Inventory[A].Asset.Group.Name == C.FocusGroup.Name) && C.Inventory[A].Asset.DynamicAllowInventoryAdd(C)) {
+					var DialogSortOrder = C.Inventory[A].Asset.DialogSortOverride != null ? C.Inventory[A].Asset.DialogSortOverride : (InventoryAllow(C, C.Inventory[A].Asset.Prerequisite, false)) ? DialogSortOrderUsable : DialogSortOrderUnusable;
+					DialogInventoryAdd(C, C.Inventory[A], false, DialogSortOrder);
+				}
 
 			// Third, we add everything from the player inventory if the player isn't the victim
 			if (C.ID != 0)
 				for (var A = 0; A < Player.Inventory.length; A++)
-					if ((Player.Inventory[A].Asset != null) && (Player.Inventory[A].Asset.Group.Name == C.FocusGroup.Name) && Player.Inventory[A].Asset.DynamicAllowInventoryAdd(C))
-						DialogInventoryAdd(C, Player.Inventory[A], false, (InventoryAllow(C, Player.Inventory[A].Asset.Prerequisite, false)) ? DialogSortOrderUsable : DialogSortOrderUnusable);
-
+					if ((Player.Inventory[A].Asset != null) && (Player.Inventory[A].Asset.Group.Name == C.FocusGroup.Name) && Player.Inventory[A].Asset.DynamicAllowInventoryAdd(C)) {
+						var DialogSortOrder = Player.Inventory[A].Asset.DialogSortOverride != null ? Player.Inventory[A].Asset.DialogSortOverride : (InventoryAllow(C, Player.Inventory[A].Asset.Prerequisite, false)) ? DialogSortOrderUsable : DialogSortOrderUnusable;
+						DialogInventoryAdd(C, Player.Inventory[A], false, DialogSortOrder);
+					}
 		}
 
 		// Rebuilds the dialog menu and it's buttons
@@ -607,9 +632,10 @@ function DialogFacialExpressionsBuild() {
 	for (var I = 0; I < Player.Appearance.length; I++) {
 		var PA = Player.Appearance[I];
 		var ExpressionList = PA.Asset.Group.AllowExpression;
-		if (!ExpressionList || !ExpressionList.length) continue;
+		if (!ExpressionList || !ExpressionList.length || PA.Asset.Group.Name == "Eyes2") continue;
 		var Item = {};
 		Item.Appearance = PA;
+		Item.Group = PA.Asset.Group.Name;
 		Item.CurrentExpression = (PA.Property == null) ? null : PA.Property.Expression;
 		var Index = ExpressionList.indexOf(Item.CurrentExpression);
 		Item.MenuExpression1 = (Index < 0) ? ExpressionList[ExpressionList.length - 1] : (Index == 0) ? null : ExpressionList[Index - 1];
@@ -781,7 +807,7 @@ function DialogMenuButtonClick() {
 		if ((MouseX >= 1885 - I * 110) && (MouseX <= 1975 - I * 110)) {
 
 			// Gets the current character and item
-			var C = (Player.FocusGroup != null) ? Player : CurrentCharacter;
+			var C = CharacterGetCurrent();
 			var Item = InventoryGet(C, C.FocusGroup.Name);
 
 			// Exit Icon - Go back to the character dialog
@@ -805,9 +831,8 @@ function DialogMenuButtonClick() {
 			}
 
 			// Remote Icon - Pops the item extension
-			else if ((DialogMenuButton[I] == "Remote") && (Item != null)) {
-				if (InventoryItemHasEffect(Item, "Egged") && InventoryAvailable(Player, "VibratorRemote", "ItemVulva"))
-					DialogExtendItem(Item);
+			else if ((DialogMenuButton[I] == "Remote") && DialogCanUseRemote(C, Item)) {
+				DialogExtendItem(Item);
 				return;
 			}
 
@@ -1042,8 +1067,10 @@ function DialogItemClick(ClickItem) {
 					} else {
 
 						// The vibrating egg remote can open the vibrating egg's extended dialog
-						if (ClickItem.Asset.Name == "VibratorRemote" && InventoryItemHasEffect(InventoryGet(C, C.FocusGroup.Name), "Egged"))
+						var Item = InventoryGet(C, C.FocusGroup.Name);
+						if ((ClickItem.Asset.Name === "VibratorRemote" || ClickItem.Asset.Name === "LoversVibratorRemote") && DialogCanUseRemote(C, CurrentItem)) {
 							DialogExtendItem(InventoryGet(C, C.FocusGroup.Name));
+						}
 
 						// Runs the activity arousal process if activated, & publishes the item action text to the chatroom
 						DialogPublishAction(C, ClickItem);
@@ -1219,14 +1246,22 @@ function DialogClick() {
 
 	// If the user clicked in the facial expression menu
 	if ((CurrentCharacter != null) && (CurrentCharacter.ID == 0) && (MouseX >= 0) && (MouseX <= 500)) {
-		if (MouseIn(15, 15, 90, 90)) {
+		if (MouseIn(20, 50, 90, 90)) {
 			DialogFacialExpressions.forEach(FE => {
 				CharacterSetFacialExpression(Player, FE.Appearance.Asset.Group.Name);
 				FE.CurrentExpression = null;
 			});
+		} else if (MouseIn(120, 50, 90, 90)) { 
+			var EyesExpression = WardrobeGetExpression(Player);
+			var CurrentExpression = DialogFacialExpressions.find(FE => FE.Group == "Eyes").CurrentExpression;
+			CharacterSetFacialExpression(Player, "Eyes1", (EyesExpression.Eyes !== "Closed") ? "Closed" : (CurrentExpression !== "Closed" ? CurrentExpression : null));
+		} else if (MouseIn(220, 50, 90, 90)) { 
+			var EyesExpression = WardrobeGetExpression(Player);
+			var CurrentExpression = DialogFacialExpressions.find(FE => FE.Group == "Eyes").CurrentExpression;
+			CharacterSetFacialExpression(Player, "Eyes2", (EyesExpression.Eyes2 !== "Closed") ? "Closed" : (CurrentExpression !== "Closed" ? CurrentExpression : null));
 		} else for (var I = 0; I < DialogFacialExpressions.length; I++) {
 			var FE = DialogFacialExpressions[I];
-			if ((MouseY >= 125 + 120 * I) && (MouseY <= (125 + 120 * I) + 90)) {
+			if ((MouseY >= 160 + 120 * I) && (MouseY <= (160 + 120 * I) + 90)) {
 
 				// Left arrow button
 				if (MouseX >= 0 && MouseX <= 45) {
@@ -1451,9 +1486,7 @@ function DialogDrawItemMenu(C) {
 
 			// Removes the item & associated items if needed, then wears the new one 
 			InventoryRemove(C, C.FocusGroup.Name);
-			if (InventoryGet(C, "ItemNeck") == null) InventoryRemove(C, "ItemNeckAccessories");
-			if (InventoryGet(C, "ItemNeck") == null) InventoryRemove(C, "ItemNeckRestraints");
-			if (DialogProgressNextItem != null) InventoryWear(C, DialogProgressNextItem.Asset.Name, DialogProgressNextItem.Asset.Group.Name, (DialogColorSelect == null) ? "Default" : DialogColorSelect, SkillGetWithRatio("Bondage"));
+			if (DialogProgressNextItem != null) InventoryWear(C, DialogProgressNextItem.Asset.Name, DialogProgressNextItem.Asset.Group.Name, (DialogColorSelect == null) ? "Default" : DialogColorSelect, SkillGetWithRatio("Bondage"), Player.MemberNumber);
 
 			// The player can use another item right away, for another character we jump back to her reaction
 			if (C.ID == 0) {
@@ -1572,10 +1605,11 @@ function DialogDraw() {
 		}
 
 		// We rebuild the menu if things changed
-		if (DialogPreviousCharacterAppearance !== JSON.stringify(ServerAppearanceBundle(CurrentCharacter.Appearance))) {
-			DialogInventoryBuild(CurrentCharacter);
-			ActivityDialogBuild(CurrentCharacter);
-			DialogPreviousCharacterAppearance = JSON.stringify(ServerAppearanceBundle(CurrentCharacter.Appearance));
+		var C = CharacterGetCurrent();
+		if (DialogPreviousCharacterAppearance !== JSON.stringify(ServerAppearanceBundle(C.Appearance))) {
+			DialogInventoryBuild(C);
+			ActivityDialogBuild(C);
+			DialogPreviousCharacterAppearance = JSON.stringify(ServerAppearanceBundle(C.Appearance));
 		}
 
 		// The view can show one specific extended item or the list of all items for a group
@@ -1583,8 +1617,8 @@ function DialogDraw() {
 			CommonDynamicFunction("Inventory" + DialogFocusItem.Asset.Group.Name + DialogFocusItem.Asset.Name + "Draw()");
 			DrawButton(1885, 25, 90, 90, "", "White", "Icons/Exit.png");
 		} else {
-			if (DialogActivityMode) DialogDrawActivityMenu((Player.FocusGroup != null) ? Player : CurrentCharacter);
-			else DialogDrawItemMenu((Player.FocusGroup != null) ? Player : CurrentCharacter);
+			if (DialogActivityMode) DialogDrawActivityMenu(C);
+			else DialogDrawItemMenu(C);
 		}
 
 		// Draw the 'Up' reposition button if some zones are offscreen
@@ -1621,12 +1655,14 @@ function DialogDraw() {
 function DialogDrawExpressionMenu() {
 
 	// Draw the expression groups
-	DrawText(DialogFind(Player, "FacialExpression"), 265, 62, "White", "Black");
-	DrawButton(15, 15, 90, 90, "", "White", "Icons/Reset.png", DialogFind(Player, "ClearFacialExpressions"));
+	DrawText(DialogFind(Player, "FacialExpression"), 165, 25, "White", "Black");
+	DrawButton(220, 50, 90, 90, "", "White", "Icons/WinkL.png", DialogFind(Player, "WinkLFacialExpressions"));
+	DrawButton(120, 50, 90, 90, "", "White", "Icons/WinkR.png", DialogFind(Player, "WinkRFacialExpressions"));
+	DrawButton(20, 50, 90, 90, "", "White", "Icons/Reset.png", DialogFind(Player, "ClearFacialExpressions"));
 	if (!DialogFacialExpressions || !DialogFacialExpressions.length) DialogFacialExpressionsBuild();
 	for (var I = 0; I < DialogFacialExpressions.length; I++) {
 		var FE = DialogFacialExpressions[I];
-		var OffsetY = 125 + 120 * I;
+		var OffsetY = 160 + 120 * I;
 
 		// Draw the back and forth arrow buttons
 		DrawButton(0, OffsetY, 45, 90, "", "White");
@@ -1684,7 +1720,16 @@ function DialogChatRoomHasSwapTarget() {
  * Leave the dialog and revert back to a safe state, when the player uses her safe word
  * @returns {void} - Nothing
  */
-function DialogChatRoomSafeword() {
+function DialogChatRoomSafewordRevert() {
 	DialogLeave();
-	ChatRoomSafeword();
+	ChatRoomSafewordRevert();
 }
+
+/**
+ * Leave the dialog and release the player of all restraints before returning them to the Main Lobby
+ * @returns {void} - Nothing
+ */
+ function DialogChatRoomSafewordRelease() {
+ 	DialogLeave();
+ 	ChatRoomSafewordRelease();
+ }

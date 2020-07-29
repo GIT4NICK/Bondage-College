@@ -50,7 +50,7 @@ function InventoryItemNeckAccessoriesCollarShockUnitSetIntensity(Modifier) {
 		var Dictionary = [];
 		Dictionary.push({Tag: "DestinationCharacter", Text: C.Name, MemberNumber: C.MemberNumber});
 		Dictionary.push({Tag: "SourceCharacter", Text: Player.Name, MemberNumber: Player.MemberNumber});
-		Dictionary.push({Tag: "AssetName", Text: DialogFocusItem.Asset.Description.toLowerCase()});
+		Dictionary.push({Tag: "AssetName", AssetName: DialogFocusItem.Asset.Name});
 		ChatRoomPublishCustomAction("ShockCollarSet" + DialogFocusItem.Property.Intensity, true, Dictionary);
 	}
 	else
@@ -68,8 +68,8 @@ function InventoryItemNeckAccessoriesCollarShockUnitTrigger() {
 	}
 
 	var Dictionary = [];
-	Dictionary.push({Tag: "DestinationCharacterName", Text: C.Name, MemberNumber: C.MemberNumber});
-	Dictionary.push({Tag: "AssetName", Text: DialogFocusItem.Asset.Description.toLowerCase()});
+	Dictionary.push({Tag: "DestinationCharacter", Text: C.Name, MemberNumber: C.MemberNumber});
+	Dictionary.push({Tag: "AssetName", AssetName: DialogFocusItem.Asset.Name});
 	ChatRoomPublishCustomAction("TriggerShock" + DialogFocusItem.Property.Intensity, true, Dictionary);
 	
     CharacterSetFacialExpression(C, "Eyebrows", "Soft", 10);

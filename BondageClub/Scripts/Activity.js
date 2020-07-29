@@ -148,7 +148,7 @@ function ActivityEffect(S, C, A, Z) {
  */
 function ActivityChatRoomArousalSync(C) {
 	if ((C.ID == 0) && (CurrentScreen == "ChatRoom"))
-		ServerSend("ChatRoomCharacterArousalUpdate", { OrgasmTimer: C.ArousalSettings.OrgasmTimer, Progress: C.ArousalSettings.Progress, ProgressTimer: C.ArousalSettings.ProgressTimer });
+		ServerSend("ChatRoomCharacterArousalUpdate", { OrgasmTimer: C.ArousalSettings.OrgasmTimer, Progress: C.ArousalSettings.Progress, ProgressTimer: C.ArousalSettings.ProgressTimer, OrgasmCount: C.ArousalSettings.OrgasmCount });
 }
 
 /**
@@ -237,6 +237,7 @@ function ActivityOrgasmStart(C) {
 		ActivityOrgasmWillpowerProgress(C);
 		C.ArousalSettings.OrgasmTimer = CurrentTime + (Math.random() * 10000) + 5000;
 		C.ArousalSettings.OrgasmStage = 2;
+		C.ArousalSettings.OrgasmCount = (C.ArousalSettings.OrgasmCount == null) ? 1 : C.ArousalSettings.OrgasmCount + 1;
 		ActivityOrgasmGameTimer = C.ArousalSettings.OrgasmTimer - CurrentTime;
 		if ((C.ID == 0) && (CurrentScreen == "ChatRoom")) {
 			var Dictionary = [];
@@ -361,6 +362,7 @@ function ActivityExpression(C, Progress) {
 		if (C.Appearance[A].Asset.Group.Name == "Eyebrows") C.Appearance[A].Property = { Expression: Eyebrows };
 		if (C.Appearance[A].Asset.Group.Name == "Fluids") C.Appearance[A].Property = { Expression: Fluids };
 		if (C.Appearance[A].Asset.Group.Name == "Eyes") C.Appearance[A].Property = { Expression: Eyes };
+		if (C.Appearance[A].Asset.Group.Name == "Eyes2") C.Appearance[A].Property = { Expression: Eyes };
 	}
 
 	// Refreshes the character
