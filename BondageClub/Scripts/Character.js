@@ -694,19 +694,17 @@ function CharacterReleaseNoLock(C) {
  * @returns {void} - Nothing
  */
 function CharacterReleaseTotal(C) {
-	for(var E = 0; E < C.Appearance.length; E++){
-
-	    if(C.Appearance[E].Asset.Group.Category != "Appearance"){
-	    	if(C.IsOwned() && C.Appearance[E].Asset.Name == "SlaveCollar") {
-	    		//Reset slave collar to the default model if it has a gameplay effect (such as gagging the player)
-	    		if(C.Appearance[E].Property.Effect && C.Appearance[E].Property.Effect.length > 0)
+	for (var E = 0; E < C.Appearance.length; E++) {
+	    if (C.Appearance[E].Asset.Group.Category != "Appearance") {
+	    	if (C.IsOwned() && C.Appearance[E].Asset.Name == "SlaveCollar") {
+	    		// Reset slave collar to the default model if it has a gameplay effect (such as gagging the player)
+	    		if (C.Appearance[E].Property && C.Appearance[E].Property.Effect && C.Appearance[E].Property.Effect.length > 0)
 	    			delete C.Appearance[E].Property;
 	    	}
 	    	else {
 	    		C.Appearance.splice(E,1);
 	        	E--;
 	    	}
-	        
 	    }
 	}
 	CharacterRefresh(C);
@@ -857,4 +855,17 @@ function CharacterDecompressWardrobe(Wardrobe) {
 		return DecompressedWardrobe;
 	}
 	return Wardrobe;
+}
+
+/**
+ * Checks if the character is wearing an item that allows for a specific activity
+ * @param {Character} C - The character to test for
+ * @param {String} Activity - The name of the activity that must be allowed
+ * @returns {boolean} - TRUE if at least one item allows that activity
+ */
+function CharacterHasItemForActivity(C, Activity) {
+	for (var A = 0; A < C.Appearance.length; A++)
+		if ((C.Appearance[A].Asset != null) && (C.Appearance[A].Asset.AllowActivity != null) && (C.Appearance[A].Asset.AllowActivity.indexOf(Activity) >= 0))
+			return true;
+	return false;
 }
