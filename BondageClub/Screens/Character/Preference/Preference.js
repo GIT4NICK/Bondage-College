@@ -31,6 +31,16 @@ var PreferenceArousalZoneFactor = 0;
 var PreferenceArousalFetishList = null;
 var PreferenceArousalFetishIndex = 0;
 var PreferenceArousalFetishFactor = 0;
+var PreferenceVisibilityGroupList = [];
+var PreferenceVisibilityGroupIndex = 0;
+var PreferenceVisibilityAssetIndex = 0;
+var PreferenceVisibilityHideChecked = false;
+var PreferenceVisibilityBlockChecked = false;
+var PreferenceVisibilityCanBlock = true;
+var PreferenceVisibilityPreviewImg = null;
+var PreferenceVisibilityHiddenList = [];
+var PreferenceVisibilityBlockList = [];
+var PreferenceVisibilityResetClicked = false;
 
 /**
  * Gets the effect of a sexual activity on the player
@@ -42,7 +52,7 @@ var PreferenceArousalFetishFactor = 0;
 function PreferenceGetActivityFactor(C, Type, Self) {
 	var Factor = 2;
 	if ((C.ArousalSettings != null) && (C.ArousalSettings.Activity != null))
-		for (var P = 0; P < C.ArousalSettings.Activity.length; P++)
+		for (let P = 0; P < C.ArousalSettings.Activity.length; P++)
 			if (C.ArousalSettings.Activity[P].Name == Type)
 				Factor = (Self) ? C.ArousalSettings.Activity[P].Self : C.ArousalSettings.Activity[P].Other;
 	if ((Factor == null) || (typeof Factor !== "number") || (Factor < 0) || (Factor > 4)) Factor = 2;
@@ -58,7 +68,7 @@ function PreferenceGetActivityFactor(C, Type, Self) {
 function PreferenceGetFetishFactor(C, Type) {
 	var Factor = 2;
 	if ((C.ArousalSettings != null) && (C.ArousalSettings.Fetish != null))
-		for (var F = 0; F < C.ArousalSettings.Fetish.length; F++)
+		for (let F = 0; F < C.ArousalSettings.Fetish.length; F++)
 			if (C.ArousalSettings.Fetish[F].Name == Type)
 				Factor = C.ArousalSettings.Fetish[F].Factor;
 	if ((Factor == null) || (typeof Factor !== "number") || (Factor < 0) || (Factor > 4)) Factor = 2;
@@ -74,7 +84,7 @@ function PreferenceGetFetishFactor(C, Type) {
  */
 function PreferenceSetActivityFactor(C, Type, Self, Factor) {
 	if ((C.ArousalSettings != null) && (C.ArousalSettings.Activity != null))
-		for (var P = 0; P < C.ArousalSettings.Activity.length; P++)
+		for (let P = 0; P < C.ArousalSettings.Activity.length; P++)
 			if (C.ArousalSettings.Activity[P].Name == Type)
 				if (Self) C.ArousalSettings.Activity[P].Self = Factor;
 				else C.ArousalSettings.Activity[P].Other = Factor;
@@ -89,7 +99,7 @@ function PreferenceSetActivityFactor(C, Type, Self, Factor) {
 function PreferenceGetZoneFactor(C, Zone) {
 	var Factor = 2;
 	if ((C.ArousalSettings != null) && (C.ArousalSettings.Zone != null))
-		for (var Z = 0; Z < C.ArousalSettings.Zone.length; Z++)
+		for (let Z = 0; Z < C.ArousalSettings.Zone.length; Z++)
 			if (C.ArousalSettings.Zone[Z].Name == Zone)
 				Factor = C.ArousalSettings.Zone[Z].Factor;
 	if ((Factor == null) || (typeof Factor !== "number") || (Factor < 0) || (Factor > 4)) Factor = 2;
@@ -105,7 +115,7 @@ function PreferenceGetZoneFactor(C, Zone) {
  */
 function PreferenceSetZoneFactor(C, Zone, Factor) {
 	if ((C.ArousalSettings != null) && (C.ArousalSettings.Zone != null))
-		for (var Z = 0; Z < C.ArousalSettings.Zone.length; Z++)
+		for (let Z = 0; Z < C.ArousalSettings.Zone.length; Z++)
 			if (C.ArousalSettings.Zone[Z].Name == Zone)
 				C.ArousalSettings.Zone[Z].Factor = Factor;
 }
@@ -118,7 +128,7 @@ function PreferenceSetZoneFactor(C, Zone, Factor) {
  */
 function PreferenceGetZoneOrgasm(C, Zone) {
 	if ((C.ArousalSettings != null) && (C.ArousalSettings.Zone != null))
-		for (var Z = 0; Z < C.ArousalSettings.Zone.length; Z++)
+		for (let Z = 0; Z < C.ArousalSettings.Zone.length; Z++)
 			if (C.ArousalSettings.Zone[Z].Name == Zone)
 				return ((C.ArousalSettings.Zone[Z].Orgasm != null) && (typeof C.ArousalSettings.Zone[Z].Orgasm === "boolean") && C.ArousalSettings.Zone[Z].Orgasm);
 	return false;
@@ -132,7 +142,7 @@ function PreferenceGetZoneOrgasm(C, Zone) {
  */
 function PreferenceSetZoneOrgasm(C, Zone, CanOrgasm) {
 	if ((C.ArousalSettings != null) && (C.ArousalSettings.Zone != null))
-		for (var Z = 0; Z < C.ArousalSettings.Zone.length; Z++)
+		for (let Z = 0; Z < C.ArousalSettings.Zone.length; Z++)
 			if (C.ArousalSettings.Zone[Z].Name == Zone)
 				if (CanOrgasm) C.ArousalSettings.Zone[Z].Orgasm = true;
 				else delete C.ArousalSettings.Zone[Z].Orgasm;
@@ -227,9 +237,9 @@ function PreferenceInit(C) {
 	if (Player.AssetFamily == "Female3DCG") {
 
 		// Validates the activities
-		for (var A = 0; A < ActivityFemale3DCG.length; A++) {
+		for (let A = 0; A < ActivityFemale3DCG.length; A++) {
 			var Found = false;
-			for (var P = 0; P < C.ArousalSettings.Activity.length; P++)
+			for (let P = 0; P < C.ArousalSettings.Activity.length; P++)
 				if ((C.ArousalSettings.Activity[P] != null) && (C.ArousalSettings.Activity[P].Name != null) && (ActivityFemale3DCG[A].Name == C.ArousalSettings.Activity[P].Name)) {
 					Found = true;
 					if ((C.ArousalSettings.Activity[P].Self == null) || (typeof C.ArousalSettings.Activity[P].Self !== "number") || (C.ArousalSettings.Activity[P].Self < 0) || (C.ArousalSettings.Activity[P].Self > 4)) C.ArousalSettings.Activity[P].Self = 2;
@@ -239,9 +249,9 @@ function PreferenceInit(C) {
 		}
 
 		// Validates the fetishes
-		for (var A = 0; A < FetishFemale3DCG.length; A++) {
+		for (let A = 0; A < FetishFemale3DCG.length; A++) {
 			var Found = false;
-			for (var F = 0; F < C.ArousalSettings.Fetish.length; F++)
+			for (let F = 0; F < C.ArousalSettings.Fetish.length; F++)
 				if ((C.ArousalSettings.Fetish[F] != null) && (C.ArousalSettings.Fetish[F].Name != null) && (FetishFemale3DCG[A].Name == C.ArousalSettings.Fetish[F].Name)) {
 					Found = true;
 					if ((C.ArousalSettings.Fetish[F].Factor == null) || (typeof C.ArousalSettings.Fetish[F].Factor !== "number") || (C.ArousalSettings.Fetish[F].Factor < 0) || (C.ArousalSettings.Fetish[F].Factor > 4)) C.ArousalSettings.Fetish[F].Factor = 2;
@@ -250,10 +260,10 @@ function PreferenceInit(C) {
 		}
 
 		// Validates the zones
-		for (var A = 0; A < AssetGroup.length; A++)
+		for (let A = 0; A < AssetGroup.length; A++)
 			if ((AssetGroup[A].Zone != null) && (AssetGroup[A].Activity != null)) {
 				var Found = false;
-				for (var Z = 0; Z < C.ArousalSettings.Zone.length; Z++)
+				for (let Z = 0; Z < C.ArousalSettings.Zone.length; Z++)
 					if ((C.ArousalSettings.Zone[Z] != null) && (C.ArousalSettings.Zone[Z].Name != null) && (AssetGroup[A].Name == C.ArousalSettings.Zone[Z].Name)) {
 						Found = true;
 						if ((C.ArousalSettings.Zone[Z].Factor == null) || (typeof C.ArousalSettings.Zone[Z].Factor !== "number") || (C.ArousalSettings.Zone[Z].Factor < 0) || (C.ArousalSettings.Zone[Z].Factor > 4)) C.ArousalSettings.Zone[Z].Factor = 2;
@@ -298,7 +308,7 @@ function PreferenceLoad() {
 	// Prepares the activity list
 	PreferenceArousalActivityList = [];
 	if (Player.AssetFamily == "Female3DCG")
-		for (var A = 0; A < ActivityFemale3DCG.length; A++)
+		for (let A = 0; A < ActivityFemale3DCG.length; A++)
 			PreferenceArousalActivityList.push(ActivityFemale3DCG[A].Name);
 	PreferenceArousalActivityIndex = 0;
 	PreferenceLoadActivityFactor();
@@ -306,7 +316,7 @@ function PreferenceLoad() {
 	// Prepares the fetish list
 	PreferenceArousalFetishList = [];
 	if (Player.AssetFamily == "Female3DCG")
-		for (var A = 0; A < FetishFemale3DCG.length; A++)
+		for (let A = 0; A < FetishFemale3DCG.length; A++)
 			PreferenceArousalFetishList.push(FetishFemale3DCG[A].Name);
 	PreferenceArousalFetishIndex = 0;
 	PreferenceLoadFetishFactor();
@@ -325,6 +335,7 @@ function PreferenceRun() {
 	if (PreferenceSubscreen == "Audio") return PreferenceSubscreenAudioRun();
 	if (PreferenceSubscreen == "Arousal") return PreferenceSubscreenArousalRun();
 	if (PreferenceSubscreen == "Security") return PreferenceSubscreenSecurityRun();
+	if (PreferenceSubscreen == "Visibility") return PreferenceSubscreenVisibilityRun();
 
 	// Draw the online preferences
 	MainCanvas.textAlign = "left";
@@ -364,6 +375,7 @@ function PreferenceRun() {
 		DrawButton(1815, 305, 90, 90, "", "White", "Icons/Audio.png");
 		DrawButton(1815, 420, 90, 90, "", "White", "Icons/Activity.png");
 		DrawButton(1815, 535, 90, 90, "", "White", "Icons/Lock.png");
+		DrawButton(1815, 650, 90, 90, "", "White", "Icons/Private.png");
 	}
 }
 
@@ -378,6 +390,7 @@ function PreferenceClick() {
 	if (PreferenceSubscreen == "Audio") return PreferenceSubscreenAudioClick();
 	if (PreferenceSubscreen == "Arousal") return PreferenceSubscreenArousalClick();
 	if (PreferenceSubscreen == "Security") return PreferenceSubscreenSecurityClick();
+	if (PreferenceSubscreen == "Visibility") return PreferenceSubscreenVisibilityClick();
 
 	// If the user clicks on "Exit"
 	if ((MouseX >= 1815) && (MouseX < 1905) && (MouseY >= 75) && (MouseY < 165) && (PreferenceColorPick == "")) PreferenceExit();
@@ -409,6 +422,12 @@ function PreferenceClick() {
 		PreferenceSubscreen = "Security";
 	}
 
+	// If the user clicks on the security settings button
+	if ((MouseX >= 1815) && (MouseX < 1905) && (MouseY >= 650) && (MouseY < 740) && (PreferenceColorPick == "")) {
+		PreferenceMainScreenExit();
+		PreferenceSubscreen = "Visibility";
+	}
+	
 	// If we must change the restrain permission level
 	if ((MouseX >= 500) && (MouseX < 590) && (MouseY >= 280) && (MouseY < 370)) {
 		Player.ItemPermission++;
@@ -542,7 +561,7 @@ function PreferenceSubscreenArousalRun() {
 		DrawText(TextGet("ArousalActivityLoveOther"), 1255, 665, "Black", "Gray");
 
 		// Draws all the available character zones
-		for (var A = 0; A < AssetGroup.length; A++)
+		for (let A = 0; A < AssetGroup.length; A++)
 			if ((AssetGroup[A].Zone != null) && (AssetGroup[A].Activity != null)) {
 				DrawAssetGroupZoneBackground(Player, AssetGroup[A].Zone, 0.9, 50, 50, PreferenceGetFactorColor(PreferenceGetZoneFactor(Player, AssetGroup[A].Name)));
 				DrawAssetGroupZone(Player, AssetGroup[A].Zone, 0.9, 50, 50, "#808080FF", 3);
@@ -594,6 +613,45 @@ function PreferenceSubscreenSecurityRun() {
 	MainCanvas.textAlign = "center";
 	DrawButton(500, 365, 250, 64, TextGet("UpdateEmail"), "White", "");
 	DrawButton(1815, 75, 90, 90, "", "White", "Icons/Exit.png");
+}
+
+/**
+ * Sets the item visibility preferences for a player. Redirected to from the main Run function if the player is in the visibility settings subscreen
+ * @returns {void} - Nothing
+ */
+function PreferenceSubscreenVisibilityRun() {
+	// Load the full asset list on the first call
+	if (PreferenceVisibilityGroupList.length == 0) PreferenceVisibilityLoad();
+
+	DrawCharacter(Player, 50, 50, 0.9);
+
+	// Exit buttons
+	DrawButton(1720, 60, 90, 90, "", "White", "Icons/Accept.png", TextGet("LeaveSave"));
+	DrawButton(1820, 60, 90, 90, "", "White", "Icons/Cancel.png", TextGet("LeaveNoSave"));
+
+	// Left-aligned text controls
+	MainCanvas.textAlign = "left";
+	DrawText(TextGet("VisibilityPreferences"), 500, 125, "Black", "Gray");
+	DrawText(TextGet("VisibilityGroup"), 500, 225, "Black", "Gray");
+	DrawText(TextGet("VisibilityAsset"), 500, 304, "Black", "Gray");
+	DrawCheckbox(500, 352, 64, 64, TextGet("VisibilityCheckboxHide"), PreferenceVisibilityHideChecked);
+	if (PreferenceVisibilityCanBlock) DrawCheckbox(500, 432, 64, 64, TextGet("VisibilityCheckboxBlock"), PreferenceVisibilityBlockChecked);
+	if (PreferenceVisibilityHideChecked) {
+		DrawImageResize("Screens/Character/Player/HiddenItem.png", 500, 516, 86, 86);
+		DrawText(TextGet("VisibilityWarning"), 600, 548, "Black", "Gray");
+	}
+	if (PreferenceVisibilityResetClicked) DrawText(TextGet("VisibilityResetDescription"), 500, 732, "Black", "Gray");
+	MainCanvas.textAlign = "center";
+
+	// Buttons
+	DrawBackNextButton(650, 193, 500, 64, PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Group.Description, "White", "", () => "", () => "");
+	DrawBackNextButton(650, 272, 500, 64, PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Assets[PreferenceVisibilityAssetIndex].Asset.Description, "White", "", () => "", () => "");
+	DrawButton(500, PreferenceVisibilityResetClicked ? 780 : 700, 300, 64, TextGet("VisibilityReset"), "White", "");
+	
+	// Preview icon
+	DrawEmptyRect(1200, 193, 225, 225, "Black");
+	if (PreferenceVisibilityPreviewImg == null) DrawRect(1203, 196, 219, 219, "LightGray");
+	else DrawImageResize(PreferenceVisibilityPreviewImg, 1202, 195, 221, 221);
 }
 
 /**
@@ -730,7 +788,7 @@ function PreferenceSubscreenArousalClick() {
 		if ((MouseX >= 1455) && (MouseX < 1905) && (MouseY >= 463) && (MouseY <= 527)) {
 			if (MouseX <= 1680) PreferenceArousalFetishFactor = (5 + PreferenceArousalFetishFactor - 1) % 5;
 			else PreferenceArousalFetishFactor = (PreferenceArousalFetishFactor + 1) % 5;
-			for (var F = 0; F < Player.ArousalSettings.Fetish.length; F++)
+			for (let F = 0; F < Player.ArousalSettings.Fetish.length; F++)
 				if (Player.ArousalSettings.Fetish[F].Name == PreferenceArousalFetishList[PreferenceArousalFetishIndex])
 					Player.ArousalSettings.Fetish[F].Factor = PreferenceArousalFetishFactor;
 		}
@@ -768,9 +826,9 @@ function PreferenceSubscreenArousalClick() {
 			PreferenceSetZoneOrgasm(Player, Player.FocusGroup.Name, !PreferenceGetZoneOrgasm(Player, Player.FocusGroup.Name));
 
 		// In arousal mode, the player can click on her zones
-		for (var A = 0; A < AssetGroup.length; A++)
+		for (let A = 0; A < AssetGroup.length; A++)
 			if ((AssetGroup[A].Zone != null) && (AssetGroup[A].Activity != null))
-				for (var Z = 0; Z < AssetGroup[A].Zone.length; Z++)
+				for (let Z = 0; Z < AssetGroup[A].Zone.length; Z++)
 					if (((Player.Pose.indexOf("Suspension") < 0) && (MouseX >= ((AssetGroup[A].Zone[Z][0] * 0.9) + 50)) && (MouseY >= (((AssetGroup[A].Zone[Z][1] - Player.HeightModifier) * 0.9) + 50)) && (MouseX <= (((AssetGroup[A].Zone[Z][0] + AssetGroup[A].Zone[Z][2]) * 0.9) + 50)) && (MouseY <= (((AssetGroup[A].Zone[Z][1] + AssetGroup[A].Zone[Z][3] - Player.HeightModifier) * 0.9) + 50)))
 						|| ((Player.Pose.indexOf("Suspension") >= 0) && (MouseX >= ((AssetGroup[A].Zone[Z][0] * 0.9) + 50)) && (MouseY >= 0.9 * ((1000 - (AssetGroup[A].Zone[Z][1] + AssetGroup[A].Zone[Z][3])) - Player.HeightModifier)) && (MouseX <= (((AssetGroup[A].Zone[Z][0] + AssetGroup[A].Zone[Z][2]) * 0.9) + 50)) && (MouseY <= 0.9 * (1000 - ((AssetGroup[A].Zone[Z][1])) - Player.HeightModifier)))) {
 						Player.FocusGroup = AssetGroup[A];
@@ -806,6 +864,172 @@ function PreferenceSubscreenSecurityClick() {
 			ElementValue("InputEmailNew", TextGet("UpdateEmailInvalid"));
 	}
 
+}
+
+/**
+ * Handles the click events for the visibility settings of a player
+ * Redirected to from the main Click function if the player is in the visibility settings subscreen
+ */
+function PreferenceSubscreenVisibilityClick() {
+
+	// Group button
+	if (MouseIn(650, 193, 500, 64)) {
+		if (MouseX >= 900) {
+			PreferenceVisibilityGroupIndex++;
+			if (PreferenceVisibilityGroupIndex >= PreferenceVisibilityGroupList.length) PreferenceVisibilityGroupIndex = 0;
+		}
+		else {
+			PreferenceVisibilityGroupIndex--;
+			if (PreferenceVisibilityGroupIndex < 0) PreferenceVisibilityGroupIndex = PreferenceVisibilityGroupList.length - 1;
+		}
+		PreferenceVisibilityAssetIndex = 0;
+		PreferenceVisibilityAssetChanged(true);
+	}
+
+	// Asset button
+	if (MouseIn(650, 272, 500, 64)) {
+		if (MouseX >= 900) {
+			PreferenceVisibilityAssetIndex++;
+			if (PreferenceVisibilityAssetIndex >= PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Assets.length) PreferenceVisibilityAssetIndex = 0;
+		}
+		else {
+			PreferenceVisibilityAssetIndex--;
+			if (PreferenceVisibilityAssetIndex < 0) PreferenceVisibilityAssetIndex = PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Assets.length - 1;
+		}
+		PreferenceVisibilityAssetChanged(true);
+	}
+
+	// Hide checkbox
+	if (MouseIn(500, 352, 64, 64)) {
+		PreferenceVisibilityHideChange();
+		if (PreferenceVisibilityHideChecked != PreferenceVisibilityBlockChecked && PreferenceVisibilityCanBlock) PreferenceVisibilityBlockChange();
+	}
+
+	// Block checkbox
+	if (MouseIn(500, 432, 64, 64) && PreferenceVisibilityCanBlock) {
+		PreferenceVisibilityBlockChange();
+	}
+
+	// Reset button
+	if (MouseIn(500, PreferenceVisibilityResetClicked ? 780 : 700, 300, 64)) {
+		if (PreferenceVisibilityResetClicked) {
+			Player.HiddenItems = [];
+			PreferenceVisibilityExit(true);
+		}
+		else PreferenceVisibilityResetClicked = true;
+	}
+
+	// Confirm button
+	if (MouseIn(1720, 60, 90, 90)) {
+		Player.HiddenItems = PreferenceVisibilityHiddenList;
+		Player.BlockItems = PreferenceVisibilityBlockList;
+		PreferenceVisibilityExit(true);
+	}
+
+	// Cancel button
+	if (MouseIn(1820, 60, 90, 90)) {
+		PreferenceVisibilityExit(false);
+	}
+}
+
+/** Load the full list of items and clothes along with the player settings for them */
+function PreferenceVisibilityLoad() {
+	PreferenceVisibilityHiddenList = Player.HiddenItems.slice();
+	PreferenceVisibilityBlockList = Player.BlockItems.slice();
+
+	for (let G = 0; G < AssetGroup.length; G++)
+		if (AssetGroup[G].Clothing || AssetGroup[G].Category != "Appearance") {
+			var AssetList = [];
+			for (let A = 0; A < Asset.length; A++)
+				if (Asset[A].Group.Name == AssetGroup[G].Name && Asset[A].Visible)
+					AssetList.push({
+						Asset: Asset[A],
+						Hidden: CharacterAppearanceItemIsHidden(Asset[A].Name, AssetGroup[G].Name),
+						Blocked: InventoryIsPermissionBlocked(Player, Asset[A].Name, AssetGroup[G].Name),
+						Limited: InventoryIsPermissionLimited(Player, Asset[A].Name, AssetGroup[G].Name)
+					});
+			if (AssetList.length > 0) PreferenceVisibilityGroupList.push({ Group: AssetGroup[G], Assets: AssetList });
+		}
+	PreferenceVisibilityAssetChanged(true);
+}
+
+/**
+ * Update the checkbox settings and asset preview image based on the new asset selection
+ * @param {boolean} RefreshCheckboxes - If TRUE, load the new asset settings. If FALSE, a checkbox was just manually changed so don't refresh them
+ */
+function PreferenceVisibilityAssetChanged(RefreshCheckboxes) {
+	var CurrAsset = PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Assets[PreferenceVisibilityAssetIndex];
+
+	// Load info for the new asset
+	if (RefreshCheckboxes) {
+		PreferenceVisibilityHideChecked = CurrAsset.Hidden;
+		PreferenceVisibilityBlockChecked = CurrAsset.Blocked;
+	}
+
+	// Can't change the Block setting if the item is worn or set to limited permissions
+	var WornItem = InventoryGet(Player, PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Group.Name);
+	PreferenceVisibilityCanBlock = (WornItem == null || WornItem.Asset.Name != CurrAsset.Asset.Name) && !CurrAsset.Limited;
+
+	// Get the preview image path
+	if (PreferenceVisibilityHideChecked) PreferenceVisibilityPreviewImg = "Icons/HiddenItem.png";
+	else PreferenceVisibilityPreviewImg = "Assets/" + CurrAsset.Asset.Group.Family + "/" + CurrAsset.Asset.Group.Name + "/Preview/" + CurrAsset.Asset.Name + ".png";
+
+	PreferenceVisibilityResetClicked = false;
+}
+
+/**
+ * Toggles the Hide checkbox
+ */
+function PreferenceVisibilityHideChange() {
+	PreferenceVisibilityHideChecked = !PreferenceVisibilityHideChecked;
+	PreferenceVisibilityCheckboxChanged(PreferenceVisibilityHiddenList, PreferenceVisibilityHideChecked);
+	PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Assets[PreferenceVisibilityAssetIndex].Hidden = PreferenceVisibilityHideChecked;
+	PreferenceVisibilityAssetChanged(false);
+}
+
+/**
+ * Toggles the Block checkbox
+ */
+function PreferenceVisibilityBlockChange() {
+	PreferenceVisibilityBlockChecked = !PreferenceVisibilityBlockChecked;
+	PreferenceVisibilityCheckboxChanged(PreferenceVisibilityBlockList, PreferenceVisibilityBlockChecked);
+	PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Assets[PreferenceVisibilityAssetIndex].Blocked = PreferenceVisibilityBlockChecked;
+	PreferenceVisibilityAssetChanged(false);
+}
+
+/**
+ * Adds or removes the current item to/from the list based on the new state of the corresponding checkbox
+ * @param {Array} List - The list to add or remove the item from
+ * @param {boolean} CheckSetting - The new true/false setting of the checkbox
+ */
+function PreferenceVisibilityCheckboxChanged(List, CheckSetting) {
+	var CurrGroup = PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Group.Name;
+	var CurrAsset = PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Assets[PreferenceVisibilityAssetIndex].Asset.Name;
+	if (CheckSetting == true) {
+		List.push({ Name: CurrAsset, Group: CurrGroup });
+	}
+	else {
+		for (let A = 0; A < List.length; A++)
+			if (List[A].Name == CurrAsset && List[A].Group == CurrGroup) {
+				List.splice(A, 1);
+				break;
+			}
+	}
+}
+
+/**
+ * Saves changes to the settings, disposes of large lists & exits the visibility preference screen.
+ * @param {boolean} SaveChanges - If TRUE, update HiddenItems and BlockItems for the account
+ * @returns {void} - Nothing
+ */
+function PreferenceVisibilityExit(SaveChanges) {
+	if (SaveChanges) ServerSend("AccountUpdate", { HiddenItems: Player.HiddenItems, BlockItems: Player.BlockItems });
+
+	PreferenceVisibilityGroupList = [];
+	PreferenceVisibilityHiddenList = [];
+	PreferenceVisibilityBlockList = [];
+	PreferenceSubscreen = "";
+	PreferenceMainScreenLoad();
 }
 
 /**

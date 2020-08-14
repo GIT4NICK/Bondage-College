@@ -60,7 +60,7 @@ var ChainsArmsOptionOffset = 0;
  * @returns {void} - Nothing
  */
 function InventoryItemArmsChainsLoad() {
-	if (DialogFocusItem.Property == null) DialogFocusItem.Property = ChainsArmsOptions[0].Property;
+	if (DialogFocusItem.Property == null) DialogFocusItem.Property = JSON.parse(JSON.stringify(ChainsArmsOptions[0].Property));
 	DialogExtendedMessage = DialogFind(Player, "SelectChainBondage");
 	ChainsArmsOptionOffset = 0;
 }
@@ -80,7 +80,7 @@ function InventoryItemArmsChainsDraw() {
 	DrawText(DialogExtendedMessage, 1500, 375, "white", "gray");
 
 	// Draw the possible positions and their requirements, 4 at a time in a 2x2 grid
-	for (var I = ChainsArmsOptionOffset; (I < ChainsArmsOptions.length) && (I < ChainsArmsOptionOffset + 4); I++) {
+	for (let I = ChainsArmsOptionOffset; (I < ChainsArmsOptions.length) && (I < ChainsArmsOptionOffset + 4); I++) {
 		var offset = I - ChainsArmsOptionOffset;
 		var X = 1200 + (offset % 2 * 387);
 		var Y = 450 + (Math.floor(offset / 2) * 300);
@@ -104,7 +104,7 @@ function InventoryItemArmsChainsClick() {
 	if (ChainsArmsOptionOffset >= ChainsArmsOptions.length) ChainsArmsOptionOffset = 0;
 
 	// Item buttons
-	for (var I = ChainsArmsOptionOffset; (I < ChainsArmsOptions.length) && (I < ChainsArmsOptionOffset + 4); I++) {
+	for (let I = ChainsArmsOptionOffset; (I < ChainsArmsOptions.length) && (I < ChainsArmsOptionOffset + 4); I++) {
 		var offset = I - ChainsArmsOptionOffset;
 		var X = 1200 + (offset % 2 * 387);
 		var Y = 450 + (Math.floor(offset / 2) * 300);
@@ -147,12 +147,6 @@ function InventoryItemArmsChainsSetPose(NewType) {
 	} else {
 		DialogExtendedMessage = DialogFind(Player, "CantChangeWhileLocked");
 		return;
-	}
-
-	// Adds the lock effect back if it was padlocked
-	if ((DialogFocusItem.Property.LockedBy != null) && (DialogFocusItem.Property.LockedBy != "")) {
-		if (DialogFocusItem.Property.Effect == null) DialogFocusItem.Property.Effect = [];
-		DialogFocusItem.Property.Effect.push("Lock");
 	}
 
 	// Refresh the character

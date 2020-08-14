@@ -54,7 +54,7 @@ var ZiptiesArmsOptionOffset = 0;
 
 // Loads the item extension properties
 function InventoryItemArmsZiptiesLoad() {
-	if (DialogFocusItem.Property == null) DialogFocusItem.Property = ZiptiesArmsOptions[0].Property;
+	if (DialogFocusItem.Property == null) DialogFocusItem.Property = JSON.parse(JSON.stringify(ZiptiesArmsOptions[0].Property));
 	DialogExtendedMessage = DialogFind(Player, "SelectZipTie");
 	ZiptiesArmsOptionOffset = 0;
 }
@@ -70,7 +70,7 @@ function InventoryItemArmsZiptiesDraw() {
 	DrawText(DialogExtendedMessage, 1500, 375, "white", "gray");
 	
 	// Draw the possible positions and their requirements, 4 at a time in a 2x2 grid
-	for (var I = ZiptiesArmsOptionOffset; (I < ZiptiesArmsOptions.length) && (I < ZiptiesArmsOptionOffset + 4); I++) {
+	for (let I = ZiptiesArmsOptionOffset; (I < ZiptiesArmsOptions.length) && (I < ZiptiesArmsOptionOffset + 4); I++) {
 		var offset = I - ZiptiesArmsOptionOffset;
 		var X = 1200 + (offset % 2 * 387);
 		var Y = 450 + (Math.floor(offset / 2) * 300);
@@ -91,7 +91,7 @@ function InventoryItemArmsZiptiesClick() {
 	if (ZiptiesArmsOptionOffset >= ZiptiesArmsOptions.length) ZiptiesArmsOptionOffset = 0;
 
 	// Item buttons
-	for (var I = ZiptiesArmsOptionOffset; (I < ZiptiesArmsOptions.length) && (I < ZiptiesArmsOptionOffset + 4); I++) {
+	for (let I = ZiptiesArmsOptionOffset; (I < ZiptiesArmsOptions.length) && (I < ZiptiesArmsOptionOffset + 4); I++) {
 		var offset = I - ZiptiesArmsOptionOffset;
 		var X = 1200 + (offset % 2 * 387);
 		var Y = 450 + (Math.floor(offset / 2) * 300);

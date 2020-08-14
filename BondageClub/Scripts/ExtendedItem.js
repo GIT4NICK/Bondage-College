@@ -38,7 +38,28 @@ var ExtendedItemOffsets = {};
 function ExtendedItemLoad(Options, DialogKey) {
 	if (!DialogFocusItem.Property) {
 		// Default to the first option if no property is set
-		DialogFocusItem.Property = Options[0].Property;
+		DialogFocusItem.Property = JSON.parse(JSON.stringify(Options[0].Property));
+		//Refresh the character if the base properties of the items do not correspond with its base type.
+		var MustRefresh = false;
+		if (DialogFocusItem.Asset.Effect == null && Array.isArray(Options[0].Property.Effect) && Options[0].Property.Effect.length > 0) MustRefresh = true;
+		if (!MustRefresh && Array.isArray(DialogFocusItem.Asset.Effect) && Array.isArray(Options[0].Property.Effect))
+			for (var E = 0; E <  Options[0].Property.Effect.length; E++)
+				if (!DialogFocusItem.Asset.Effect.includes(Options[0].Property.Effect[E])) { 
+					MustRefresh = true;
+					break;
+				}
+		if (!MustRefresh && DialogFocusItem.Asset.Block == null && Array.isArray(Options[0].Property.Block) && Options[0].Property.Block.length > 0) MustRefresh = true;
+		if (!MustRefresh && Array.isArray(DialogFocusItem.Asset.Block) && Array.isArray(Options[0].Property.Block))
+			for (var E = 0; E <  Options[0].Property.Block.length; E++)
+				if (!DialogFocusItem.Asset.Block.includes(Options[0].Property.Block[E])) { 
+					MustRefresh = true;
+					break;
+					}
+		if (MustRefresh) { 
+			var C = (Player.FocusGroup != null) ? Player : CurrentCharacter;
+			CharacterRefresh(C);
+			ChatRoomCharacterItemUpdate(C, DialogFocusItem.Asset.Group.Name);
+		}
 	}
 
 	if (Options.length > 2) {
@@ -172,7 +193,7 @@ function ExtendedItemSetType(Options, Option) {
 function ExtendedItemDrawTwo(Options, DialogPrefix, IsSelfBondage) {
 	var Asset = DialogFocusItem.Asset;
 
-	for (var I = 0; I < Options.length; I++) {
+	for (let I = 0; I < Options.length; I++) {
 		var X = 1175 + I * 425;
 		var Y = 550;
 		var Option = Options[I];
@@ -198,7 +219,7 @@ function ExtendedItemDrawGrid(Options, DialogPrefix, IsSelfBondage) {
 	var Asset = DialogFocusItem.Asset;
 	var ItemOptionsOffset = ExtendedItemGetOffset();
 	// Draw the possible variants and their requirements, 4 at a time in a 2x2 grid
-	for (var I = ItemOptionsOffset; I < Options.length && I < ItemOptionsOffset + 4; I++) {
+	for (let I = ItemOptionsOffset; I < Options.length && I < ItemOptionsOffset + 4; I++) {
 		var PageOffset = I - ItemOptionsOffset;
 		var X = 1200 + (PageOffset % 2 * 387);
 		var Y = 450 + (Math.floor(PageOffset / 2) * 300);
@@ -219,7 +240,7 @@ function ExtendedItemDrawGrid(Options, DialogPrefix, IsSelfBondage) {
  * @returns {void} Nothing
  */
 function ExtendedItemClickTwo(Options, IsSelfBondage) {
-	for (var I = 0; I < Options.length; I++) {
+	for (let I = 0; I < Options.length; I++) {
 		var X = 1175 + I * 425;
 		var Y = 550;
 		var Option = Options[I];
@@ -244,7 +265,7 @@ function ExtendedItemClickGrid(Options, IsSelfBondage) {
 
 	var ItemOptionsOffset = ExtendedItemGetOffset();
 
-	for (var I = ItemOptionsOffset; I < Options.length && I < ItemOptionsOffset + 4; I++) {
+	for (let I = ItemOptionsOffset; I < Options.length && I < ItemOptionsOffset + 4; I++) {
 		var offset = I - ItemOptionsOffset;
 		var X = 1200 + (offset % 2 * 387);
 		var Y = 450 + (Math.floor(offset / 2) * 300);
