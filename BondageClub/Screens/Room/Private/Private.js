@@ -315,7 +315,7 @@ function PrivatePlayerCanTurnTables() { return (!Player.IsRestrained() && (Reput
  * Checks if it's possible for the submissive to turn the tables against her player owner
  * @returns {boolean} - TRUE if turning the tables is possible
  */
-function PrivateSubCanTurnTables() { return (!Player.IsRestrained() && !CurrentCharacter.IsRestrained() && !Player.IsOwned() && (ReputationGet("Dominant") + 50 <= NPCTraitGet(CurrentCharacter, "Dominant")) && (NPCEventGet(CurrentCharacter, "NPCCollaring") > 0)) }
+function PrivateSubCanTurnTables() { return (!Player.IsRestrained() && !CurrentCharacter.IsRestrained() && !Player.IsOwned() && !PrivateOwnerInRoom() && (ReputationGet("Dominant") + 50 <= NPCTraitGet(CurrentCharacter, "Dominant")) && (NPCEventGet(CurrentCharacter, "NPCCollaring") > 0)) }
 
 /**
  * Loads the private room screen and the vendor NPC.
@@ -1012,6 +1012,7 @@ function PrivateActivityRun(LoveFactor) {
 		InventoryRemove(Player, "ItemFeet");
 		InventoryRemove(Player, "Hat");
 		InventoryRemove(Player, "HairAccessory2");
+		InventoryRemove(Player, "HairAccessory3");
 		InventoryWearRandom(Player, "ItemMouth");
 		InventoryWear(Player, "BitchSuit", "ItemArms", "Default", Math.floor(Math.random() * 10) + 1);
 		InventoryWear(Player, "PuppyEars1", "HairAccessory1");

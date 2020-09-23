@@ -235,7 +235,7 @@ function ServerValidateProperties(C, Item) {
 
 	// For each effect on the item
 	if ((Item.Property != null) && (Item.Property.Effect != null)) {
-		for (let E = 0; E < Item.Property.Effect.length; E++) {
+		for (let E = Item.Property.Effect.length - 1; E >= 0; E--) {
 
 			// Make sure the item can be locked, remove any lock that's invalid
 			var Effect = Item.Property.Effect[E];
@@ -250,7 +250,6 @@ function ServerValidateProperties(C, Item) {
 				delete Item.Property.EnableRandomInput;
 				delete Item.Property.MemberNumberList;
 				Item.Property.Effect.splice(E, 1);
-				E--;
 			}
 
 			// If the item is locked by a lock
@@ -286,7 +285,6 @@ function ServerValidateProperties(C, Item) {
 					delete Item.Property.EnableRandomInput;
 					delete Item.Property.MemberNumberList;
 					Item.Property.Effect.splice(E, 1);
-					E--;
 				}
 
 				// Make sure the lover lock is valid
@@ -301,7 +299,6 @@ function ServerValidateProperties(C, Item) {
 					delete Item.Property.EnableRandomInput;
 					delete Item.Property.MemberNumberList;
 					Item.Property.Effect.splice(E, 1);
-					E--;
 				}
 
 			}
@@ -319,7 +316,6 @@ function ServerValidateProperties(C, Item) {
 				// Remove the effect if it's not allowed
 				if (MustRemove) {
 					Item.Property.Effect.splice(E, 1);
-					E--;
 				}
 
 			}
@@ -328,7 +324,7 @@ function ServerValidateProperties(C, Item) {
 
 	// For each block on the item
 	if ((Item.Property != null) && (Item.Property.Block != null)) {
-		for (let B = 0; B < Item.Property.Block.length; B++) {
+		for (let B = Item.Property.Block.length - 1; B >= 0; B--) {
 
 			// Check if the effect is allowed for the item
 			var MustRemove = true;
@@ -340,7 +336,6 @@ function ServerValidateProperties(C, Item) {
 			// Remove the effect if it's not allowed
 			if (MustRemove) {
 				Item.Property.Block.splice(B, 1);
-				B--;
 			}
 		}
 	}
@@ -671,6 +666,7 @@ function ServerAccountOwnership(data) {
 	if ((data != null) && (typeof data === "object") && !Array.isArray(data) && (data.ClearOwnership != null) && (typeof data.ClearOwnership === "boolean") && (data.ClearOwnership == true)) {
 		Player.Owner = "";
 		Player.Ownership = null;
+		LogDelete("ReleasedCollar", "OwnerRule");
 		LoginValidCollar();
 	}
 

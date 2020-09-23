@@ -503,10 +503,9 @@ function ManagementReleaseFromOwner(RepChange) {
 	Player.Owner = "";
 	ServerPlayerSync();
 	InventoryRemove(Player, "ItemNeck");
-	InventoryRemove(Player, "ItemNeckAccessories");
-	InventoryRemove(Player, "ItemNeckRestraints");
 	ReputationProgress("Dominant", RepChange);
 	LogAdd("ReleasedFromOwner", "Management");
+	LogDelete("ReleasedCollar", "OwnerRule");
 	if ((Player.Ownership != null) && (Player.Ownership.MemberNumber != null)) ServerSend("AccountOwnership", { MemberNumber: Player.Ownership.MemberNumber, Action: "Break" });
 }
 
@@ -571,11 +570,9 @@ function ManagementClubSlaveCollar(RepChange) {
 function ManagementFinishClubSlave(RepChange) {
 	ReputationProgress("Dominant", RepChange);
 	CharacterChangeMoney(Player, 80);
-	if (Player.IsOwned()) InventoryWear(Player, "SlaveCollar", "ItemNeck");
+	if (Player.IsOwned() && !LogQuery("ReleasedCollar", "OwnerRule")) InventoryWear(Player, "SlaveCollar", "ItemNeck");
 	else {
 		InventoryRemove(Player, "ItemNeck");
-		InventoryRemove(Player, "ItemNeckAccessories");
-		InventoryRemove(Player, "ItemNeckRestraints");
 	}
 	if (Player.IsNaked()) CharacterDress(Player, ManagementPlayerAppearance);
 }

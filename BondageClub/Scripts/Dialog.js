@@ -321,8 +321,7 @@ function DialogCanUnlock(C, Item) {
 	if (LogQuery("KeyDeposit", "Cell")) return false;
 	if ((Item != null) && (Item.Asset != null) && (Item.Asset.OwnerOnly == true)) return Item.Asset.Enable && C.IsOwnedByPlayer();
 	if ((Item != null) && (Item.Asset != null) && (Item.Asset.LoverOnly == true)) return Item.Asset.Enable && C.IsLoverOfPlayer();
-	if ((Item != null) && (Item.Asset != null) && (Item.Asset.SelfUnlock != null) && (Item.Asset.SelfUnlock == false) && !Player.CanInteract()) return false;
-	if ((Item != null) && (Item.Property != null) && (Item.Property.SelfUnlock != null) && (Item.Property.SelfUnlock == false) && !Player.CanInteract()) return false;
+	if (InventoryGetItemProperty(Item, "SelfUnlock") == false && (!Player.CanInteract() || C.ID == 0)) return false;
 	if (C.IsOwnedByPlayer() && InventoryAvailable(Player, "OwnerPadlockKey", "ItemMisc") && Item.Asset.Enable) return true;
 	if (C.IsLoverOfPlayer() && InventoryAvailable(Player, "LoversPadlockKey", "ItemMisc") && Item.Asset.Enable && Item.Property && !Item.Property.LockedBy.startsWith("Owner")) return true;
 	var UnlockName = "Unlock-" + Item.Asset.Name;
@@ -389,10 +388,9 @@ function DialogRemove() {
  */
 function DialogRemoveGroup(GroupName) {
 	GroupName = GroupName.trim().toUpperCase();
-	for (let D = 0; D < CurrentCharacter.Dialog.length; D++)
+	for (let D = CurrentCharacter.Dialog.length - 1; D >= 0; D--)
 		if ((CurrentCharacter.Dialog[D].Group != null) && (CurrentCharacter.Dialog[D].Group.trim().toUpperCase() == GroupName)) {
 			CurrentCharacter.Dialog.splice(D, 1);
-			D--;
 		}
 }
 
@@ -1446,11 +1444,15 @@ function DialogDrawItemMenu(C) {
 	if (DialogTextDefaultTimer < CommonTime()) DialogText = DialogTextDefault;
 
 	// Draws the top menu text & icons
-	if (DialogMenuButton == null) DialogMenuButtonBuild((Player.FocusGroup != null) ? Player : CurrentCharacter);
+	if (DialogMenuButton == null) DialogMenuButtonBuild(CharacterGetCurrent());
 	if ((DialogColor == null) && Player.CanInteract() && (DialogProgress < 0) && !InventoryGroupIsBlocked(C) && DialogMenuButton.length < 8) DrawTextWrap((!DialogItemPermissionMode) ? DialogText : DialogFind(Player, "DialogPermissionMode"), 1000, 0, 975 - DialogMenuButton.length * 110, 125, "White", null, 3);
-	for (let I = DialogMenuButton.length - 1; I >= 0; I--)
-		DrawButton(1885 - I * 110, 15, 90, 90, "", ((DialogMenuButton[I] == "ColorPick") && (DialogColorSelect != null)) ? DialogColorSelect : "White", "Icons/" + DialogMenuButton[I] + ".png", (DialogColor == null) ? DialogFind(Player, DialogMenuButton[I]) : null);
-
+	for (let I = DialogMenuButton.length - 1; I >= 0; I--) {
+		let ButtonColor = (DialogMenuButton[I] == "ColorPick") && (DialogColorSelect != null) ? DialogColorSelect : "White";
+		let ButtonImage = DialogMenuButton[I] == "ColorPick" && !ItemColorIsSimple(FocusItem) ? "MultiColorPick" : DialogMenuButton[I];
+		let ButtonHoverText = (DialogColor == null) ? DialogFind(Player, DialogMenuButton[I]) : null;
+		DrawButton(1885 - I * 110, 15, 90, 90, "", ButtonColor, "Icons/" + ButtonImage + ".png", ButtonHoverText);
+	}
+	
 	// Draws the color picker
 	if (!FocusItem && DialogColor != null) {
 		ElementPosition("InputColor", 1450, 65, 300);
@@ -1816,7 +1818,7 @@ function DialogDrawPoseMenu() {
 			else if ((PoseGroup[P].Name == "BaseUpper" || PoseGroup[P].Name == "BaseLower") && Player.ActivePose == null)
 				IsActive = true;
 			
-			DrawButton(OffsetX, OffsetY, 90, 90, "", CharacterItemsHavePoseType(Player, PoseGroup[0].Category) ? "#888" : IsActive ? "Pink" : "White", "Icons/Poses/" + PoseGroup[P].Name + ".png");
+			DrawButton(OffsetX, OffsetY, 90, 90, "", CharacterItemsHavePoseType(Player, PoseGroup[0].Category, true) ? "#888" : IsActive ? "Pink" : "White", "Icons/Poses/" + PoseGroup[P].Name + ".png");
 		}
 	}
 }
@@ -1838,7 +1840,7 @@ function DialogClickPoseMenu() {
 			if (Array.isArray(Player.ActivePose) && Player.ActivePose.includes(PoseGroup[P].Name))
 				IsActive = true;
 			
-			if (MouseIn(OffsetX, OffsetY, 90, 90) && !IsActive && !CharacterItemsHavePoseType(Player, PoseGroup[0].Category)) { 
+			if (MouseIn(OffsetX, OffsetY, 90, 90) && !IsActive && !CharacterItemsHavePoseType(Player, PoseGroup[0].Category, true)) { 
 				CharacterSetActivePose(Player, PoseGroup[P].Name);
 				ServerSend("ChatRoomCharacterPoseUpdate", { Pose: Player.ActivePose });
 			}
@@ -1871,6 +1873,7 @@ function DialogDrawOwnerRulesMenu() {
 	if (LogQuery("BlockKey", "OwnerRule")) ToDisplay.push({ Tag: "BlockKey" });
 	if (LogQuery("BlockRemote", "OwnerRule")) ToDisplay.push({ Tag: "BlockRemote" });
 	if (LogQuery("BlockRemoteSelf", "OwnerRule")) ToDisplay.push({ Tag: "BlockRemoteSelf" });
+	if (LogQuery("ReleasedCollar", "OwnerRule")) ToDisplay.push({ Tag: "ReleasedCollar" });
 	if (ToDisplay.length == 0) ToDisplay.push({ Tag: "Empty" });
 	
 	for (let I = 0; I < ToDisplay.length; I++) { 
