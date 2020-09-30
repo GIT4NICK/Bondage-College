@@ -101,7 +101,7 @@ function InventoryItemNoseNoseRingValidate(Option) {
 		case "Base":
 			break;
 		case "ChainShort":
-			if (!InventoryAllow(C, ["NotSuspended", "StraitDressOpen", "NotMounted"], true)){
+			if (!InventoryAllow(C, ["NotSuspended", "CanKneel", "NotMounted"], true)){
 				DialogExtendedMessage = DialogText;
 				ChainShortPrerequisites = false;
 			} // if

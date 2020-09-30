@@ -656,6 +656,10 @@ function CharacterRefresh(C, Push) {
 			}
 			ActivityDialogBuild(C);
 		}
+		if (DialogColor != null) { 
+			if (ItemColorItem == null || InventoryGet(C, ItemColorItem.Asset.Group.Name) == null || InventoryGet(C, ItemColorItem.Asset.Group.Name).Asset.Name != ItemColorItem.Asset.Name)
+				ItemColorExit();
+		}
 	}
 }
 
@@ -905,7 +909,7 @@ function CharacterSetActivePose(C, NewPose, ForceChange) {
 	}
 	
 	// If we reset to base, we remove the poses
-	if (C.ActivePose.length == 2 && C.ActivePose.includes("BaseUpper") && C.ActivePose.includes("BaseLower")) C.ActivePose = null;
+	if (C.ActivePose.filter(P => P !== "BaseUpper" && P !== "BaseLower").length == 0) C.ActivePose = null;
 	
 	CharacterRefresh(C, false);
 }
