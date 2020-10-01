@@ -11,17 +11,20 @@ FailIntro3,,,Cut!  That doesn't work hun.  You forgot to spice up your play.,,
 0,,Can you help me?,"Go find a maid, I have a movie to shoot.",,Player.IsRestrained()
 0,,Are you looking for actresses?,All the time.  If you're not shy we could hire you.  You could become the next bondage idol.,,
 0,,Do actresses get paid?,"Of course hun.  The better the performance, the better the salary.",,
+0,,How long are the movies?,"Most movies roll for around half an hour, we divide them in scenes of ten minutes.",,
+0,,How do you know if a movie is good?,We judge each ten minutes scenes individually.  They must all be sexy and nonrepetitive for the movie to be sold.,,
 0,1000,What are you filming?,"The movie is called: ""The Interview"".  It's the story of a curious journalist that comes to the Bondage Club to interview a Mistress.  Are you interested?",,
 0,,Take care.  (Leave her.),,DialogLeave(),
 1000,,Tell me about the script.,"The script is open hun, as long as it's sexy.  It starts with a journlist that comes in advance to interview a Mistress, and finds herself waiting in a room full of toys.",,
 1000,,What roles are available?,"There's a role for a journalist, a Mistress and a maid.  But you'll need to be a true Club Mistress or Maid for the last two.",,
 1000,,Can actors improvise?,Oh yeah!  We give you a starting situation and you can roll with it.  Just make sure the movie is sexy and will sell well.,,
-1000,1010,I want to play in that movie.,"Great!  Which role would you like to take?  The journalist, the maid or the Mistress?",,
+1000,1010,I want to play in that movie.,"Great!  Which role would you like to take?  The journalist, the maid or the Mistress?",,CanPlayInMovie()
+1000,,I want to play in that movie.,"(She checks your locks.)  Sorry hun, get yourself unlocked first if you want to be a star.",,!CanPlayInMovie()
 1000,0,I'm not interested.,"Fine, make some room for the next movie star then.",,
 1010,1020,I'll be the journalist.,The starring role!  You will do fine hun.,,
-1010,,I'll be the maid.,TO DO,,"DialogLogQuery(""JoinedSorority"", ""Maid"")"
+1010,,I'll be the maid.,"Sorry maid DialogPlayerName, this role is already taken today.  Maybe it will be available later.",,"DialogLogQuery(""JoinedSorority"", ""Maid"")"
 1010,,I'll be the maid.,"Sorry, this role is for real maids only.",,"!DialogLogQuery(""JoinedSorority"", ""Maid"")"
-1010,,I'll be the Mistress.,TO DO,,"DialogLogQuery(""ClubMistress"", ""Management"")"
+1010,,I'll be the Mistress.,"Sorry Mistress DialogPlayerName, this role is already taken today.  Maybe it will be available later.",,"DialogLogQuery(""ClubMistress"", ""Management"")"
 1010,,I'll be the Mistress.,"Sorry, this role is for real Mistresses only.",,"!DialogLogQuery(""ClubMistress"", ""Management"")"
 1010,0,I'm not sure about this.,"Fine, make some room for the next movie star then.",,
 1020,1021,What should I do?,"You start the movie by entering a dungeon room with an X-Cross and a drawer full of latex clothes and cuffs, be curious!",,
@@ -31,8 +34,8 @@ FailIntro3,,,Cut!  That doesn't work hun.  You forgot to spice up your play.,,
 1022,1023,What about the Mistress?,"The Mistress comes in third, finding both you and the maid.  This will be the hotest scene.",,
 1022,1023,And after that?,"The Mistress comes in third, finding both you and the maid.  This will be the hotest scene.",,
 1022,1023,(Take a few notes.),"The Mistress comes in third, finding both you and the maid.  This will be the hotest scene.",,
-1023,1024,There's only three scenes?,"No, in the last scene, the journalist does the actual interview, most probably in a kinky situation.",,
-1023,1024,And that's it?,"In the last scene, the journalist does the actual interview, most probably in a kinky situation.",,
+1023,1024,There's only three scenes?,"The last scene will go faster, it's the aftercare.  The journalist does the actual interview and we promote the club, most probably in a kinky situation.",,
+1023,1024,And that's it?,"The last scene will go faster, it's the aftercare.  The journalist does the actual interview and we promote the club, most probably in a kinky situation.",,
 1024,1025,I'm ready to shoot.,"This is wonderful hun,  you'll become a star.  Go get changed and we'll start filming when you get back.",,
 1024,1025,I'll be the greatest journalist!,"This is wonderful hun,  you'll become a star.  Go get changed and we'll start filming when you get back.","DialogChangeReputation(""Dominant"", 2)",
 1024,1025,I will try my best Miss Director.,"This is wonderful hun,  you'll become a star.  Go get changed and we'll start filming when you get back.","DialogChangeReputation(""Dominant"", -2)",
