@@ -995,26 +995,6 @@ function CharacterAppearanceExit(C) {
  * @returns {void} - Nothing
  */
 function CharacterAppearanceReady(C) {
-
-	// Make sure the character has one item of each default type (not used for now)
-	if (CharacterAppearanceReturnRoom == "DO NOT USE")
-		for (let A = 0; A < AssetGroup.length; A++)
-			if ((AssetGroup[A].IsDefault) || CharacterAppearanceRequired(C, AssetGroup[A].Name)) {
-
-				// Check to find at least one item from the group
-				var Found = false;
-				for (let P = 0; P < C.Appearance.length; P++)
-					if (C.Appearance[P].Asset.Group.Name == AssetGroup[A].Name)
-						Found = true;
-
-				// If we didn't found the group, we warn the user
-				if (!Found) {
-					CharacterAppearanceHeaderText = TextGet("MustPickItem") + " " + AssetGroup[A].Name;
-					return;
-				}
-
-			}
-
 	// Exits wardrobe mode
 	ElementRemove("InputWardrobeName");
 	CharacterAppearanceMode = "";

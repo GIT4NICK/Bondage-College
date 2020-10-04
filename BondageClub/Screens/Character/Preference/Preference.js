@@ -581,6 +581,7 @@ function PreferenceSubscreenOnlineRun() {
 	DrawCheckbox(500, 865, 64, 64, TextGet("BlockBodyCosplay"), Player.OnlineSharedSettings.BlockBodyCosplay);
 	DrawButton(1815, 75, 90, 90, "", "White", "Icons/Exit.png");
 	DrawCharacter(Player, 50, 50, 0.9);
+	MainCanvas.textAlign = "center";
 }
 
 /**

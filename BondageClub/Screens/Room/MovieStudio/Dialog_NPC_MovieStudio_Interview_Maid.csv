@@ -76,6 +76,35 @@ PlayerGagged,,,That gag looks great on you.  It sounds good also.  (She laughs.)
 153,,(Dust the room.),(You dust randomly in the room as the camera follows you.),"DoActivity(""InterviewDustRoom"")",
 153,,(Whimper for freedom.),(You whimper for freedom as she laughs at you.)  Get dusting girl!,"DoActivity(""InterviewWhimper"")",
 153,,(Leave her.),,DialogLeave(),
-200,,TO DO,TO DO,,
-200,,TO DO,TO DO,,
-200,,TO DO,TO DO,,
+200,210,Control?  What kind of control?,"(She giggles.)  Dominants like you can order submissives around, get them bound and gagged.  They can also control them sexually.","DialogChangeReputation(""Dominant"", -2)",
+200,210,Control is my middle name.,"(She bows her head.)  Dominants like you can order submissives around, get them bound and gagged.  They can also control them sexually.","DialogChangeReputation(""Dominant"", 2)",
+200,210,Being in control sounds good.,"(She blushes.)  Dominants like you can order submissives around, get them bound and gagged.  They can also control them sexually.",,
+210,220,Submissives like you?,(She freezes for a few seconds and blushes.)  Well...  Miss...  I did...  I did not mean...,,
+210,220,You like to be controlled don't you?,(She freezes for a few seconds and blushes.)  Well...  Miss...  I did...  I did not mean...,,
+220,230,Submit to me now.,(She bows her head and slowly gets on her knees.)  Yes Miss.  I'm under your control.,"DoActivity(""InterviewMaidKneel"")",
+220,230,What does your submissive heart tell you?,(She bows her head and slowly gets on her knees.)  I feel like getting on my knees for you Miss.,"DoActivity(""InterviewMaidKneel"")",
+220,230,Get on your knees girl.,(She bows her head and slowly gets on her knees.)  Yes Miss.  Of course Miss.,"DoActivity(""InterviewMaidKneel"")",
+220,230,(Point to the ground.),"(She stays silent, bows her head and slowly gets on her knees.)","DoActivity(""InterviewMaidKneel"")",
+230,240,You belong to me now.,(She bows her head.)  How can I serve you Miss?,,
+230,240,I've always wanted a maid.,(She looks up at you and nods.)  How can I serve you Miss?,,
+230,240,(Make an evil grin.),(She gulps.)  How can I serve you Miss?,,
+240,,,How can I serve you Miss?,,
+240,,Bark for me bitch.,(She lowers her head and barks for you.)  Woof!  Woof!  Woof!,"DoActivity(""InterviewMaidBark"")","CanDoActivity(""InterviewMaidDusterGag"")"
+240,,(Use a duster gag on her.),(She whimpers as you strap a duster gag on her mouth.),"DoActivity(""InterviewMaidDusterGag"")","CanDoActivity(""InterviewMaidDusterGag"")"
+240,,(Make her clean the room.),(She crawls on her knees and cleans the room as the camera follows her.),"DoActivity(""InterviewMaidClean"")","!CanDoActivity(""InterviewMaidDusterGag"")"
+240,,(Expose her breast.),(You slowly grab her breast and reveal them to the camera.  You expose them out of her outfit.),"DoActivity(""InterviewDustOutfit"")","CanDoActivity(""InterviewMaidBreast"")"
+240,,(Massage her breast.),(You cup her breast and massage it slowly as she moans from the pleasure.),"DoActivity(""InterviewMaidMassageBreast"")","!CanDoActivity(""InterviewMaidBreast"")"
+240,,(Lock her in cuffs.),"(You lock cuffs on her arms and legs, then attach them behind her back.)","DoActivity(""InterviewMaidCuffs"")","CanDoActivity(""InterviewMaidCuffs"")"
+240,250,(Strap her on the X cross.),(You pick her up and strap her on the huge X cross as she struggles sensually.),"DoActivity(""InterviewMaidCross"")","!CanDoActivity(""InterviewMaidCuffs"")"
+240,,(Leave her.),,DialogLeave(),
+250,,,(She struggles playfully on the cross and moans.),,
+250,,(Slap her butt.),"(You raise the hem of her outfit, revealing her butt to the camera.  You then slap it a few times as she jumps with each impact.)","DoActivity(""InterviewMaidSlapButt"")",
+250,,(French kiss her.),(You French kiss her lovingly as she struggles on the X cross very slowly.),"DoActivity(""InterviewMaidFrenchKiss"")","CanDoActivity(""InterviewMaidDusterGag"")"
+250,,(Use a duster gag on her.),(She whimpers as you strap a duster gag on her mouth.),"DoActivity(""InterviewMaidDusterGag"")","CanDoActivity(""InterviewMaidDusterGag"")"
+250,,(Expose her breast.),(You slowly grab her breast and reveal them to the camera.  You expose them out of her outfit.),"DoActivity(""InterviewDustOutfit"")","CanDoActivity(""InterviewMaidBreast"")"
+250,,(Massage her breast.),(You cup her breast and massage it slowly as she moans from the pleasure.),"DoActivity(""InterviewMaidMassageBreast"")","!CanDoActivity(""InterviewMaidBreast"")"
+250,,(Pinch her nipples.),(You pinch her nipples with both hands and twist slowly as she jerks from the pain.),"DoActivity(""InterviewMaidPinchNipples"")","!CanDoActivity(""InterviewMaidBreast"")"
+250,,(Masturbate her.),(You slide your hand under her outfit and masturbate her.  The camera goes down and films your hand as she gets really wet.),"DoActivity(""InterviewMaidCrossMasturbate"")",
+250,,(Leave her.),,DialogLeave(),
+300,,,(The maid seems very nervous.  She stares at the Mistress and doesn't notice you anymore.),,
+300,,(Leave her.),,DialogLeave(),

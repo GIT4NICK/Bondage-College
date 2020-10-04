@@ -1,0 +1,5 @@
+PlayerGagged,,,"Girl, I'm not going to try to translate your mumbles.",,
+0,,,(She looks at you from head to toes.)  What happened here?,,Player.IsRestrained()
+0,,,(She looks at the maid and turns to you.)  What happened here?,,!Player.IsRestrained()
+0,,Who are you?,"I'm Mistress DialogCharacterName.  I've reserved this room, you should not be here.",DialogRemove(),
+0,,(Leave her.),,DialogLeave(),
