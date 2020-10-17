@@ -73,16 +73,9 @@ let ItemColorGroupNames;
  * @returns {void} - Nothing
  */
 function ItemColorLoad(c, item, x, y, width, height) {
+	ItemColorReset();
 	ItemColorCharacter = c;
 	ItemColorItem = item;
-	ItemColorCurrentMode = ItemColorMode.DEFAULT;
-	ItemColorStateKey = null;
-	ItemColorState = null;
-	ItemColorPage = 0;
-	ItemColorLayerPages = {};
-	ItemColorPickerBackup = null;
-	ItemColorPickerIndices = [];
-	ItemColorExitListeners = [];
 	ItemColorBackup = AppearanceItemStringify(item);
 	ItemColorStateBuild(c, item, x, y, width, height);
 	if (ItemColorState.simpleMode) {
@@ -312,8 +305,10 @@ function ItemColorExit() {
 			return ItemColorPickerCancel();
 		case ItemColorMode.DEFAULT:
 		default:
-			Object.assign(ItemColorItem, AppearanceItemParse(ItemColorBackup));
-			CharacterLoadCanvas(ItemColorCharacter);
+			if (ItemColorBackup && ItemColorCharacter) {
+				Object.assign(ItemColorItem, AppearanceItemParse(ItemColorBackup));
+				CharacterLoadCanvas(ItemColorCharacter);
+			}
 			ItemColorFireExit(false);
 	}
 }
@@ -593,7 +588,25 @@ function ItemColorOnExit(callback) {
  */
 function ItemColorFireExit(save) {
 	ItemColorExitListeners.forEach(listener => listener(ItemColorCharacter, ItemColorItem, save));
+	ItemColorReset();
+}
+
+/**
+ * Resets color UI related global variables back to their default states.
+ * @returns {void} - Nothing
+ */
+function ItemColorReset() {
+	ItemColorCharacter = null;
+	ItemColorItem = null;
+	ItemColorCurrentMode = ItemColorMode.DEFAULT;
+	ItemColorStateKey = null;
+	ItemColorState = null;
+	ItemColorPage = 0;
+	ItemColorLayerPages = {};
+	ItemColorPickerBackup = null;
+	ItemColorPickerIndices = [];
 	ItemColorExitListeners = [];
+	ItemColorBackup = null;
 	ItemColorLayerNames = null;
 	ItemColorGroupNames = null;
 }
