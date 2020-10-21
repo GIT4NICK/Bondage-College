@@ -33,15 +33,27 @@ var InventoryItemHeadInteractiveVisorOptions = [
 ];
 
 function InventoryItemHeadInteractiveVisorLoad() {
-	ExtendedItemLoad(InventoryItemHeadInteractiveVisorOptions, "SelectVisorType");
+	 var C = (Player.FocusGroup != null) ? Player : CurrentCharacter;
+	if (!InventoryItemMouthFuturisticPanelGagValidate(C)) {
+		InventoryItemMouthFuturisticPanelGagLoadAccessDenied()
+	} else
+		ExtendedItemLoad(InventoryItemHeadInteractiveVisorOptions, "SelectVisorType");
 }
 
 function InventoryItemHeadInteractiveVisorDraw() {
-	ExtendedItemDraw(InventoryItemHeadInteractiveVisorOptions, "InteractiveVisorHeadType");
+	var C = (Player.FocusGroup != null) ? Player : CurrentCharacter;
+	if (!InventoryItemMouthFuturisticPanelGagValidate(C)) {
+		InventoryItemMouthFuturisticPanelGagDrawAccessDenied()
+	} else
+		ExtendedItemDraw(InventoryItemHeadInteractiveVisorOptions, "InteractiveVisorHeadType");
 }
 
 function InventoryItemHeadInteractiveVisorClick() {
-	ExtendedItemClick(InventoryItemHeadInteractiveVisorOptions);
+	var C = (Player.FocusGroup != null) ? Player : CurrentCharacter;
+	if (!InventoryItemMouthFuturisticPanelGagValidate(C)) {
+		InventoryItemMouthFuturisticPanelGagClickAccessDenied()
+	} else
+		ExtendedItemClick(InventoryItemHeadInteractiveVisorOptions);
 }
 
 function InventoryItemHeadInteractiveVisorPublishAction(C, Option) {
@@ -55,16 +67,12 @@ function InventoryItemHeadInteractiveVisorPublishAction(C, Option) {
 }
 
 
+function InventoryItemHeadInteractiveVisorExit() {
+	InventoryItemMouthFuturisticPanelGagExitAccessDenied()
+}
 
 function InventoryItemHeadInteractiveVisorValidate(C, Option) {
-	var Allowed = true;
-
-	if (DialogFocusItem.Property.LockedBy && !DialogCanUnlock(C, DialogFocusItem)) {
-		DialogExtendedMessage = DialogFind(Player, "CantChangeWhileLockedFuturisticVisor");
-		Allowed = false;
-	} 
-
-	return Allowed;
+	return InventoryItemMouthFuturisticPanelGagValidate(C, Option); // All futuristic items refer to the gag
 }
 
 function InventoryItemHeadInteractiveVisorNpcDialog(C, Option) {

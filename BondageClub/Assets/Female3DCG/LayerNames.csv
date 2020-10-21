@@ -155,6 +155,8 @@ ItemArmsChains,Chains
 ItemArmsChainsSuspension,Suspension Chain
 ItemNeckHighCollarLeather,Leather
 ItemNeckHighCollarRings,Rings
+ItemNeckFuturisticCollarBand,Band
+ItemNeckFuturisticCollarDisplay,Display
 ItemNeckOrnateCollarCollar,Collar
 ItemNeckOrnateCollarGem,Gems
 ItemNeckAccessoriesCustomCollarTagTag,Tag
@@ -166,11 +168,16 @@ ItemMiscWoodenSignRope,Rope
 ItemMiscWoodenSignText,Text
 ItemDevicesBedPillow,Pillow
 ItemDevicesBedMattress,Mattress
+ItemDevicesBedHeadboard,Headboard
 ItemDevicesBedBedFrame,Frame
 ItemDevicesCoffinInside,Velvet
 ItemDevicesCoffinFrame,Frame
 ItemDevicesCoffinOpen,Lid (open)
 ItemDevicesCoffinClosed,Lid (closed)
+ItemDevicesCryoCapsuleInside,Bottom
+ItemDevicesCryoCapsuleFrame,Frame
+ItemDevicesCryoCapsuleOpen,Lid (open)
+ItemDevicesCryoCapsuleClosed,Lid (closed)
 ItemAddonCoversOuter,Outer
 ItemAddonCoversInner,Inner
 ItemDevicesCageFrame,Frame
@@ -194,6 +201,8 @@ ItemHoodAddonOldGasMaskLensesRebreatherLenses,Lenses
 ItemHoodAddonOldGasMaskLensesRebreatherRebreather,Lenses
 ItemBootsLockingBoots1Boots,Boots
 ItemBootsLockingBoots1Straps,Straps
+ItemBootsFuturisticHeelsShoes,Body
+ItemBootsFuturisticHeelsDisplay,Display
 ItemBootsLeatherFootMitts1Mitts,Mittens
 ItemBootsLeatherFootMitts1Straps,Straps
 ItemMouthWiffleGagStrap,Strap
@@ -322,9 +331,11 @@ ItemMouth3DusterGagDuster,Duster
 ItemMouth3DusterGagPanel,Panel
 ItemMouthFuturisticPanelGagMask,Muzzle
 ItemMouthFuturisticPanelGagBall,Display
+ItemMouthFuturisticPanelGagLight,Light
 ItemMouthFuturisticHarnessPanelGagStraps,Straps
 ItemMouthFuturisticHarnessPanelGagMask,Muzzle
 ItemMouthFuturisticHarnessPanelGagBall,Display
+ItemMouthFuturisticHarnessPanelGagLight,Light
 ItemMouth3PantiesMaskDarkStripes,Dark Stripes
 ItemMouth3PantiesMaskLightStripes,Light Stripes
 ItemMouth3ShoeGagShoe,Shoe
@@ -344,6 +355,16 @@ MaskKittyMask3Mask,Mask
 ItemBreastFuturisticBraBra,Body
 ItemBreastFuturisticBraDisplay,Display
 ItemBreastFuturisticBraMesh,Mesh
+ItemBreastFuturisticBraText,Text
 ItemPelvisFuturisticChastityBeltScreen,Screen
 ItemPelvisFuturisticChastityBeltMesh,Mesh
 ItemPelvisFuturisticChastityBeltBelt,Belt
+SuitLowerPilotSuitLayer1,Suit
+SuitLowerPilotSuitLayer2,Highlights
+SuitLowerPilotSuitLayer3,Center
+SuitLowerPilotSuitLayer4,Underlayment
+SuitPilotSuitLayer1,Suit
+SuitPilotSuitLayer2,Highlights
+SuitPilotSuitLayer3,Center
+SuitPilotSuitLayer4,Arms
+SuitPilotSuitFeet,Feet
