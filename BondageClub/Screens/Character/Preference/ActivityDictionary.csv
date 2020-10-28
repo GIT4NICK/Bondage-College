@@ -285,15 +285,15 @@ ChatOther-ItemNose-Caress,SourceCharacter caresses TargetCharacter's nose.
 ChatOther-ItemNose-Pull,SourceCharacter pulls TargetCharacter's nose.
 ChatOther-ItemNose-Rub,SourceCharacter rubs TargetCharacter's nose.
 ChatOther-ItemNose-Nibble,SourceCharacter nibbles TargetCharacter's nose.
-ChatOther-ItemNose-Choke,SourceCharacter pinches  TargetCharacter's nostrils closed.
-ChatOther-ItemNose-Lick,SourceCharacter licks  TargetCharacter's nose.
+ChatOther-ItemNose-Choke,SourceCharacter pinches TargetCharacter's nostrils closed.
+ChatOther-ItemNose-Lick,SourceCharacter licks TargetCharacter's nose.
 ChatOther-ItemNose-Bite,SourceCharacter bites TargetCharacter's nose.
 ChatSelf-ItemNose-Pinch,SourceCharacter pinches her nose.
 ChatSelf-ItemNose-Caress,SourceCharacter caresses her nose.
 ChatSelf-ItemNose-Pet,SourceCharacter boops her nose.
 ChatSelf-ItemNose-Pull,SourceCharacter pulls her nose.
 ChatSelf-ItemNose-Rub,SourceCharacter rubs her nose.
-ChatSelf-ItemNose-Choke,SourceCharacter pinches  her nostrils closed.
+ChatSelf-ItemNose-Choke,SourceCharacter pinches her nostrils closed.
 ChatSelf-ItemEars-Pinch,SourceCharacter pinches her ear.
 ChatSelf-ItemEars-Caress,SourceCharacter caresses her ear.
 ChatOther-ItemEars-Bite,SourceCharacter bites TargetCharacter's ear.

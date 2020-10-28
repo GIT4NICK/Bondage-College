@@ -168,7 +168,7 @@ function DialogLogQuery(LogType, LogGroup) { return LogQuery(LogType, LogGroup);
  * @param {string} Allow - The flag to set. Either "TRUE" or "FALSE"
  * @returns {boolean} - The boolean version of the flag
  */
-function DialogAllowItem(Allow) { return CurrentCharacter.AllowItem = (Allow.toUpperCase().trim() == "TRUE"); } // 
+function DialogAllowItem(Allow) { return CurrentCharacter.AllowItem = (Allow.toUpperCase().trim() == "TRUE"); }
 
 /**
  * Returns the value of the AllowItem flag of a given character
@@ -337,6 +337,15 @@ function DialogCanUnlock(C, Item) {
 			} else return true;
 		}
 	return false;
+}
+
+/**
+ * Some specific screens like the movie studio cannot allow the player to use items on herself, return FALSE if it's the case
+ * @returns {boolean} - Returns TRUE if we allow using items
+ */
+function DialogAllowItemScreenException() {
+	if ((CurrentScreen == "MovieStudio") && (MovieStudioCurrentMovie != "")) return false;
+	return true;
 }
 
 /**
@@ -1183,7 +1192,7 @@ function DialogClick() {
 	}
 
 	// If the user clicked on the interaction character or herself, we check to build the item menu
-	if ((CurrentCharacter.AllowItem || (MouseX < 500)) && (MouseX >= 0) && (MouseX <= 1000) && (MouseY >= 0) && (MouseY < 1000) && ((CurrentCharacter.ID != 0) || (MouseX > 500)) && (DialogIntro() != "")) {
+	if ((CurrentCharacter.AllowItem || (MouseX < 500)) && (MouseX >= 0) && (MouseX <= 1000) && (MouseY >= 0) && (MouseY < 1000) && ((CurrentCharacter.ID != 0) || (MouseX > 500)) && (DialogIntro() != "") && DialogAllowItemScreenException()) {
 		DialogLeaveItemMenu();
 		DialogLeaveFocusItem();
 		var C = (MouseX < 500) ? Player : CurrentCharacter;
