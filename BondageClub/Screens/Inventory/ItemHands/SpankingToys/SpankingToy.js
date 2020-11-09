@@ -45,6 +45,10 @@ const InventoryItemHandsSpankingToysOptions = [
 		Property: { Type: "TennisRacket" },
 		ExpressionTrigger: [{ Group: "Blush", Name: "Low", Timer: 10 }, { Group: "Eyebrows", Name: "Soft", Timer: 10 }]
 	}, {
+		Name: "Gavel",
+		Property: { Type: "Gavel" },
+		ExpressionTrigger: [{ Group: "Blush", Name: "Low", Timer: 10 }, { Group: "Eyes", Name: "Closed", Timer: 5 }]
+	}, {
 		Name: "Feather",
 		Property: { Type: "Feather" },
 		ExpressionTrigger: [{ Group: "Blush", Name: "Medium", Timer: 10 }, {Group: "Eyes", Name: "Closed", Timer: 10}, { Group: "Mouth", Name: "Grin", Timer: 10}, { Group: "Eyebrows", Name: "Soft", Timer: 10}]

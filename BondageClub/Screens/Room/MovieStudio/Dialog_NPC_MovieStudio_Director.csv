@@ -24,7 +24,7 @@ FailIntro3,,,Cut!  That doesn't work hun.  You forgot to spice up your play.,,
 1010,1020,I'll be the journalist.,The starring role!  You will do fine hun.,,
 1010,,I'll be the maid.,"Sorry maid DialogPlayerName, this role is already taken today.  Maybe it will be available later.",,"DialogLogQuery(""JoinedSorority"", ""Maid"")"
 1010,,I'll be the maid.,"Sorry, this role is for real maids only.",,"!DialogLogQuery(""JoinedSorority"", ""Maid"")"
-1010,,I'll be the Mistress.,"Sorry Mistress DialogPlayerName, this role is already taken today.  Maybe it will be available later.",,"DialogLogQuery(""ClubMistress"", ""Management"")"
+1010,1100,I'll be the Mistress.,"Of course, Mistress DialogPlayerName.  This role will be perfect for you.",,"DialogLogQuery(""ClubMistress"", ""Management"")"
 1010,,I'll be the Mistress.,"Sorry, this role is for real Mistresses only.",,"!DialogLogQuery(""ClubMistress"", ""Management"")"
 1010,0,I'm not sure about this.,"Fine, make some room for the next movie star then.",,
 1020,1021,What should I do?,"You start the movie by entering a dungeon room with an X-Cross and a drawer full of latex clothes and cuffs, be curious!",,
@@ -50,10 +50,23 @@ FailIntro3,,,Cut!  That doesn't work hun.  You forgot to spice up your play.,,
 1050,1060,Talking about money...,,GetMoney(),
 1050,1060,How much does it pay?,,GetMoney(),
 1050,1060,No need for money.  I'd like that camera though.,"The journalist camera?  It's yours then, you deserve it.  (She gives you the camera.)",GetCamera(),CanGetCamera()
+1050,1060,No need for money.  I'd like that gavel though.,"The wooden gavel from the trial?  Keep it, you deserve it.  (She gives you the gavel.)",GetGavel(),CanGetGavel()
 1060,1070,Thanks a lot.,"My pleasure.  We'll probably shoot another movie soon, come back later.",,
 1060,1070,I might do another movie.,"Great!  We'll probably shoot another movie soon, come back later.",,
 1070,,,We are done filming for now.  Please come back later.,,
 1070,,(Leave her.),,DialogLeave(),
+1100,1110,Tell me of the role.,"You enter on the third and last scene.  Your character is expecting to see a journalist, but will find a club member playing with a maid.",,
+1100,1110,What should I do?,"You enter on the third and last scene.  Your character is expecting to see a journalist, but will find a club member playing with a maid.",,
+1110,1120,What are they doing there?,They are having fun in your reserved interview room.  You should teach them a lesson in front of the camera.,,
+1110,1120,They are using my interview room?,"Exactly!  They should not be in your interview room, so you need to teach them a lesson in front of the camera.",,
+1120,1130,I discipline the club member?,It's up to you Mistress DialogPlayerName.  Just make sure it's spicy and the camera can catch the action.,,
+1120,1130,I discipline the maid?,It's up to you Mistress DialogPlayerName.  Just make sure it's spicy and the camera can catch the action.,,
+1120,1130,I discipline both of them?,It's up to you Mistress DialogPlayerName.  Just make sure it's spicy and the camera can catch the action.,,
+1130,1140,And that's it?,"That's it, the movie ends there.  Your character is only there for the final scene.  Just make sure it's hot and nonrepetitive.  Are you ready to shoot?",,
+1130,1140,What goes on after the punishment?,"That's it, the movie ends there.  Your character is only there for the final scene.  Just make sure it's hot and nonrepetitive.  Are you ready to shoot?",,
+1140,1150,I'm ready to shoot.,Great!  You can use your regular Mistress clothes for the role.  (A maid helps you to change.),"Change(""Mistress"")",
+1140,0,I've changed my mind.,This is perfectly fine.  We will try to find another Mistress then.,,
+1150,,(Start the movie.),,"Progress(""Interview"", ""3"", ""Mistress"")",
 MovieSalary,,,(She checks her purse and gives you SALARYAMOUNT $.)  Here's your salary hun.  You deserve it.,,
 Fail,Fail2,What?  You're stopping the movie?,That movie wasn't going anywhere.  We can't produce a boring film.  Dress back up.,PlayerDressBack(),
 Fail,Fail2,Wait!  It was about to get hot.,You're cold as ice.  We can't produce a boring film.  Dress back up.,PlayerDressBack(),

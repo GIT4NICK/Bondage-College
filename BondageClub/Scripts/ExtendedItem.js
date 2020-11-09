@@ -244,6 +244,13 @@ function ExtendedItemSetType(C, Options, Option, IsCloth) {
 	else if (Option.Prerequisite != null && !InventoryAllow(C, Option.Prerequisite, true)) {
 		DialogExtendedMessage = DialogText;
 		return;
+	} else {
+		let Asset = DialogFocusItem.Asset;
+		let OldOption = InventoryGet(C, Asset.Group.Name);
+		if (OldOption.Property.Effect && OldOption.Property.Effect.indexOf("Lock") >= 0 && !Option.Property.AllowLock) {
+			DialogExtendedMessage = DialogFind(Player, "ExtendedItemUnlockBeforeChange");
+			return;
+		}
 	}
 
 	if (CurrentScreen == "ChatRoom") {

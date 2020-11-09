@@ -163,6 +163,14 @@ ItemArmsChains,Chains
 ItemArmsChainsSuspension,Suspension Chain
 ItemNeckHighCollarLeather,Leather
 ItemNeckHighCollarRings,Rings
+ItemNeckPostureCollarCollar,Collar
+ItemNeckPostureCollarRing1,Middle Ring
+ItemNeckPostureCollarRing2,Left Ring
+ItemNeckPostureCollarRing3,Right Ring
+ItemNeckLeatherCollarCollar,Collar
+ItemNeckLeatherCollarRing,Ring
+ItemNeckLeatherChokerLeather,Leather
+ItemNeckLeatherChokerMetal,Metal
 ItemNeckFuturisticCollarBand,Band
 ItemNeckFuturisticCollarDisplay,Display
 ItemNeckOrnateCollarCollar,Collar
@@ -178,6 +186,8 @@ ItemDevicesBedPillow,Pillow
 ItemDevicesBedMattress,Mattress
 ItemDevicesBedHeadboard,Headboard
 ItemDevicesBedBedFrame,Frame
+ItemDevicesBondageBenchBench,Bench
+ItemDevicesBondageBenchStraps,Straps
 ItemDevicesCoffinInside,Velvet
 ItemDevicesCoffinFrame,Frame
 ItemDevicesCoffinOpen,Lid (open)
@@ -209,6 +219,10 @@ ItemHoodAddonOldGasMaskLensesTube2Lenses,Lenses
 ItemHoodAddonOldGasMaskLensesTube2Tube2,Tube
 ItemHoodAddonOldGasMaskLensesRebreatherLenses,Lenses
 ItemHoodAddonOldGasMaskLensesRebreatherRebreather,Lenses
+ItemHoodGP9GasMaskMouth,Mouthpiece
+ItemHoodGP9GasMaskLens,Lens
+ItemHoodGP9GasMaskMask,Mask
+ItemHoodGP9GasMaskEdges,Edges
 ItemBootsLockingBoots1Boots,Boots
 ItemBootsLockingBoots1Straps,Straps
 ItemBootsFuturisticHeelsShoes,Body

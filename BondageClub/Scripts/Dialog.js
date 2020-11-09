@@ -498,7 +498,7 @@ function DialogInventoryAdd(C, NewInv, NewInvWorn, SortOrder) {
 			return;
 
 	// If the item is blocked, we show it at the end of the list
-	if (InventoryIsPermissionBlocked(C, NewInv.Asset.Name, NewInv.Asset.Group.Name) || !InventoryCheckLimitedPermission(C, NewInv))
+	if (InventoryIsPermissionBlocked(C, NewInv.Asset.DynamicName(Player), NewInv.Asset.DynamicGroupName) || !InventoryCheckLimitedPermission(C, NewInv))
 		SortOrder = DialogSortOrderBlocked;
 
 	// Creates a new dialog inventory item
@@ -587,7 +587,12 @@ function DialogMenuButtonBuild(C) {
 		if ((Item != null) && (C.ID == 0) && !Player.CanInteract() && InventoryItemHasEffect(Item, "Block", true) && IsItemLocked && DialogCanUnlock(C, Item) && (DialogMenuButton.indexOf("Unlock") < 0) && InventoryAllow(C, Item.Asset.Prerequisite) && !IsGroupBlocked) DialogMenuButton.push("Unlock");
 		if ((Item != null) && (C.ID == 0) && (!Player.CanInteract() || (IsItemLocked && !DialogCanUnlock(C, Item))) && (DialogMenuButton.indexOf("Unlock") < 0) && InventoryAllow(C, Item.Asset.Prerequisite) && !IsGroupBlocked) DialogMenuButton.push("Struggle");
 		if (IsItemLocked && !Player.IsBlind() && (Item.Property != null) && (Item.Property.LockedBy != null) && (Item.Property.LockedBy != "")) DialogMenuButton.push("InspectLock");
-		if ((Item != null) && Item.Asset.AllowLock && !IsItemLocked && Player.CanInteract() && InventoryAllow(C, Item.Asset.Prerequisite) && !IsGroupBlocked) DialogMenuButton.push("Lock");
+		if ((Item != null) && !IsItemLocked && Player.CanInteract() && InventoryAllow(C, Item.Asset.Prerequisite) && !IsGroupBlocked) {
+			if ((Item.Asset.AllowLock) ||
+				(Item.Asset.Extended && Item.Property && Item.Property.AllowLock && Item.Asset.AllowLockType.indexOf(Item.Property.Type) >= 0)) {
+				DialogMenuButton.push("Lock");
+			}
+		} 
 		if ((Item != null) && !IsItemLocked && !InventoryItemHasEffect(Item, "Mounted", true) && !InventoryItemHasEffect(Item, "Enclose", true) && Player.CanInteract() && InventoryAllow(C, Item.Asset.Prerequisite) && !IsGroupBlocked) DialogMenuButton.push("Remove");
 		if ((Item != null) && !IsItemLocked && InventoryItemHasEffect(Item, "Mounted", true) && Player.CanInteract() && InventoryAllow(C, Item.Asset.Prerequisite) && !IsGroupBlocked) DialogMenuButton.push("Dismount");
 		if ((Item != null) && !IsItemLocked && InventoryItemHasEffect(Item, "Enclose", true) && Player.CanInteract() && InventoryAllow(C, Item.Asset.Prerequisite) && !IsGroupBlocked) DialogMenuButton.push("Escape");
@@ -1118,7 +1123,8 @@ function DialogItemClick(ClickItem) {
 
 	// If we must apply a lock to an item (can trigger a daily job)
 	if (DialogItemToLock != null) {
-		if ((CurrentItem != null) && CurrentItem.Asset.AllowLock) {
+		if ((CurrentItem != null) &&
+			(CurrentItem.Asset.AllowLock || CurrentItem.Asset.Extended && CurrentItem.Property && CurrentItem.Property.AllowLock && CurrentItem.Asset.AllowLockType.indexOf(CurrentItem.Property.Type)>=0)) {
 			InventoryLock(C, CurrentItem, ClickItem, Player.MemberNumber);
 			IntroductionJobProgress("DomLock", ClickItem.Asset.Name, true);
 			DialogItemToLock = null;

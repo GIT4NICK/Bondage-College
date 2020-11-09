@@ -325,6 +325,7 @@ Gloves,GlovesFur,Gloves with Fur
 Gloves,Catsuit,Catsuit Gloves
 Gloves,SeethroughSuit,See-through Gloves
 Gloves,CowPrintedGloves,Cow Printed Gloves
+Gloves,LatexElbowGloves, Latex Elbow Gloves
 Glasses,,Glasses
 Glasses,Glasses1,Style 1
 Glasses,Glasses2,Style 2
@@ -351,6 +352,7 @@ Mask,KittyMask3,Full Kitty Mask
 Mask,LaceMask1,Bat Mask
 Mask,LaceMask2,Venice Festival Mask
 Mask,FuturisticVisor,Futuristic Visor
+Mask,OpenFaceHood,Open Face Hood
 TailStraps,,Tail Strap
 TailStraps,TailStrap,Kitty Tail Strap
 TailStraps,HorseTailStrap,Horse Tail Strap
@@ -760,6 +762,7 @@ ItemHands,SpankingToysWhipPaddle,Whip Paddle
 ItemHands,SpankingToysWhip,Whip
 ItemHands,SpankingToysCattleProd,Cattle Prod
 ItemHands,SpankingToysTennisRacket,Tennis Racket
+ItemHands,SpankingToysGavel,Gavel
 ItemHands,SpankingToysFeather,Feather
 ItemHands,SpankingToysFeatherDuster,Feather Duster
 ItemHands,SpankingToysIceCube,Ice Cube
@@ -1026,6 +1029,8 @@ ItemHood,PonyHood,Pony Hood
 ItemHood,LeatherHoodOpenMouth,Leather Hood Mouth
 ItemHood,CanvasHood,Canvas Hood
 ItemHood,Pantyhose,Pantyhose
+ItemHood,GP9GasMask,GP-9 Gas Mask
+ItemHood,OpenFaceHood,Open Face Hood
 ItemEars,,Ears
 ItemEars,LightDutyEarPlugs,Light Duty Ear Plugs
 ItemEars,HeavyDutyEarPlugs,Heavy Duty Ear Plugs
@@ -1098,7 +1103,6 @@ ItemHoodAddon,OldGasMaskLensesTube1,Gas Mask Tube & Lenses
 ItemHoodAddon,OldGasMaskLensesTube2,Gas Mask Tube & Lenses
 ItemHoodAddon,OldGasMaskLensesRebreather,Rebreather & Lenses
 ItemAddon,,Body
-ItemAddon,BondageBenchStraps,Leather Belt Straps
 ItemAddon,Covers,Blanket
 ItemAddon,BedRopes,Bed Ropes
 ItemAddon,BedStraps,Bed Straps

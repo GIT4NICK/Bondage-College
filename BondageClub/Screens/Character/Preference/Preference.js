@@ -5,7 +5,7 @@ var PreferenceSafewordConfirm = false;
 var PreferenceMaidsButton = true;
 var PreferenceColorPick = "";
 var PreferenceSubscreen = "";
-var PreferenceSubscreenList = ["General", "Chat", "Audio", "Arousal", "Security", "Online", "Visibility"];
+var PreferenceSubscreenList = ["General", "Chat", "Audio", "Arousal", "Security", "Online", "Visibility", "Immersion", "Graphics"];
 var PreferenceChatColorThemeSelected = "";
 var PreferenceChatColorThemeList = ["Light", "Dark"];
 var PreferenceChatColorThemeIndex = 0;
@@ -15,8 +15,10 @@ var PreferenceChatEnterLeaveIndex = 0;
 var PreferenceChatMemberNumbersSelected = "";
 var PreferenceChatMemberNumbersList = ["Always", "Never", "OnMouseover"];
 var PreferenceChatMemberNumbersIndex = 0;
-var PreferenceSettingsSensDepList = ["Normal", "SensDepNames", "SensDepTotal"];
+var PreferenceSettingsSensDepList = ["SensDepLight", "Normal", "SensDepNames", "SensDepTotal", "SensDepExtreme"];
 var PreferenceSettingsSensDepIndex = 0;
+var PreferenceSettingsVFXList = ["VFXInactive", "VFXSolid", "VFXAnimatedTemp", "VFXAnimated"];
+var PreferenceSettingsVFXIndex = 0;
 var PreferenceSettingsVolumeList = [1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
 var PreferenceSettingsVolumeIndex = 0;
 var PreferenceEmailStatusReceived = false;
@@ -206,6 +208,8 @@ function PreferenceInit(C) {
 	if (C.ChatSettings.ShowAutomaticMessages == null) C.ChatSettings.ShowAutomaticMessages = false;
 	if (C.ChatSettings.WhiteSpace == null) C.ChatSettings.WhiteSpace = "Preserve";
 	if (C.ChatSettings.ColorActivities == null) C.ChatSettings.ColorActivities = true;
+	if (C.ChatSettings.AutoOOC == null) C.ChatSettings.AutoOOC = false;
+	if (C.ChatSettings.OOCWhispers == null) C.ChatSettings.OOCWhispers = false;
 	if (!C.VisualSettings) C.VisualSettings = { ForceFullHeight: false };
 
 	// Sets the default audio settings
@@ -216,12 +220,13 @@ function PreferenceInit(C) {
 	if (typeof C.AudioSettings.PlayItemPlayerOnly !== "boolean") C.AudioSettings.PlayItemPlayerOnly = false;
 
 	// Sets the default arousal settings
-	if (!C.ArousalSettings) C.ArousalSettings = { Active: "Hybrid", Visible: "Access", ShowOtherMeter: true, AffectExpression: true, AffectStutter: "All", Progress: 0, ProgressTimer: 0, Activity: [], Zone: [] };
+	if (!C.ArousalSettings) C.ArousalSettings = { Active: "Hybrid", Visible: "Access", ShowOtherMeter: true, AffectExpression: true, AffectStutter: "All", Progress: 0, ProgressTimer: 0, VibratorLevel: 0, VFX: "VFXAnimatedTemp", ChangeTime: CommonTime(), Activity: [], Zone: [] };
 	if (typeof C.ArousalSettings.Active !== "string") C.ArousalSettings.Active = "Hybrid";
 	if (typeof C.ArousalSettings.Visible !== "string") C.ArousalSettings.Visible = "Access";
 	if (typeof C.ArousalSettings.ShowOtherMeter !== "boolean") C.ArousalSettings.ShowOtherMeter = true;
 	if (typeof C.ArousalSettings.AffectExpression !== "boolean") C.ArousalSettings.AffectExpression = true;
 	if (typeof C.ArousalSettings.AffectStutter !== "string") C.ArousalSettings.AffectStutter = "All";
+	if (typeof C.ArousalSettings.VFX !== "string") C.ArousalSettings.VFX = "VFXAnimatedTemp";
 	if ((typeof C.ArousalSettings.Progress !== "number") || isNaN(C.ArousalSettings.Progress)) C.ArousalSettings.Progress = 0;
 	if ((typeof C.ArousalSettings.ProgressTimer !== "number") || isNaN(C.ArousalSettings.ProgressTimer)) C.ArousalSettings.ProgressTimer = 0;
 	if ((C.ArousalSettings.Activity == null) || !Array.isArray(C.ArousalSettings.Activity)) C.ArousalSettings.Activity = [];
@@ -233,8 +238,14 @@ function PreferenceInit(C) {
 	if (typeof C.GameplaySettings.SensDepChatLog !== "string") C.GameplaySettings.SensDepChatLog = "Normal";
 	if (typeof C.GameplaySettings.BlindDisableExamine !== "boolean") C.GameplaySettings.BlindDisableExamine = false;
 	if (typeof C.GameplaySettings.DisableAutoRemoveLogin !== "boolean") C.GameplaySettings.DisableAutoRemoveLogin = false;
+	if (typeof C.GameplaySettings.ImmersionLockSetting !== "boolean") C.GameplaySettings.ImmersionLockSetting = false;
 	if (typeof C.GameplaySettings.EnableSafeword !== "boolean") C.GameplaySettings.EnableSafeword = true;
 	if (typeof C.GameplaySettings.DisableAutoMaid !== "boolean") C.GameplaySettings.DisableAutoMaid = false;
+	
+	
+	// Sets the default immersion settings
+	if (!C.ImmersionSettings) C.ImmersionSettings = {};
+	if (typeof C.ImmersionSettings.BlockGaggedOOC !== "boolean") C.ImmersionSettings.BlockGaggedOOC = false;
 
 	if (!C.OnlineSettings) C.OnlineSettings = {};
 	if (!C.OnlineSharedSettings) C.OnlineSharedSettings = {};
@@ -330,6 +341,7 @@ function PreferenceLoad() {
 	PreferenceSettingsSensDepIndex = (PreferenceSettingsSensDepList.indexOf(Player.GameplaySettings.SensDepChatLog) < 0) ? 0 : PreferenceSettingsSensDepList.indexOf(Player.GameplaySettings.SensDepChatLog);
 	PreferenceSettingsVolumeIndex = (PreferenceSettingsVolumeList.indexOf(Player.AudioSettings.Volume) < 0) ? 0 : PreferenceSettingsVolumeList.indexOf(Player.AudioSettings.Volume);
 	PreferenceArousalActiveIndex = (PreferenceArousalActiveList.indexOf(Player.ArousalSettings.Active) < 0) ? 0 : PreferenceArousalActiveList.indexOf(Player.ArousalSettings.Active);
+	PreferenceSettingsVFXIndex = (PreferenceSettingsVFXList.indexOf(Player.ArousalSettings.VFX) < 0) ? 0 : PreferenceSettingsVFXList.indexOf(Player.ArousalSettings.VFX);
 	PreferenceArousalVisibleIndex = (PreferenceArousalVisibleList.indexOf(Player.ArousalSettings.Visible) < 0) ? 0 : PreferenceArousalVisibleList.indexOf(Player.ArousalSettings.Visible);
 	PreferenceArousalAffectStutterIndex = (PreferenceArousalAffectStutterList.indexOf(Player.ArousalSettings.AffectStutter) < 0) ? 0 : PreferenceArousalAffectStutterList.indexOf(Player.ArousalSettings.AffectStutter);
 	PreferenceChatColorThemeSelected = PreferenceChatColorThemeList[PreferenceChatColorThemeIndex];
@@ -390,19 +402,11 @@ function PreferenceSubscreenGeneralRun() {
 	DrawButton(1140, 187, 65, 65, "", "White", "Icons/Color.png");
 	DrawButton(500, 280, 90, 90, "", "White", "Icons/Next.png");
 	DrawText(TextGet("ItemPermission") + " " + TextGet("PermissionLevel" + Player.ItemPermission.toString()), 615, 325, "Black", "Gray");
-	DrawText(TextGet("SensDepSetting"), 800, 428, "Black", "Gray");
 
 	// Checkboxes
-	DrawCheckbox(500, 472, 64, 64, TextGet("BlindDisableExamine"), Player.GameplaySettings.BlindDisableExamine);
-	DrawCheckbox(500, 552, 64, 64, TextGet("DisableAutoRemoveLogin"), Player.GameplaySettings.DisableAutoRemoveLogin);
-	DrawCheckbox(500, 632, 64, 64, TextGet("ForceFullHeight"), Player.VisualSettings.ForceFullHeight);
-	DrawCheckbox(500, 712, 64, 64, TextGet(PreferenceSafewordConfirm ? "ConfirmSafeword" : "EnableSafeword"), Player.GameplaySettings.EnableSafeword);
-	DrawCheckbox(500, 792, 64, 64, TextGet("DisableAutoMaid"), !Player.GameplaySettings.DisableAutoMaid);
-
-	MainCanvas.textAlign = "center";
-	DrawBackNextButton(500, 392, 250, 64, TextGet(Player.GameplaySettings.SensDepChatLog), "White", "",
-		() => TextGet(PreferenceSettingsSensDepList[(PreferenceSettingsSensDepIndex + PreferenceSettingsSensDepList.length - 1) % PreferenceSettingsSensDepList.length]),
-		() => TextGet(PreferenceSettingsSensDepList[(PreferenceSettingsSensDepIndex + 1) % PreferenceSettingsSensDepList.length]));
+	DrawCheckbox(500, 402, 64, 64, TextGet("ForceFullHeight"), Player.VisualSettings.ForceFullHeight);
+	DrawCheckbox(500, 482, 64, 64, TextGet(PreferenceSafewordConfirm ? "ConfirmSafeword" : "EnableSafeword"), Player.GameplaySettings.EnableSafeword);
+	DrawCheckbox(500, 562, 64, 64, TextGet("DisableAutoMaid"), !Player.GameplaySettings.DisableAutoMaid);
 
 	// Draw the player & controls
 	DrawCharacter(Player, 50, 50, 0.9);
@@ -455,18 +459,10 @@ function PreferenceSubscreenGeneralClick() {
 	if ((MouseX >= 1140) && (MouseX < 1205) && (MouseY >= 187) && (MouseY < 252)) PreferenceColorPick = (PreferenceColorPick != "InputCharacterLabelColor") ? "InputCharacterLabelColor" : "";
 	if ((MouseX >= 1815) && (MouseX < 1905) && (MouseY >= 75) && (MouseY < 165) && (PreferenceColorPick != "")) PreferenceColorPick = "";
 
-	// If we must change audio gameplay or visual settings
-	if ((MouseX >= 500) && (MouseX < 750) && (MouseY >= 392) && (MouseY < 456)) {
-		if (MouseX <= 625) PreferenceSettingsSensDepIndex = (PreferenceSettingsSensDepList.length + PreferenceSettingsSensDepIndex - 1) % PreferenceSettingsSensDepList.length;
-		else PreferenceSettingsSensDepIndex = (PreferenceSettingsSensDepIndex + 1) % PreferenceSettingsSensDepList.length;
-		Player.GameplaySettings.SensDepChatLog = PreferenceSettingsSensDepList[PreferenceSettingsSensDepIndex];
-	}
 
 	// Preference check boxes
-	if (MouseIn(500, 472, 64, 64)) Player.GameplaySettings.BlindDisableExamine = !Player.GameplaySettings.BlindDisableExamine;
-	if (MouseIn(500, 552, 64, 64)) Player.GameplaySettings.DisableAutoRemoveLogin = !Player.GameplaySettings.DisableAutoRemoveLogin;
-	if (MouseIn(500, 632, 64, 64)) Player.VisualSettings.ForceFullHeight = !Player.VisualSettings.ForceFullHeight;
-	if (MouseIn(500, 712, 64, 64)) {
+	if (MouseIn(500, 402, 64, 64)) Player.VisualSettings.ForceFullHeight = !Player.VisualSettings.ForceFullHeight;
+	if (MouseIn(500, 482, 64, 64)) {
 		if (!Player.GameplaySettings.EnableSafeword && !Player.IsRestrained() && !Player.IsChaste()) { 
 			if (PreferenceSafewordConfirm) {
 				Player.GameplaySettings.EnableSafeword = true;
@@ -485,7 +481,65 @@ function PreferenceSubscreenGeneralClick() {
 	} else {
 		PreferenceSafewordConfirm = false;
 	}
-	if (MouseIn(500, 792, 64, 64)) Player.GameplaySettings.DisableAutoMaid = !Player.GameplaySettings.DisableAutoMaid;
+	if (MouseIn(500, 562, 64, 64)) Player.GameplaySettings.DisableAutoMaid = !Player.GameplaySettings.DisableAutoMaid;
+}
+
+
+function PreferenceSubscreenImmersionRun() {
+	// Draw the online preferences
+	MainCanvas.textAlign = "left";
+	DrawText(TextGet("ImmersionPreferences"), 500, 125, "Black", "Gray");
+	if (PreferenceMessage != "") DrawText(TextGet(PreferenceMessage), 865, 125, "Red", "Black");
+	
+	// Immersion Settings
+	
+	DrawCheckbox(500, 272, 64, 64, TextGet("BlindDisableExamine"), Player.GameplaySettings.BlindDisableExamine);
+	DrawCheckbox(500, 352, 64, 64, TextGet("DisableAutoRemoveLogin"), Player.GameplaySettings.DisableAutoRemoveLogin);
+	DrawCheckbox(500, 432, 64, 64, TextGet("BlockGaggedOOC"), Player.ImmersionSettings.BlockGaggedOOC);
+	DrawCheckbox(500, 800, 64, 64, TextGet("ImmersionLockSetting"), Player.GameplaySettings.ImmersionLockSetting);
+	
+
+	DrawText(TextGet("SensDepSetting"), 800, 228, "Black", "Gray");
+
+	MainCanvas.textAlign = "center";
+	DrawBackNextButton(500, 192, 250, 64, TextGet(Player.GameplaySettings.SensDepChatLog), "White", "",
+		() => TextGet(PreferenceSettingsSensDepList[(PreferenceSettingsSensDepIndex + PreferenceSettingsSensDepList.length - 1) % PreferenceSettingsSensDepList.length]),
+		() => TextGet(PreferenceSettingsSensDepList[(PreferenceSettingsSensDepIndex + 1) % PreferenceSettingsSensDepList.length]));
+
+	// Draw the player & controls
+	DrawCharacter(Player, 50, 50, 0.9);
+	DrawButton(1815, 75, 90, 90, "", "White", "Icons/Exit.png");
+}
+
+function PreferenceSubscreenImmersionClick() {
+	// If the user clicks on "Exit"
+	if ((MouseX >= 1815) && (MouseX < 1905) && (MouseY >= 75) && (MouseY < 165)) {
+		PreferenceSubscreen = "";
+	}
+
+	// If we must change audio gameplay or visual settings
+	if ((MouseX >= 500) && (MouseX < 750) && (MouseY >= 192) && (MouseY < 256) && 
+		(!Player.GameplaySettings.ImmersionLockSetting  || (!Player.IsRestrained()))) {
+		if (MouseX <= 625) PreferenceSettingsSensDepIndex = (PreferenceSettingsSensDepList.length + PreferenceSettingsSensDepIndex - 1) % PreferenceSettingsSensDepList.length;
+		else PreferenceSettingsSensDepIndex = (PreferenceSettingsSensDepIndex + 1) % PreferenceSettingsSensDepList.length;
+		Player.GameplaySettings.SensDepChatLog = PreferenceSettingsSensDepList[PreferenceSettingsSensDepIndex];
+	}
+
+	// Preference check boxes
+	if (MouseIn(500, 272, 64, 64) && 
+		(!Player.GameplaySettings.ImmersionLockSetting  || (!Player.IsRestrained())))
+			Player.GameplaySettings.BlindDisableExamine = !Player.GameplaySettings.BlindDisableExamine;
+	if (MouseIn(500, 352, 64, 64) && 
+		(!Player.GameplaySettings.ImmersionLockSetting || (!Player.IsRestrained())))
+			Player.GameplaySettings.DisableAutoRemoveLogin = !Player.GameplaySettings.DisableAutoRemoveLogin;
+	if (MouseIn(500, 432, 64, 64) && 
+		(!Player.GameplaySettings.ImmersionLockSetting || (!Player.IsRestrained())))
+			Player.ImmersionSettings.BlockGaggedOOC = !Player.ImmersionSettings.BlockGaggedOOC;
+	
+	
+	if (MouseIn(500, 800, 64, 64) && 
+		(!Player.GameplaySettings.ImmersionLockSetting || (!Player.IsRestrained())))
+			Player.GameplaySettings.ImmersionLockSetting = !Player.GameplaySettings.ImmersionLockSetting;
 }
 
 /**
@@ -501,6 +555,7 @@ function PreferenceExit() {
 		VisualSettings: Player.VisualSettings,
 		AudioSettings: Player.AudioSettings,
 		GameplaySettings: Player.GameplaySettings,
+		ImmersionSettings: Player.ImmersionSettings,
 		ArousalSettings: Player.ArousalSettings,
 		OnlineSettings: Player.OnlineSettings,
 		OnlineSharedSettings: Player.OnlineSharedSettings
@@ -547,6 +602,8 @@ function PreferenceSubscreenChatRun() {
 	DrawCheckbox(1200, 492, 64, 64, TextGet("ShowAutomaticMessages"), Player.ChatSettings.ShowAutomaticMessages);
 	DrawCheckbox(1200, 572, 64, 64, TextGet("PreserveWhitespace"), Player.ChatSettings.WhiteSpace == "Preserve");
 	DrawCheckbox(1200, 652, 64, 64, TextGet("ColorActivities"), Player.ChatSettings.ColorActivities);
+	DrawCheckbox(1200, 732, 64, 64, TextGet("AutoOOC"), Player.ChatSettings.AutoOOC);
+	DrawCheckbox(1200, 812, 64, 64, TextGet("OOCWhispers"), Player.ChatSettings.OOCWhispers);
 	MainCanvas.textAlign = "center";
 	DrawBackNextButton(1000, 190, 350, 70, TextGet(PreferenceChatColorThemeSelected), "White", "",
 		() => TextGet((PreferenceChatColorThemeIndex == 0) ? PreferenceChatColorThemeList[PreferenceChatColorThemeList.length - 1] : PreferenceChatColorThemeList[PreferenceChatColorThemeIndex - 1]),
@@ -696,6 +753,51 @@ function PreferenceSubscreenVisibilityRun() {
 }
 
 /**
+ * Sets the graphical preferences for a player. Redirected to from the main Run function if the player is in the visibility settings subscreen
+ * @returns {void} - Nothing
+ */
+function PreferenceSubscreenGraphicsRun() {
+	DrawCharacter(Player, 50, 50, 0.9);
+
+	// Exit button
+	DrawButton(1815, 75, 90, 90, "", "White", "Icons/Exit.png");
+
+	// Left-aligned text controls
+	MainCanvas.textAlign = "left";
+	DrawText(TextGet("VFXPreferences"), 500, 125, "Black", "Gray");
+	DrawText(TextGet("VFX"), 800, 246, "Black", "Gray");
+	
+	MainCanvas.textAlign = "center";
+	DrawBackNextButton(500, 212, 250, 64, TextGet(Player.ArousalSettings.VFX), "White", "",
+		() => TextGet(PreferenceSettingsVFXList[(PreferenceSettingsVFXIndex + PreferenceSettingsVFXList.length - 1) % PreferenceSettingsVFXList.length]),
+		() => TextGet(PreferenceSettingsVFXList[(PreferenceSettingsVFXIndex + 1) % PreferenceSettingsVFXList.length]));
+
+}
+
+/**
+ * Handles click events for the audio preference settings. 
+ * Redirected to from the main Click function if the player is in the audio settings subscreen
+ * @returns {void} - Nothing
+ */
+function PreferenceSubscreenGraphicsClick() {
+
+	// If the user clicked the exit icon to return to the main screen
+	if ((MouseX >= 1815) && (MouseX < 1905) && (MouseY >= 75) && (MouseY < 165)) {
+		PreferenceSubscreen = "";
+	}
+
+	if (MouseIn(500, 212, 250, 64)) {
+		if (MouseX <= 625) PreferenceSettingsVFXIndex = (PreferenceSettingsVFXList.length + PreferenceSettingsVFXIndex - 1) % PreferenceSettingsVFXList.length;
+		else PreferenceSettingsVFXIndex = (PreferenceSettingsVFXIndex + 1) % PreferenceSettingsVFXList.length;
+		Player.ArousalSettings.VFX = PreferenceSettingsVFXList[PreferenceSettingsVFXIndex];
+	}
+
+
+}
+
+
+
+/**
  * Handles click events for the audio preference settings. 
  * Redirected to from the main Click function if the player is in the audio settings subscreen
  * @returns {void} - Nothing
@@ -738,9 +840,13 @@ function PreferenceSubscreenChatClick() {
 		if (MouseYIn(812, 64)) Player.ChatSettings.ShowActivities = !Player.ChatSettings.ShowActivities;
 	}
 
-	if (MouseIn(1200, 492, 64, 64)) Player.ChatSettings.ShowAutomaticMessages = !Player.ChatSettings.ShowAutomaticMessages;
-	if (MouseIn(1200, 572, 64, 64)) Player.ChatSettings.WhiteSpace = Player.ChatSettings.WhiteSpace == "Preserve" ? "" : "Preserve";
-	if (MouseIn(1200, 652, 64, 64)) Player.ChatSettings.ColorActivities = !Player.ChatSettings.ColorActivities;
+	if (MouseXIn(1200, 64)) {
+		if (MouseYIn(492, 64)) Player.ChatSettings.ShowAutomaticMessages = !Player.ChatSettings.ShowAutomaticMessages;
+		if (MouseYIn(572, 64)) Player.ChatSettings.WhiteSpace = Player.ChatSettings.WhiteSpace == "Preserve" ? "" : "Preserve";
+		if (MouseYIn(652, 64)) Player.ChatSettings.ColorActivities = !Player.ChatSettings.ColorActivities;
+		if (MouseYIn(732, 64)) Player.ChatSettings.AutoOOC = !Player.ChatSettings.AutoOOC;
+		if (MouseYIn(812, 64)) Player.ChatSettings.OOCWhispers = !Player.ChatSettings.OOCWhispers;
+	}
 
 	// If the user used one of the BackNextButtons
 	if ((MouseX >= 1000) && (MouseX < 1350) && (MouseY >= 190) && (MouseY < 270)) {
@@ -1123,5 +1229,5 @@ function PreferenceSubscreenSecurityLoad() {
  * @returns {boolean} - Return true if sensory deprivation is active, false otherwise
  */
 function PreferenceIsPlayerInSensDep() {
-	return (Player.GameplaySettings && ((Player.GameplaySettings.SensDepChatLog == "SensDepNames") || (Player.GameplaySettings.SensDepChatLog == "SensDepTotal")) && (Player.GetDeafLevel() >= 3) && (Player.Effect.indexOf("BlindHeavy") >= 0));
+	return (Player.GameplaySettings && ((Player.GameplaySettings.SensDepChatLog == "SensDepNames") || (Player.GameplaySettings.SensDepChatLog == "SensDepTotal") || (Player.GameplaySettings.SensDepChatLog == "SensDepExtreme")) && (Player.GetDeafLevel() >= 3) && (Player.GetBlindLevel() >= 3));
 }

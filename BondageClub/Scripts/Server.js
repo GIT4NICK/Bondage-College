@@ -229,7 +229,6 @@ function ServerAppearanceBundle(Appearance) {
  * @returns {void} - Nothing
  */
 function ServerValidateProperties(C, Item) {
-
 	// No validations for NPCs
 	if ((C.AccountName.substring(0, 4) == "NPC_") || (C.AccountName.substring(0, 4) == "NPC-")) return;
 
@@ -237,9 +236,11 @@ function ServerValidateProperties(C, Item) {
 	if ((Item.Property != null) && (Item.Property.Effect != null)) {
 		for (let E = Item.Property.Effect.length - 1; E >= 0; E--) {
 
-			// Make sure the item can be locked, remove any lock that's invalid
+			// Make sure the item or its subtype can be locked, remove any lock that's invalid
 			var Effect = Item.Property.Effect[E];
-			if ((Effect == "Lock") && ((Item.Asset.AllowLock == null) || (Item.Asset.AllowLock == false) || (InventoryGetLock(Item) == null) || (InventoryIsPermissionBlocked(C, Item.Property.LockedBy, "ItemMisc")))) {
+			if ((Effect == "Lock") && ((Item.Asset.AllowLock == null) || (Item.Asset.AllowLock == false) || (InventoryGetLock(Item) == null) || (InventoryIsPermissionBlocked(C, Item.Property.LockedBy, "ItemMisc"))) &&
+				// Check if a lock on the items sub type is allowed
+				!(Item.Asset.Extended && Item.Property && Item.Property.AllowLock && Item.Asset.AllowLockType.indexOf(Item.Property.Type) >= 0)) {
 				delete Item.Property.LockedBy;
 				delete Item.Property.LockMemberNumber;
 				delete Item.Property.CombinationNumber;
@@ -637,7 +638,7 @@ function ServerAccountBeep(data) {
 		}
 		ServerBeep.Message = DialogFind(Player, "BeepFrom") + " " + ServerBeep.MemberName + " (" + ServerBeep.MemberNumber.toString() + ")";
 		if (ServerBeep.ChatRoomName != null)
-			ServerBeep.Message = ServerBeep.Message + " " + DialogFind(Player, "InRoom") + " \"" + ServerBeep.ChatRoomName + "\" " + (data.ChatRoomSpace === "Asylum" ? DialogFind(Player, "InAsylum") : data.ChatRoomSpace === "LARP" ? DialogFind(Player, "InLarp") : '');
+			ServerBeep.Message = ServerBeep.Message + " " + DialogFind(Player, "InRoom") + " \"" + ServerBeep.ChatRoomName + "\" " + (data.ChatRoomSpace === "Asylum" ? DialogFind(Player, "InAsylum") : '');
 		FriendListBeepLog.push({ MemberNumber: data.MemberNumber, MemberName: data.MemberName, ChatRoomName: data.ChatRoomName, ChatRoomSpace: data.ChatRoomSpace, Sent: false, Time: new Date() });
 		if (CurrentScreen == "FriendList") ServerSend("AccountQuery", { Query: "OnlineFriends" });
 	}
