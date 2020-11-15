@@ -1067,3 +1067,18 @@ function CharacterIsEdged(C) {
 	// Return true if every vibrating item on an orgasm zone has the "Edged" effect
 	return !!VibratingItems.length && VibratingItems.every(Item => Item.Property.Effect && Item.Property.Effect.includes("Edged"));
 }
+
+/**
+ * Checks if the character is wearing an item flagged as a category in a blocked list
+ * @param {Character} C - The character to validate
+ * @param {Array} BlockList - An array of strings to validate
+ * @returns {boolean} - TRUE if the character is wearing a blocked item, FALSE otherwise
+ */
+function CharacterHasBlockedItem(C, BlockList) {
+	if ((BlockList == null) || !Array.isArray(BlockList) || (BlockList.length == 0)) return false;
+	for (let B = 0; B < BlockList.length; B++)
+		for (let A = 0; A < C.Appearance.length; A++)
+			if ((C.Appearance[A].Asset != null) && (C.Appearance[A].Asset.Category != null) && (C.Appearance[A].Asset.Category.indexOf(BlockList[B]) >= 0))
+				return true;
+	return false;
+}

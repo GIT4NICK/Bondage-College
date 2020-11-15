@@ -245,9 +245,8 @@ function ExtendedItemSetType(C, Options, Option, IsCloth) {
 		DialogExtendedMessage = DialogText;
 		return;
 	} else {
-		let Asset = DialogFocusItem.Asset;
-		let OldOption = InventoryGet(C, Asset.Group.Name);
-		if (OldOption.Property.Effect && OldOption.Property.Effect.indexOf("Lock") >= 0 && !Option.Property.AllowLock) {
+		const OldEffect= DialogFocusItem && DialogFocusItem.Property && DialogFocusItem.Property.Effect;
+		if (OldEffect && OldEffect.includes("Lock") && Option.Property.AllowLock === false) {
 			DialogExtendedMessage = DialogFind(Player, "ExtendedItemUnlockBeforeChange");
 			return;
 		}
@@ -335,10 +334,16 @@ function ExtendedItemHandleOptionClick(C, Options, Option, IsSelfBondage, IsClot
  * of the requirements they do not meet
  */
 function ExtendedItemRequirementCheckMessage(Option, IsSelfBondage) {
-	if (IsSelfBondage && SkillGetLevelReal(Player, "SelfBondage") < Option.SelfBondageLevel) {
-		return DialogFind(Player, "RequireSelfBondage" + Option.SelfBondageLevel);
-	} else if (!IsSelfBondage && SkillGetLevelReal(Player, "Bondage") < Option.BondageLevel) {
-		return DialogFind(Player, "RequireBondageLevel").replace("ReqLevel", Option.BondageLevel);
+	if (IsSelfBondage) {
+		let RequiredLevel = Option.SelfBondageLevel || Math.max(DialogFocusItem.Asset.SelfBondage, Option.BondageLevel);
+		if (SkillGetLevelReal(Player, "SelfBondage") < RequiredLevel) {
+			return DialogFind(Player, "RequireSelfBondage" + RequiredLevel);
+		}
+	} else {
+		let RequiredLevel = Option.BondageLevel;
+		if (SkillGetLevelReal(Player, "Bondage") < RequiredLevel) {
+			return DialogFind(Player, "RequireBondageLevel").replace("ReqLevel", RequiredLevel);
+		}
 	}
 	return null;
 }
