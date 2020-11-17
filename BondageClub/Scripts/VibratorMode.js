@@ -179,7 +179,7 @@ function VibratorModeDrawHeader() {
 
 	var X = 1389;
 	var Y = 102;
-	if (DialogFocusItem.Property.Intensity >= 0) {
+	if ((DialogFocusItem != null) && (DialogFocusItem.Property != null) && (DialogFocusItem.Property.Intensity != null) && (DialogFocusItem.Property.Intensity >= 0)) {
 		X += Math.floor(Math.random() * 3) - 1;
 		Y += Math.floor(Math.random() * 3) - 1;
 	}
