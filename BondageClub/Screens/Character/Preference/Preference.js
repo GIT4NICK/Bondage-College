@@ -48,6 +48,7 @@ var PreferenceVisibilityBlockList = [];
 var PreferenceVisibilityResetClicked = false;
 var PreferenceDifficultyLevel = null;
 var PreferenceDifficultyAccept = false;
+
 /**
  * Gets the effect of a sexual activity on the player
  * @param {Character} C - The player who performs the sexual activity
@@ -145,6 +146,7 @@ function PreferenceGetZoneOrgasm(C, Zone) {
  * @param {Character} C - The characterfor whom we set the ability to órgasm from a given zone
  * @param {string} Zone - The name of the zone to set the ability to orgasm for
  * @param {boolean} CanOrgasm - Sets, if the character can cum from the given zone (true) or not (false)
+ * @returns {void} - Nothing
  */
 function PreferenceSetZoneOrgasm(C, Zone, CanOrgasm) {
 	if ((C.ArousalSettings != null) && (C.ArousalSettings.Zone != null))
@@ -247,20 +249,9 @@ function PreferenceInit(C) {
 	if (typeof C.GameplaySettings.OfflineLockedRestrained !== "boolean") C.GameplaySettings.OfflineLockedRestrained = false;
 	if ((C.ID == 0) && (C.GetDifficulty() >= 2)) C.GameplaySettings.OfflineLockedRestrained = true;
 
-	// Sets the default immersion settings, force them for Extreme mode
+	// Sets the default immersion settings
 	if (!C.ImmersionSettings) C.ImmersionSettings = {};
 	if (typeof C.ImmersionSettings.BlockGaggedOOC !== "boolean") C.ImmersionSettings.BlockGaggedOOC = false;
-
-	if ((C.ID == 0) && (C.GetDifficulty() >= 3)) {
-		Player.GameplaySettings.BlindDisableExamine = true;
-		Player.GameplaySettings.DisableAutoRemoveLogin = true;
-		Player.ImmersionSettings.BlockGaggedOOC = true;
-		Player.GameplaySettings.ImmersionLockSetting = true;
-		Player.OnlineSharedSettings.AllowPlayerLeashing = true;
-		PreferenceSettingsSensDepIndex = PreferenceSettingsSensDepList.length - 1;
-		Player.GameplaySettings.SensDepChatLog = PreferenceSettingsSensDepList[PreferenceSettingsSensDepIndex];
-	}
-
 
 	// Sets the default restriction settings
 	if (!C.RestrictionSettings) C.RestrictionSettings = {};
@@ -276,6 +267,17 @@ function PreferenceInit(C) {
 	if (C.OnlineSharedSettings.BlockBodyCosplay == null) C.OnlineSharedSettings.BlockBodyCosplay = false;
 	if (typeof C.OnlineSharedSettings.AllowPlayerLeashing !== "boolean") C.OnlineSharedSettings.AllowPlayerLeashing = true;
 
+	// Forces some preferences when playing in Extreme mode
+	if ((C.ID == 0) && (C.GetDifficulty() >= 3)) {
+		Player.GameplaySettings.BlindDisableExamine = true;
+		Player.GameplaySettings.DisableAutoRemoveLogin = true;
+		Player.ImmersionSettings.BlockGaggedOOC = true;
+		Player.GameplaySettings.ImmersionLockSetting = true;
+		Player.OnlineSharedSettings.AllowPlayerLeashing = true;
+		PreferenceSettingsSensDepIndex = PreferenceSettingsSensDepList.length - 1;
+		Player.GameplaySettings.SensDepChatLog = PreferenceSettingsSensDepList[PreferenceSettingsSensDepIndex];
+	}
+	
 	// TODO: The following preferences were migrated September 2020 in for R61 - replace with standard preference code after a few months
 	PreferenceMigrate(C.ChatSettings, C.OnlineSettings, "AutoBanBlackList", false);
 	PreferenceMigrate(C.ChatSettings, C.OnlineSettings, "AutoBanGhostList", true);
@@ -654,7 +656,7 @@ function PreferenceSubscreenImmersionRun() {
 		DrawCheckbox(500, 272, 64, 64, TextGet("BlindDisableExamine"), Player.GameplaySettings.BlindDisableExamine);
 		DrawCheckbox(500, 352, 64, 64, TextGet("DisableAutoRemoveLogin"), Player.GameplaySettings.DisableAutoRemoveLogin);
 		DrawCheckbox(500, 432, 64, 64, TextGet("BlockGaggedOOC"), Player.ImmersionSettings.BlockGaggedOOC);
-	   DrawCheckbox(500, 512, 64, 64, TextGet("AllowPlayerLeashing"), Player.OnlineSharedSettings.AllowPlayerLeashing);
+		DrawCheckbox(500, 512, 64, 64, TextGet("AllowPlayerLeashing"), Player.OnlineSharedSettings.AllowPlayerLeashing);
 		DrawCheckbox(500, 800, 64, 64, TextGet("ImmersionLockSetting"), Player.GameplaySettings.ImmersionLockSetting);
 		DrawText(TextGet("SensDepSetting"), 800, 228, "Black", "Gray");
 		MainCanvas.textAlign = "center";
@@ -679,7 +681,6 @@ function PreferenceSubscreenImmersionClick() {
 
 	// Cannot change any value under the Extreme difficulty mode
 	if (Player.GetDifficulty() <= 2) {
-
 
 		// If we must change audio gameplay or visual settings
 		if ((MouseX >= 500) && (MouseX < 750) && (MouseY >= 192) && (MouseY < 256) && (!Player.GameplaySettings.ImmersionLockSetting  || (!Player.IsRestrained()))) {
@@ -779,6 +780,10 @@ function PreferenceSubscreenChatRun() {
 	DrawCharacter(Player, 50, 50, 0.9);
 }
 
+/**
+ * Sets the online preferences for the player. Redirected to from the main Run function if the player is in the online settings subscreen.
+ * @returns {void} - Nothing
+ */
 function PreferenceSubscreenOnlineRun() {
 	MainCanvas.textAlign = "left";
 	DrawText(TextGet("OnlinePreferences"), 500, 125, "Black", "Gray");
@@ -945,8 +950,7 @@ function PreferenceSubscreenGraphicsRun() {
 }
 
 /**
- * Handles click events for the audio preference settings. 
- * Redirected to from the main Click function if the player is in the audio settings subscreen
+ * Handles click events for the audio preference settings.  Redirected from the main Click function. 
  * @returns {void} - Nothing
  */
 function PreferenceSubscreenGraphicsClick() {
@@ -959,8 +963,7 @@ function PreferenceSubscreenGraphicsClick() {
 }
 
 /**
- * Handles click events for the audio preference settings. 
- * Redirected to from the main Click function if the player is in the audio settings subscreen
+ * Handles click events for the audio preference settings.  Redirected from the main Click function.
  * @returns {void} - Nothing
  */
 function PreferenceSubscreenAudioClick() {
@@ -985,8 +988,8 @@ function PreferenceSubscreenAudioClick() {
 }
 
 /**
- * Handles the click events for the chat settings of a player
- * Redirected to from the main Click function if the player is in the chat settings subscreen
+ * Handles the click events for the chat settings of a player.  Redirected from the main Click function.
+ * @returns {void} - Nothing
  */
 function PreferenceSubscreenChatClick() {
 
@@ -1026,12 +1029,15 @@ function PreferenceSubscreenChatClick() {
 	}
 
 	// If the user clicked the exit icon to return to the main screen
-	if ((MouseX >= 1815) && (MouseX < 1905) && (MouseY >= 75) && (MouseY < 165) && (PreferenceColorPick == "")) {
+	if ((MouseX >= 1815) && (MouseX < 1905) && (MouseY >= 75) && (MouseY < 165) && (PreferenceColorPick == ""))
 		PreferenceSubscreen = "";
-	}
 
 }
 
+/**
+ * Handles the click events for the online settings.  Redirected from the main Click function.
+ * @returns {void} - Nothing
+ */
 function PreferenceSubscreenOnlineClick() {
 	const OnlineSettings = Player.OnlineSettings;
 	const OnlineSharedSettings = Player.OnlineSharedSettings;
@@ -1051,8 +1057,7 @@ function PreferenceSubscreenOnlineClick() {
 }
 
 /**
- * Handles the click events for the arousal settings
- * Redirected to from the main Click function if the player is in the arousal settings subscreen
+ * Handles the click events for the arousal settings.  Redirected from the main Click function.
  * @returns {void} - Nothing
  */
 function PreferenceSubscreenArousalClick() {
@@ -1158,8 +1163,8 @@ function PreferenceSubscreenArousalClick() {
 }
 
 /**
- * Handles the click events in the security settings dialog for a player.
- * Redirected to from the main Click function if the player is in the security settings subscreen
+ * Handles the click events in the security settings dialog for a player.  Redirected from the main Click function.
+ * @returns {void} - Nothing
  */
 function PreferenceSubscreenSecurityClick() {
 
@@ -1184,8 +1189,8 @@ function PreferenceSubscreenSecurityClick() {
 }
 
 /**
- * Handles the click events for the visibility settings of a player
- * Redirected to from the main Click function if the player is in the visibility settings subscreen
+ * Handles the click events for the visibility settings of a player.  Redirected from the main Click function.
+ * @returns {void} - Nothing
  */
 function PreferenceSubscreenVisibilityClick() {
 
@@ -1251,11 +1256,13 @@ function PreferenceSubscreenVisibilityClick() {
 
 }
 
-/** Load the full list of items and clothes along with the player settings for them */
+/**
+ * Handles the loading of the visibility settings of a player
+ * @returns {void} - Nothing
+ */
 function PreferenceSubscreenVisibilityLoad() {
 	PreferenceVisibilityHiddenList = Player.HiddenItems.slice();
 	PreferenceVisibilityBlockList = Player.BlockItems.slice();
-
 	for (let G = 0; G < AssetGroup.length; G++)
 		if (AssetGroup[G].Clothing || AssetGroup[G].Category != "Appearance") {
 			var AssetList = [];
@@ -1275,6 +1282,7 @@ function PreferenceSubscreenVisibilityLoad() {
 /**
  * Update the checkbox settings and asset preview image based on the new asset selection
  * @param {boolean} RefreshCheckboxes - If TRUE, load the new asset settings. If FALSE, a checkbox was just manually changed so don't refresh them
+ * @returns {void} - Nothing
  */
 function PreferenceVisibilityAssetChanged(RefreshCheckboxes) {
 	var CurrAsset = PreferenceVisibilityGroupList[PreferenceVisibilityGroupIndex].Assets[PreferenceVisibilityAssetIndex];
@@ -1298,6 +1306,7 @@ function PreferenceVisibilityAssetChanged(RefreshCheckboxes) {
 
 /**
  * Toggles the Hide checkbox
+ * @returns {void} - Nothing
  */
 function PreferenceVisibilityHideChange() {
 	PreferenceVisibilityHideChecked = !PreferenceVisibilityHideChecked;
@@ -1308,6 +1317,7 @@ function PreferenceVisibilityHideChange() {
 
 /**
  * Toggles the Block checkbox
+ * @returns {void} - Nothing
  */
 function PreferenceVisibilityBlockChange() {
 	PreferenceVisibilityBlockChecked = !PreferenceVisibilityBlockChecked;

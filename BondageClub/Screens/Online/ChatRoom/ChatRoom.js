@@ -146,7 +146,7 @@ function ChatRoomCanStopSlowPlayer() { return (CurrentCharacter.IsSlow() && Play
  * @returns {boolean} - TRUE if the player can interact and is allowed to interact with the current character.
  */
 function ChatRoomCanHoldLeash() { return CurrentCharacter.AllowItem && Player.CanInteract() && CurrentCharacter.OnlineSharedSettings && CurrentCharacter.OnlineSharedSettings.AllowPlayerLeashing && ChatRoomLeashList.indexOf(CurrentCharacter.MemberNumber) < 0
-	&& ChatRoomCanBeLeashed(CurrentCharacter) }
+	&& ChatRoomCanBeLeashed(CurrentCharacter)}
 /**
  * Checks if the player can let go of the targeted player's leash
  * @returns {boolean} - TRUE if the player can interact and is allowed to interact with the current character.
@@ -565,6 +565,9 @@ function ChatRoomClick() {
 		ServerSend("ChatRoomLeave", "");
 		CommonSetScreen("Online", "ChatSearch");
 		CharacterDeleteAllOnline();
+		
+		// Clear leash since the player has escaped
+		ChatRoomLeashPlayer = ""
 	}
 
 	// When the player is slow and attempts to leave
@@ -957,7 +960,7 @@ function ChatRoomMessage(data) {
 					ChatRoomSlowStop = true;
 				} 
 				if (msg == "HoldLeash"){
-					if (SenderCharacter.MemberNumber != ChatRoomLeashPlayer) {
+					if (SenderCharacter.MemberNumber != ChatRoomLeashPlayer && ChatRoomLeashPlayer != null) {
 						ServerSend("ChatRoomChat", { Content: "RemoveLeash", Type: "Hidden", Target: ChatRoomLeashPlayer });
 					}
 					if (ChatRoomCanBeLeashed(Player)) {
@@ -976,7 +979,7 @@ function ChatRoomMessage(data) {
 						ServerSend("ChatRoomChat", { Content: "RemoveLeash", Type: "Hidden", Target: SenderCharacter.MemberNumber });
 					}
 				}
- 				if (msg == "RemoveLeash"){
+ 				if (msg == "RemoveLeash" || msg == "RemoveLeashNotFriend"){
 					if (ChatRoomLeashList.indexOf(SenderCharacter.MemberNumber) >= 0) {
 						ChatRoomLeashList.splice(ChatRoomLeashList.indexOf(SenderCharacter.MemberNumber), 1)
 					} 
