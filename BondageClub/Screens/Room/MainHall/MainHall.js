@@ -11,7 +11,11 @@ var MainHallHasLoverLock = false;
 var MainHallHasSlaveCollar = false;
 var MainHallTip = 0;
 var MainHallMaidWasCalledManually = false;
-var MainHallRemoveLockTypes = ["CombinationPadlock"];
+
+var MainHallRemoveLockTypes = [
+	"CombinationPadlock",
+	"PasswordPadlock",
+]
 
 /**
  * Checks to see if the player needs help in any way
