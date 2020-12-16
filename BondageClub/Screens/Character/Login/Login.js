@@ -376,7 +376,17 @@ function LoginResponse(C) {
 			Player.WhiteList = ((C.WhiteList == null) || !Array.isArray(C.WhiteList)) ? [] : C.WhiteList;
 			Player.BlackList = ((C.BlackList == null) || !Array.isArray(C.BlackList)) ? [] : C.BlackList;
 			Player.FriendList = ((C.FriendList == null) || !Array.isArray(C.FriendList)) ? [] : C.FriendList;
-			Player.FriendNames = typeof C.FriendNames === "string" ? new Map(JSON.parse(LZString.decompressFromUTF16(C.FriendNames))) : new Map();
+			// Attempt to parse friend names
+			if (typeof C.FriendNames === "string") { 
+				try {
+					Player.FriendNames = new Map(JSON.parse(LZString.decompressFromUTF16(C.FriendNames)));
+				} catch {
+					console.warn("An error occured while parsing friendnames, entries have been reset.");
+				}
+			}
+			if (Player.FriendNames == null) { 
+				Player.FriendNames = new Map();
+			}
 			Player.SubmissivesList = typeof C.SubmissivesList === "string" ? new Set(JSON.parse(LZString.decompressFromUTF16(C.SubmissivesList))) : new Set();
 			Player.GhostList = ((C.GhostList == null) || !Array.isArray(C.GhostList)) ? [] : C.GhostList;
 
