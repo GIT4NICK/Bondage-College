@@ -105,6 +105,8 @@ ItemFeetOrnateAnkleCuffsGems,Gems
 ItemLegsOrnateLegCuffsCuffs,Cuffs
 ItemFeetFuturisticAnkleCuffsCuffs,Cuffs
 ItemFeetFuturisticAnkleCuffsDisplay,Display
+ItemFeetMedicalBedRestraintsBase,Bed Straps
+ItemFeetMedicalBedRestraintsStraps,Cuffs
 ItemLegsFuturisticLegCuffsCuffs,Cuffs
 ItemLegsFuturisticLegCuffsDisplay,Display
 ItemLegsFuturisticCuffsCuffs,Cuffs
@@ -116,6 +118,8 @@ ItemLegsHobbleSkirtLatex,Skirt
 ItemLegsHobbleSkirtBelts,Belts
 ItemLegsWoodenHorseFrame,Frame
 ItemLegsWoodenHorseWood,Wood
+ItemLegsMedicalBedRestraintsBase,Bed Straps
+ItemLegsMedicalBedRestraintsStraps,Cuffs
 ItemVulvaWandBeltBelt,Belt
 ItemVulvaWandBeltWand,Wand
 ItemVulvaHempRopeBeltRope,Rope
@@ -187,6 +191,8 @@ ItemArmsFuturisticArmbinderDisplay,Display
 ItemArmsFuturisticArmbinderBinder,Binder
 ItemArmsFuturisticArmbinderBand,Band
 ItemArmsFuturisticArmbinderStraps,Straps
+ItemArmsMedicalBedRestraintsBase,Bed Straps
+ItemArmsMedicalBedRestraintsStraps,Cuffs
 ItemHandsFuturisticMittensBody,Body
 ItemHandsFuturisticMittensMesh,Mesh
 ItemHandsFuturisticMittensDisplay,Display
@@ -239,6 +245,9 @@ ItemDevicesChangingTableFrame,Frame
 ItemDevicesChangingTableTable,Tabletop
 ItemDevicesConcealingCloakFront,Cloak
 ItemDevicesConcealingCloakStrap,Straps
+ItemDevicesTransportWoodenBoxBox,Box
+ItemDevicesTransportWoodenBoxWheelholders,Wheel Holders 
+ItemDevicesTransportWoodenBoxWheels,Wheels
 ItemHoodPumpkinHeadFront,Front
 ItemHoodPumpkinHeadBack,Back
 ItemHoodLatexHoodOpenHairHair,Hair

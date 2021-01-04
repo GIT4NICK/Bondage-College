@@ -2,6 +2,7 @@ PlayerGagged,,,(You can use or remove items by selecting specific body regions o
 0,,,(You can use or remove items by selecting specific body regions on yourself.),,
 0,10,(Adjust your bondage skill.),"(By default, you restrain using your full bondage skill.  You can use less of your skill and make it easier for your victims to escape.)",,"DialogSkillGreater(""Bondage"", 1)"
 0,20,(Adjust your evasion skill.),"(By default, you struggle using your full evasion skill.  You can use less of your skill and make it harder for you to struggle free.)",,"DialogSkillGreater(""Evasion"", 1)"
+0,0,(Call the maids for help),"(The maids will be here shortly...)",DialogCallMaids(),DialogCanCallMaids()
 0,30,(Room administrator action.),"(As a room administrator, you can take these actions.)",,DialogChatRoomPlayerIsAdmin()
 0,90,(Use your safeword.),"(A safeword is serious and should not be used to cheat.  It can revert your clothes and restraints to when you entered the lobby, or release you completely.)",,DialogChatRoomCanSafeword()
 0,0,(View your current rules.),(Here are your currently active rules.),DialogViewOwnerRules(),DialogCanViewRules()
@@ -197,7 +198,6 @@ ReceivedBeep,,,Received at,,
 YourRoom,,,<i>Your private room</i>,,
 InRoom,,,in room,,
 PrivateRoom,,,<i>Private room</i>,,
-Offline,,,<i>Offline</i>,,
 WrestlingRing,,,Wrestling Ring,,
 Introduction,,,Introduction,,
 KidnapLeague,,,Kidnappers League,,
@@ -350,6 +350,10 @@ ServerMessageOwnerRuleRemoteBlock,,,Your owner is now preventing you from gettin
 ServerMessageOwnerRuleRemoteBlockSelf,,,Your owner is now preventing you from using remotes on yourself.,,
 ServerMessageOwnerRuleCollarWear,,,Your owner has locked the slave collar on your neck.,,
 ServerMessageOwnerRuleCollarRelease,,,Your owner released you from the slave collar.,,
+ServerMessageLoverRuleSelfLoverLockAllow,,,Your lover is now allowing you to use lovers locks on yourself.,,
+ServerMessageLoverRuleSelfLoverLockBlock,,,Your lover is now preventing you from using lovers locks on yourself.,,
+ServerMessageLoverRuleOwnerLoverLockAllow,,,Your lover is now allowing your owner to use lovers locks on you.,,
+ServerMessageLoverRuleOwnerLoverLockBlock,,,Your lover is now preventing your owner from using lovers locks on you.,,
 ServerMessageOfferBeginDating,,,"SourceCharacter is asking you to be her girlfriend.  Click on her and manage your relationship to accept, don't do anything to refuse.",,
 ServerMessageBeginDating,,,The Bondage Club is pleased to announce that SourceCharacter and TargetCharacter are starting a 7 days minimum period as lovers.,,
 ServerMessageOfferBeginEngagement,,,"SourceCharacter is asking you to become her fiancée.  Click on her and manage your relationship to accept, don't do anything to refuse.",,
@@ -360,7 +364,7 @@ ServerEnter,,,SourceCharacter entered.,,
 ServerLeave,,,SourceCharacter left.,,
 ServerDisconnect,,,SourceCharacter disconnected.,,
 ServerBan,,,TargetCharacterName was banned by SourceCharacter.,,
-ServerKick,,,TargetCharacterName was kicked-out by SourceCharacter.,,
+ServerKick,,,SourceCharacter called the maids to escort TargetCharacterName out of the room.,,
 ServerMoveLeft,,,TargetCharacterName was moved to the left by SourceCharacter.,,
 ServerMoveRight,,,TargetCharacterName was moved to the right by SourceCharacter.,,
 ServerSwap,,,SourceCharacter swapped TargetCharacterName and DestinationCharacterName places.,,

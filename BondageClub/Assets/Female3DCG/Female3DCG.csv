@@ -559,6 +559,7 @@ ItemFeet,Chains,Chains
 ItemFeet,SpreaderDildoBar,Spreader Dildo Bar
 ItemFeet,SpreaderVibratingDildoBar,Vibrating Spreader Dildo Bar
 ItemFeet,WoodenCuffs,Wooden Cuffs
+ItemFeet,MedicalBedRestraints,Medical Bed Restraints
 ItemLegs,,Legs
 ItemLegs,NylonRope,Nylon Rope
 ItemLegs,HempRope,Hemp Rope
@@ -577,6 +578,7 @@ ItemLegs,Zipties,Zip Ties
 ItemLegs,Chains,Chains
 ItemLegs,FrogtieStraps,Frog-tie Straps
 ItemLegs,MermaidTail, Mermaid Tail
+ItemLegs,MedicalBedRestraints,Medical Bed Restraints
 ItemVulva,,Vulva
 ItemVulva,VibratingEgg,Vibrating Egg
 ItemVulva,VibratingWand,Vibrating Wand
@@ -783,6 +785,7 @@ ItemArms,PantyhoseBodyOpen,Crotchless Pantyhose fullBody
 ItemArms,WoodenCuffs,Wooden Cuffs
 ItemArms,InflatableStraightLeotard,Inflatable Strait Leotard
 ItemArms,StrictLeatherPetCrawler,Strict Leather Pet Crawler
+ItemArms,MedicalBedRestraints,Medical Bed Restraints
 ItemHands,,Hands
 ItemHands,PaddedMittens,Padded Mittens
 ItemHands,PawMittens,Paw Mittens
@@ -1138,6 +1141,7 @@ ItemDevices,SmallLocker,Small Locker
 ItemDevices,VentlessLocker,Ventless Locker
 ItemDevices,SmallVentlessLocker,Small Ventless Locker
 ItemDevices,ConcealingCloak,Concealing Cloak
+ItemDevices,TransportWoodenBox,Transport Box
 ItemHoodAddon,,Hood
 ItemHoodAddon,OldGasMaskLenses,Blinding Lenses
 ItemHoodAddon,OldGasMaskTube1,Gas Mask Tube
