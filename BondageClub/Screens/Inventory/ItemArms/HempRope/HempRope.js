@@ -63,7 +63,8 @@ const InventoryItemArmsHempRopeOptions = [
 		Name: "SuspensionHogtied",
 		BondageLevel: 8,
 		Prerequisite: ["NotMounted", "NotChained", "NotSuspended", "CannotBeHogtiedWithAlphaHood"],
-		Property: { Type: "SuspensionHogtied", Effect: ["Block", "Freeze", "Prone"], Block: ["ItemHands", "ItemLegs", "ItemFeet", "ItemBoots"], AllowActivityOn: ["ItemHands", "ItemLegs", "ItemFeet", "ItemBoots"], SetPose: ["Hogtied", "SuspensionHogtied"], Difficulty: 6 },
+		Property: { Type: "SuspensionHogtied", Effect: ["Block", "Freeze", "Prone"], Block: ["ItemHands", "ItemLegs", "ItemFeet", "ItemBoots"], AllowActivityOn: ["ItemHands", "ItemLegs", "ItemFeet", "ItemBoots"], SetPose: ["Hogtied", "SuspensionHogtied"], Difficulty: 6,
+			OverrideHeight: { Height: 0, Priority: 51, HeightRatioProportion: 0 } },
 		Expression: [{ Group: "Blush", Name: "Medium", Timer: 10 }],
 	}, {
 		Name: "BedSpreadEagle",
