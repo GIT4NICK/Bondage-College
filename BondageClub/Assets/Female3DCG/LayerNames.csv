@@ -138,6 +138,11 @@ ItemButtFoxTail2Base,Tail
 ItemButtFoxTail2Tip,Tip
 ItemButtSuccubusHeartButtPlugTail,Tail
 ItemButtSuccubusHeartButtPlugHeart,Heart
+ItemButtTailButtPlugTail,Tail
+ItemButtTailButtPlugRibbon,Ribbon
+ItemButtTailButtPlugBell,Bell
+ItemButtFoxTailsBases,Tails
+ItemButtFoxTailsTips,Tips
 ItemPelvisOrnateChastityBeltBelt,Belt
 ItemPelvisOrnateChastityBeltGems,Gems
 ItemNipplesTapedVibeEggsEgg1,Left Vibe Egg
@@ -267,6 +272,8 @@ ItemHoodGP9GasMaskMouth,Mouthpiece
 ItemHoodGP9GasMaskLens,Lens
 ItemHoodGP9GasMaskMask,Mask
 ItemHoodGP9GasMaskEdges,Edges
+ItemHoodCanvasHoodHood,Canvas
+ItemHoodCanvasHoodText,Text
 ItemBootsLockingBoots1Boots,Boots
 ItemBootsLockingBoots1Straps,Straps
 ItemBootsFuturisticHeelsShoes,Body
@@ -449,6 +456,9 @@ MaskKittyMask3Mask,Mask
 ItemTorsoFuturisticHarnessBand,Straps
 ItemTorsoFuturisticHarnessDisplay,Display
 ItemTorsoFuturisticHarnessMesh,Module
+ItemTorsoFuturisticHarness2Band,Straps
+ItemTorsoFuturisticHarness2Display,Display
+ItemTorsoFuturisticHarness2Mesh,Module
 ItemBreastFuturisticBraBra,Body
 ItemBreastFuturisticBraDisplay,Display
 ItemBreastFuturisticBraMesh,Mesh

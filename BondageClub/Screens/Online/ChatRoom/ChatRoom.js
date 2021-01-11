@@ -567,10 +567,10 @@ function ChatRoomRun() {
 			Player.LastChatRoomAdmin.push(Player.MemberNumber)
 		}*/
 		var UpdatedRoom = {
-			Name: ChatRoomData.Name,
-			Description: ChatRoomData.Description,
-			Background: ChatRoomData.Background,
-			Limit: ChatRoomData.Limit,
+			Name: Player.LastChatRoom,
+			Description: Player.LastChatRoomDesc,
+			Background: Player.LastChatRoomBG,
+			Limit: "" + Player.LastChatRoomSize,
 			Admin: Player.LastChatRoomAdmin,
 			Ban: ChatRoomData.Ban,
 			BlockCategory: ChatRoomData.BlockCategory,
@@ -630,9 +630,9 @@ function ChatRoomRun() {
 			ChatRoomSlowtimer = 0;
 			ChatRoomSlowStop = false;
 			ChatRoomClearAllElements();
+			ChatRoomSetLastChatRoom("")
 			ServerSend("ChatRoomLeave", "");
 			CommonSetScreen("Online", "ChatSearch");
-			ChatRoomSetLastChatRoom("")
 		}
 	}
 
@@ -711,11 +711,11 @@ function ChatRoomClick() {
 	if (MouseIn(1005, 0, 120, 62) && ChatRoomCanLeave() && !Player.IsSlow()) {
 		ChatRoomClearAllElements();
 		ServerSend("ChatRoomLeave", "");
-		CommonSetScreen("Online", "ChatSearch");
-		CharacterDeleteAllOnline();
 		ChatRoomSetLastChatRoom("")		
 		// Clear leash since the player has escaped
 		ChatRoomLeashPlayer = null
+		CommonSetScreen("Online", "ChatSearch");
+		CharacterDeleteAllOnline();
 	}
 
 	// When the player is slow and attempts to leave

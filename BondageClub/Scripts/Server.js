@@ -68,6 +68,7 @@ function ServerSetConnected(connected, errorMessage) {
 		LoginErrorMessage = "";
 	} else {
 		LoginErrorMessage = errorMessage || "";
+		LoginSubmitted = false;
 	}
 	LoginUpdateMessage();
 }
@@ -574,7 +575,7 @@ function ServerItemCopyProperty(C, Item, NewProperty) {
 	if (Item.Property.LockMemberNumber != null) NewProperty.LockMemberNumber = Item.Property.LockMemberNumber; else delete NewProperty.LockMemberNumber;
 	if (Item.Property.CombinationNumber != null) NewProperty.CombinationNumber = Item.Property.CombinationNumber; else delete NewProperty.CombinationNumber;
 	if (Item.Property.RemoveItem != null) NewProperty.RemoveItem = Item.Property.RemoveItem; else delete NewProperty.RemoveItem;
-	if (Item.Property.ShowTimer != null) NNewProperty.ShowTimer = Item.Property.ShowTimer; else delete NewProperty.ShowTimer;
+	if (Item.Property.ShowTimer != null) NewProperty.ShowTimer = Item.Property.ShowTimer; else delete NewProperty.ShowTimer;
 	if (Item.Property.EnableRandomInput != null) NewProperty.EnableRandomInput = Item.Property.EnableRandomInput; else delete NewProperty.EnableRandomInput;
 	if (!NewProperty.EnableRandomInput || NewProperty.LockedBy != "LoversTimerPadlock") {
 		if (Item.Property.MemberNumberList != null) NewProperty.MemberNumberList = Item.Property.MemberNumberList; else delete NewProperty.MemberNumberList;
