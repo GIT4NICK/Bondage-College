@@ -65,6 +65,11 @@ function TimerInventoryRemove() {
 						delete Character[C].Appearance[A].Property.ShowTimer;
 						delete Character[C].Appearance[A].Property.EnableRandomInput;
 						delete Character[C].Appearance[A].Property.MemberNumberList;
+						delete Character[C].Appearance[A].Property.Password;
+						delete Character[C].Appearance[A].Property.CombinationNumber;
+						delete Character[C].Appearance[A].Property.LockSet;
+						delete Character[C].Appearance[A].Property.Hint;
+						
 						if (Character[C].Appearance[A].Property.Effect != null)
 							for (let E = 0; E < Character[C].Appearance[A].Property.Effect.length; E++)
 								if (Character[C].Appearance[A].Property.Effect[E] == "Lock")
@@ -244,9 +249,13 @@ function TimerProcess(Timestamp) {
 
 	}
 
-	// Launches the main again for the next frame
-	requestAnimationFrame(MainRun);
+	if (ControllerActive == true) {
+		DrawRect(MouseX - 5, MouseY - 5, 10, 10, "Cyan");
+	}
 
+    // Launches the main again for the next frame
+	requestAnimationFrame(MainRun);
+    
 }
 
 /**

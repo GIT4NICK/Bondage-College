@@ -67,6 +67,7 @@ function CharacterReset(CharacterID, CharacterAssetFamily) {
 			if (this.GameplaySettings && this.GameplaySettings.SensDepChatLog == "SensDepLight") blindLevel = Math.min(2, blindLevel);
 			return blindLevel;
 		},
+		IsLocked: function () { return this.Effect.indexOf("Lock") > 0;},
 		IsBlind: function () { return this.GetBlindLevel() > 0 },
 		IsEnclose: function () { return (this.Effect.indexOf("Enclose") >= 0) },
 		IsMounted: function () { return (this.Effect.indexOf("Mounted") >= 0) },
@@ -348,6 +349,11 @@ function CharacterLoadOnline(data, SourceMemberNumber) {
 			if (Character[C].AccountName == "Online-" + data.ID.toString())
 				Char = Character[C];
 
+	// Decompresses description
+	if (typeof data.Description === "string" && data.Description.startsWith("╬")) {
+		data.Description = LZString.decompressFromUTF16(data.Description.substr(1));
+	}
+
 	// If the character isn't found
 	if (Char == null) {
 		// We delete the duplicate character if the person relogged.
@@ -364,7 +370,6 @@ function CharacterLoadOnline(data, SourceMemberNumber) {
 		Char.Lover = (data.Lover != null) ? data.Lover : "";
 		Char.Owner = (data.Owner != null) ? data.Owner : "";
 		Char.Title = data.Title;
-		Char.Description = data.Description;
 		Char.AccountName = "Online-" + data.ID.toString();
 		Char.MemberNumber = data.MemberNumber;
 		Char.Difficulty = data.Difficulty;
@@ -521,6 +526,8 @@ function CharacterDoItemsSetPose(C, pose) {
 		return setPose && setPose.includes(pose);
 	});
 }
+
+
 
 /**
  * Checks if a character has a pose type from items (not active pose unless an item lets it through)
@@ -692,10 +699,14 @@ function CharacterRefresh(C, Push) {
 	if (Current && C.ID == Current.ID) {
 		if (DialogFocusItem && DialogFocusItem.Asset) {
 			if (!DialogFocusItem.Asset.IsLock) {
-				DialogFocusItem = C.Appearance.find(Item =>
+				let DFI = C.Appearance.find(Item =>
 					Item.Asset.Name == DialogFocusItem.Asset.Name && Item.Asset.Group.Name == DialogFocusItem.Asset.Group.Name
 				);
-				if (DialogFocusItem && DialogFocusItem.Asset.Extended && typeof window["Inventory" + DialogFocusItem.Asset.Group.Name + DialogFocusItem.Asset.Name + "Load"] === "function") window["Inventory" + DialogFocusItem.Asset.Group.Name + DialogFocusItem.Asset.Name + "Load"]();
+				if (!DFI) DialogLeaveFocusItem();
+				else {
+					DialogFocusItem = DFI;
+					if (DialogFocusItem && DialogFocusItem.Asset.Extended && typeof window["Inventory" + DialogFocusItem.Asset.Group.Name + DialogFocusItem.Asset.Name + "Load"] === "function") window["Inventory" + DialogFocusItem.Asset.Group.Name + DialogFocusItem.Asset.Name + "Load"]();
+				}
 			} else {
 				var DFSI = DialogFocusSourceItem && DialogFocusSourceItem.Asset && C.Appearance.find(Item =>
 					Item.Asset.Name == DialogFocusSourceItem.Asset.Name && Item.Asset.Group.Name == DialogFocusSourceItem.Asset.Group.Name
