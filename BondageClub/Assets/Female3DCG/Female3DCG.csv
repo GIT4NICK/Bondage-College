@@ -592,6 +592,7 @@ ItemVulva,WandBelt,Wand Belt
 ItemVulva,PenisDildo,Penis Dildo
 ItemVulva,ShockDildo,Shock Dildo
 ItemVulva,VibratingDildo,Vibrating Dildo
+ItemVulva,FuturisticVibrator,Futuristic Vibrator
 ItemVulva,InflatableVibeDildo,Inflatable Vibrating Dildo
 ItemVulva,ClitoralStimulator,Clitoral Stimulator
 ItemVulva,ClitSuctionCup,Clit Suction Cup
@@ -751,6 +752,7 @@ ItemArms,Manacles,Manacles
 ItemArms,FullBodyShackles,Full Body Shackles
 ItemArms,WristShackles,Wrist Shackles
 ItemArms,StraitLeotard,Latex Strait Leotard
+ItemArms,FuturisticStraitjacket,Futuristic Straitjacket
 ItemArms,StraitJacket,Straitjacket
 ItemArms,CollarCuffs,Collar Cuffs
 ItemArms,LeatherStraitJacket,Leather Straitjacket
@@ -921,6 +923,7 @@ ItemMouth,CarrotGag,Rubber Carrot Gag
 ItemMouth,MuzzleGag,Muzzle Gag
 ItemMouth,FuturisticPanelGag,Futuristic Panel Gag
 ItemMouth,FuturisticHarnessPanelGag,Futuristic Harness Panel Gag
+ItemMouth,FuturisticHarnessBallGag,Futuristic Ball Gag
 ItemMouth,RegularSleepingPill,Sleeping Pill
 ItemMouth,PantiesMask,Panties Mask
 ItemMouth,PlugGag,Plug Gag
@@ -1079,6 +1082,7 @@ ItemHood,LeatherHoodSealed,Sealed Leather Hood
 ItemHood,PolishedSteelHood,Polished Steel Hood
 ItemHood,InflatedBallHood,Inflatable Hood
 ItemHood,OldGasMask,Gas Mask
+ItemHood,KirugumiMask,Kigurumi Mask
 ItemHood,PumpkinHead,Pumpkin Head
 ItemHood,SackHood,Sack Hood
 ItemHood,LeatherHoodSensDep,Sensory Deprivation Hood

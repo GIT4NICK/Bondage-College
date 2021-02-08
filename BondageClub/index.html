@@ -47,11 +47,15 @@
 <script src="Scripts/Translation.js"></script>
 <script src="Scripts/Activity.js"></script>
 <script src="Scripts/ExtendedItem.js"></script>
+<script src="Scripts/ModularItem.js"></script>
 <script src="Screens/Character/ItemColor/ItemColor.js"></script>
 <script src="Scripts/LZString.js"></script>
 <script src="Scripts/VibratorMode.js"></script>
 <script src="Scripts/socket.io/socket.io.js"></script>
+<script src="Scripts/DynamicDraw.js"></script>
+<script src="Scripts/Notifications.js"></script>
 <script src="Assets/Female3DCG/Female3DCG.js"></script>
+<script src="Assets/Female3DCG/Female3DCGExtended.js"></script>
 <script src="Screens/Character/Login/Login.js"></script>
 <script src="Screens/Character/Appearance/Appearance.js"></script>
 <script src="Screens/Character/Creation/Creation.js"></script>
@@ -178,6 +182,7 @@
 <script src="Screens/Inventory/ItemMouth/PlugGag/PlugGag.js"></script>
 <script src="Screens/Inventory/ItemMouth/FuturisticPanelGag/FuturisticPanelGag.js"></script>
 <script src="Screens/Inventory/ItemMouth/FuturisticHarnessPanelGag/FuturisticHarnessPanelGag.js"></script>
+<script src="Screens/Inventory/ItemMouth/FuturisticHarnessBallGag/FuturisticHarnessBallGag.js"></script>
 <script src="Screens/Inventory/ItemArms/FuturisticCuffs/FuturisticCuffs.js"></script>
 <script src="Screens/Inventory/ItemLegs/FuturisticLegCuffs/FuturisticLegCuffs.js"></script>
 <script src="Screens/Inventory/ItemFeet/FuturisticAnkleCuffs/FuturisticAnkleCuffs.js"></script>
@@ -223,6 +228,7 @@
 <script src="Screens/Inventory/ItemDevices/CryoCapsule/CryoCapsule.js"></script>
 <script src="Screens/Inventory/ItemArms/LeatherStraitJacket/LeatherStraitJacket.js"></script>
 <script src="Screens/Inventory/ItemArms/FuturisticArmbinder/FuturisticArmbinder.js"></script>
+<script src="Screens/Inventory/ItemArms/FuturisticStraitjacket/FuturisticStraitjacket.js"></script>
 <script src="Screens/Inventory/ItemAddon/CeilingChain/CeilingChain.js"></script>
 <script src="Screens/Inventory/ItemAddon/CeilingRope/CeilingRope.js"></script>
 <script src="Screens/Inventory/ItemHands/FuturisticMittens/FuturisticMittens.js"></script>
@@ -249,6 +255,7 @@
 <script src="Screens/Inventory/ItemFeet/OrnateAnkleCuffs/OrnateAnkleCuffs.js"></script>
 <script src="Screens/Inventory/ItemArms/FullLatexSuit/FullLatexSuit.js"></script>
 <script src="Screens/Inventory/ItemVulva/FullLatexSuitWand/FullLatexSuitWand.js"></script>
+<script src="Screens/Inventory/ItemVulva/FuturisticVibrator/FuturisticVibrator.js"></script>
 <script src="Screens/Inventory/ItemArms/LeatherArmbinder/LeatherArmbinder.js"></script>
 <script src="Screens/Inventory/ItemArms/BitchSuit/BitchSuit.js"></script>
 <script src="Screens/Inventory/ItemArms/TightJacketCrotch/TightJacketCrotch.js"></script>
@@ -295,7 +302,7 @@
 <script src="Screens/Inventory/ItemArms/LatexBoxtieLeotard/LatexBoxtieLeotard.js"></script>
 <script src="Screens/Inventory/ItemArms/LatexSleevelessLeotard/LatexSleevelessLeotard.js"></script>
 <script src="Screens/Inventory/ItemArms/PrisonLockdownSuit/PrisonLockdownSuit.js"></script>
-<script src="Screens/Inventory/ItemArms/HighSecurityStraitJacket/HighSecurityStraitJacket.js"></script>
+<script src="Screens/Inventory/ItemHood/KirugumiMask/KirugumiMask.js"></script>
 <script src="Screens/Inventory/Corset/LatexCorset1/LatexCorset1.js"></script>
 <script src="Screens/Inventory/Necklace/NecklaceKey/NecklaceKey.js"></script>
 <script src="Screens/Inventory/Necklace/NecklaceLock/NecklaceLock.js"></script>
@@ -310,6 +317,7 @@
 <script src="Screens/Inventory/ItemHood/CanvasHood/CanvasHood.js"></script>
 <script src="Screens/Inventory/ItemDevices/Vacbed/Vacbed.js"></script>
 <script src="Screens/Inventory/ItemDevices/WoodenBox/WoodenBox.js"></script>
+<script src="Screens/Inventory/ItemDevices/TransportWoodenBox/TransportWoodenBox.js"></script>
 <script src="Screens/Inventory/HairAccessory3/Halo/Halo.js"></script>
 <script src="Screens/Inventory/HairAccessory1/Halo/Halo.js"></script>
 <script>
@@ -404,7 +412,7 @@ function Click(event) {
 }
 
 // When the user touches the screen (mobile only), we fire the click event for other screens
-function Touch(event) {
+function TouchStart(event) {
 	if (CommonIsMobile) {
 		var rect = document.getElementById("MainCanvas").getBoundingClientRect();
 		if (document.body.clientWidth <= document.body.clientHeight * 2) {
@@ -413,9 +421,9 @@ function Touch(event) {
 		} else {
 			MouseX = Math.round((event.touches[0].clientX - rect.left) * 1000 / document.body.clientHeight);
 			MouseY = Math.round((event.touches[0].clientY - rect.top) * 1000 / document.body.clientHeight);
-		}		
+		}
 		CommonClick();
-	} 
+	}
 }
 
 // When mouse move, we keep the mouse position for other scripts
@@ -437,7 +445,7 @@ function LoseFocus(event) {
 		MouseY = -1;
 	}
 }
- 
+
 </script>
 
 
@@ -484,6 +492,6 @@ function LoseFocus(event) {
 </script>
 
 <body style="width:100%; height:100%; background-color:black; margin:0px; padding:0px; overflow:hidden;">
-	<canvas id="MainCanvas" Width="2000" Height="1000" onClick="Click(event);" onTouchStart="Touch(event);" onMouseMove="MouseMove(event);" onMouseLeave="LoseFocus(event);"></canvas>
+	<canvas id="MainCanvas" Width="2000" Height="1000" onClick="Click(event);" onTouchStart="TouchStart(event);" onMouseMove="MouseMove(event);" onMouseLeave="LoseFocus(event);"></canvas>
 </body>
 </html>
