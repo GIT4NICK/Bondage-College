@@ -191,7 +191,7 @@ var AssetFemale3DCG = [
 				Name: "NecklaceLock", Fetish: ["Metal"], Value: 40, Left: 155, Top: 152, ParentGroup: null, AllowType: ["Tucked"], Extended: true,
 				Layer: [
 					{ Name: "Chain", HasType: false },
-					{ Name: "Lock", HasType: false },
+					{ Name: "Lock", LockLayer: true,HasType: false },
 				]
 			},
 			{
@@ -1288,7 +1288,7 @@ var AssetFemale3DCG = [
 				Layer: [
 					{ Name: "Display", ParentGroup: null},
 					{ Name: "Cuffs" },
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				]
 			},
 			{
@@ -1357,7 +1357,7 @@ var AssetFemale3DCG = [
 				Layer: [
 					{ Name: "Display", ParentGroup: null},
 					{ Name: "Cuffs" },
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				]
 			},
 			{
@@ -1468,7 +1468,7 @@ var AssetFemale3DCG = [
 				Layer: [
 					{ Name: "Display", AllowColorize: true },
 					{ Name: "Band", AllowColorize: true },
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				]
 			},
 			{
@@ -1617,8 +1617,8 @@ var AssetFemale3DCG = [
 			{ Name: "VibratingDildoPlug", Value: 60, Time: 10, Visible: false, BuyGroup: "VibratingDildo", Prerequisite: ["AccessVulva", "AccessVulvaSuitZip"], Effect: ["IsPlugged", "Egged"], AllowEffect: ["IsPlugged", "Egged", "Vibrating", "Edged"], DynamicScriptDraw: true },
 			{ Name: "BunnyTailPlug1", Fetish: ["Pet"], Value: 1, Time: 10, Visible: false, Prerequisite: ["AccessVulva", "AccessVulvaSuitZip"], ExpressionTrigger: [{ Name: "Low", Group: "Blush", Timer: 10 }] },
 			{ Name: "BunnyTailPlug2", Fetish: ["Pet"], Value: 1, Time: 10, Visible: false, Prerequisite: ["AccessVulva", "AccessVulvaSuitZip"], ExpressionTrigger: [{ Name: "Low", Group: "Blush", Timer: 10 }] },
-			{ Name: "EggVibePlugXXL", Effect: ["IsPlugged", "Egged"], Value: 90, Prerequisite: ["AccessVulva", "AccessVulvaSuitZip"], Time: 10, ExpressionTrigger: [{ Group: "Blush", Name: "High", Timer: 10 }], AllowEffect: ["Egged", "Vibrating"], Visible: false, DynamicScriptDraw: true },
 			{ Name: "BunnyTailVibePlug", Fetish: ["Pet"], Effect: ["IsPlugged", "Egged"], Value: 75, Prerequisite: ["AccessVulva", "AccessVulvaSuitZip"], Time: 10, ExpressionTrigger: [{ Group: "Blush", Name: "Low", Timer: 10 }], AllowEffect: ["Egged", "Vibrating"], Visible: false, DynamicScriptDraw: true },
+			{ Name: "EggVibePlugXXL", Effect: ["IsPlugged", "Egged"], Value: 90, Prerequisite: ["AccessVulva", "AccessVulvaSuitZip"], Time: 10, ExpressionTrigger: [{ Group: "Blush", Name: "High", Timer: 10 }], AllowEffect: ["Egged", "Vibrating"], Visible: false, DynamicScriptDraw: true },
 			{ Name: "ShockPlug", Fetish: ["Masochism"], Value: 60, Time: 10, Visible: false, Extended: true, AlwaysExtend: true, Prerequisite: ["AccessVulva", "AccessVulvaSuitZip"], ExpressionTrigger: [{ Name: "Low", Group: "Blush", Timer: 10 }], Activity: "ShockItem" },
 			{ Name: "Cowtail", Fetish: ["Pet"], BuyGroup: "CowTails", Value: 20, Time: 10, Top: 80, Prerequisite: ["AccessVulva", "AccessVulvaSuitZip"], AllowPose: ["AllFours"], ExpressionTrigger: [{ Name: "Low", Group: "Blush", Timer: 10 }] },
 			{ Name: "HollowButtPlug", Value: 15, Time: 10, Visible: false, Prerequisite: ["AccessVulva", "AccessVulvaSuitZip"], ExpressionTrigger: [{ Name: "Low", Group: "Blush", Timer: 10 }] },
@@ -1649,7 +1649,7 @@ var AssetFemale3DCG = [
 					{ Name: "Mesh", AllowColorize: true , ParentGroup: null},
 					{ Name: "Screen", AllowColorize: true , ParentGroup: null},
 					{ Name: "Belt", AllowColorize: true , ParentGroup: null},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				]
 			},
 			{ Name: "FuturisticChastityBelt2", Category: ["SciFi"], Fetish: ["Metal"], Value: -1, Difficulty: 50, Time: 15, RemoveTime: 12, BuyGroup: "FuturisticChastityBelt", Random: false, AllowLock: true, DrawLocks: false, DefaultColor: ["#93C48C", "#3B7F2C", "Default", "Default", "Default"], Audio: "FuturisticApply", Prerequisite: "AccessVulva", HideItem: ["ItemButtAnalBeads2", "ItemVulvaVibratingDildo", "ItemVulvaClitSuctionCup", "ItemVulvaInflatableVibeDildo", "ItemVulvaHeavyWeightClamp", "ItemVulvaPenisDildo", "ItemVulvaShockDildo", "ItemVulvaPiercingsVibeHeartClitPiercing"], Effect: ["Chaste"], AllowBlock: ["ItemVulvaPiercings", "ItemButt", "ItemVulva"], AllowType: ["ClosedBack","OpenFront", "ChatMessage", "PunishOrgasm", "PunishStruggle", "PunishStrugleOther"], Block: [], ExpressionTrigger: [{ Name: "Soft", Group: "Eyebrows", Timer: 10 }], Extended: true, HasType: false, AlwaysExtend: true, DynamicScriptDraw: true,
@@ -1659,7 +1659,7 @@ var AssetFemale3DCG = [
 					{ Name: "Band", AllowColorize: true},
 					{ Name: "Belt", AllowColorize: true},
 					{ Name: "Plug", AllowColorize: true},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				]
 			},
 			{
@@ -1710,7 +1710,7 @@ var AssetFemale3DCG = [
 					{ Name: "Closed", AllowColorize: true, CopyLayerColor: "Open", AllowTypes: ["Closed", "Vibe", "Shock"], HasType: false },
 					{ Name: "Vibe", AllowColorize: false, AllowTypes: ["Vibe"], HasType: false, OverrideAllowPose: [] },
 					{ Name: "Shock", AllowColorize: false, AllowTypes: ["Shock"], HasType: false, OverrideAllowPose: [] },
-					{ Name: "Lock", AllowColorize: false, AllowTypes: ["", "Open", "Closed", "Vibe", "Shock"], HasType: false, OverrideAllowPose: [] },
+					{ Name: "Lock", LockLayer: true,AllowColorize: false, AllowTypes: ["", "Open", "Closed", "Vibe", "Shock"], HasType: false, OverrideAllowPose: [] },
 					{ Name: "ShieldLock", AllowColorize: false, AllowTypes: ["Closed", "Vibe", "Shock"], HasType: false, OverrideAllowPose: [] },
 				]
 			},
@@ -1749,7 +1749,7 @@ var AssetFemale3DCG = [
 					{ Name: "Display", AllowColorize: true, ParentGroup: null, Priority: 15, AllowTypes: ["", "Lower"], HasType: false},
 					{ Name: "Band", AllowColorize: true, Priority: 15 , AllowTypes: ["", "Lower"], HasType: false},
 					{ Name: "Mesh", AllowColorize: true, ParentGroup: null, Priority: 15, AllowTypes: ["", "Lower"], HasType: false},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null, AllowTypes: ["", "Lower"], HasType: false},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null, AllowTypes: ["", "Lower"], HasType: false},
 					{ Name: "Display2", AllowColorize: true, CopyLayerColor: "Display", ParentGroup: null, AllowTypes: ["", "Upper"], HasType: false},
 					{ Name: "Band2", AllowColorize: true, CopyLayerColor: "Band", AllowTypes: ["", "Upper"], HasType: false},
 					{ Name: "Lock2", CopyLayerColor: "Lock", HasType: false, ParentGroup: null, AllowTypes: ["", "Upper"], HasType: false},
@@ -1874,7 +1874,7 @@ var AssetFemale3DCG = [
 					{ Name: "Text" , AllowColorize: true , AllowTypes: ["", "Heart"]},
 					{ Name: "Mesh" , AllowColorize: true , HasType: false},
 					{ Name: "Bra" , AllowColorize: true , AllowTypes: ["", "Heart", "Solid"]},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				]
 			},
 			{ Name: "FuturisticBra2", Category: ["SciFi"], Fetish: ["Metal"], Value: -1, BuyGroup: "FuturisticBra", Difficulty: 50, Time: 10, Random: false, AllowLock: true, DrawLocks: false, DefaultColor: ["#50913C", "Default", "#889FA7", "#404040"], AllowType: ["", "NoDisplay"], Audio: "FuturisticApply", Prerequisite: "AccessBreast", Hide: ["ItemNipples", "ItemNipplesPiercings"], Effect: ["BreastChaste"], Block: ["ItemNipples", "ItemNipplesPiercings"], ExpressionTrigger: [{ Name: "Soft", Group: "Eyebrows", Timer: 10 }], Extended: true, AlwaysExtend: true,
@@ -1883,7 +1883,7 @@ var AssetFemale3DCG = [
 					{ Name: "Bra" , AllowColorize: true, HasType: false},
 					{ Name: "Mesh" , AllowColorize: true , HasType: false},
 					{ Name: "Straps" , AllowColorize: true , HasType: false},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				]
 			},
 			{
@@ -1950,7 +1950,7 @@ var AssetFemale3DCG = [
 				Layer: [
 					{ Name: "Display", ParentGroup: null },
 					{ Name: "Cuffs" },
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				],
 			},
 			{
@@ -1985,7 +1985,7 @@ var AssetFemale3DCG = [
 				]
 			},
 			{
-				Name: "FuturisticStraitjacket", Category: ["SciFi"], Fetish: ["Latex"], Value: 100, Priority: 15, Difficulty: 13, SelfBondage: 4, Time: 35, RemoveTime: 15, Audio: "FuturisticApply", AllowLock: true, DrawLocks: false, DefaultColor: ["#528FD1", "#8EADC4", "##A4A4A4", "#93C48C", "Default"],
+				Name: "FuturisticStraitjacket", Category: ["SciFi"], Fetish: ["Latex"], Value: 100, Priority: 15, Difficulty: 13, SelfBondage: 4, Time: 35, RemoveTime: 15, Audio: "FuturisticApply", AllowLock: true, DrawLocks: false, DefaultColor: ["#528FD1", "#8EADC4", "#A4A4A4", "#93C48C", "Default"],
 				Hide: ["Cloth", "ItemNipplesPiercings", "ItemVulvaPiercings", "ItemVulva", "ItemVulvaPiercings"],
 				Block: ["ItemNipples", "ItemNipplesPiercings", "ItemVulva", "ItemVulvaPiercings", "ItemButt", "ItemHands"],
 				AllowBlock: ["ItemPelvis", "ItemBreast"],
@@ -1997,7 +1997,7 @@ var AssetFemale3DCG = [
 					{ Name: "Sides", AllowColorize: true, HasType: false},
 					{ Name: "Display", AllowColorize: true, HasType: false, ParentGroup: null},
 					{ Name: "Band", AllowColorize: true, HasType: false},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 					{ Name: "GlovesBack", CopyLayerColor: "Lower", HasType: false, Priority: 14, AllowTypes: ["HandsBack", "HandsBackChastity"]},
 					{ Name: "Gloves", CopyLayerColor: "Lower", HasType: false, Priority: 23, AllowTypes: ["HandsFront", ""]},
 				]
@@ -2214,7 +2214,7 @@ var AssetFemale3DCG = [
 					{ Name: "Binder" , ParentGroup: null, AllowTypes: [""], Priority: 6, Left: 50, Top: 200,	},
 					{ Name: "Band" , ParentGroup: null, AllowTypes: [""], Priority: 6, Left: 50, Top: 200,	},
 					{ Name: "Straps", Priority: 31, HasType: false,  Left: 0, Top: 0,  },
-					{ Name: "Lock", AllowColorize: true, Priority: 31, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, Priority: 31, ParentGroup: null},
 				]
 			},
 			{ Name: "SeamlessLatexArmbinder", Fetish: ["Latex"], Priority: 6, Value: 60, Difficulty: 10, SelfBondage: 7, Time: 25, RemoveTime: 10, AllowLock: true, SetPose: ["BackElbowTouch"], Effect: ["Block", "Prone"], Block: ["ItemHands"], SelfUnlock: false },
@@ -2264,7 +2264,7 @@ var AssetFemale3DCG = [
 					{ Name: "CrotchStrapsSingle", ColorGroup: "Straps", ParentGroup: null, AllowModuleTypes: ["s1"], HasType: false },
 					{ Name: "CrotchStrapsDouble", CopyLayerColor: "CrotchStrapsSingle", ParentGroup: null, AllowModuleTypes: ["s2"], HasType: false },
 					{ Name: "CrotchStrapsTriple", CopyLayerColor: "CrotchStrapsSingle", ParentGroup: null, AllowModuleTypes: ["s3"], HasType: false },
-					{ Name: "Lock", AllowColorize: false, ParentGroup: null, AllowModuleTypes: ["s1", "s2", "s3", "a2"], LockLayer: true }
+					{ Name: "Lock", LockLayer: true,AllowColorize: false, ParentGroup: null, AllowModuleTypes: ["s1", "s2", "s3", "a2"], LockLayer: true }
 				],
 				SelfUnlock: false
 			},
@@ -2303,7 +2303,7 @@ var AssetFemale3DCG = [
 				],
 			},
 			{
-				Name: "TransportJacket", Value: 100, Difficulty: 7, Time: 25, RemoveTime: 15, AllowLock: true, DrawLocks: false, Left: 100, AllowPose: ["LegsClosed", "Horse", "KneelingSpread", "Spread"], SetPose: ["BackElbowTouch"], Extended: true, DynamicAfterDraw: true,
+				Name: "TransportJacket", Value: 100, Difficulty: 7, Time: 25, RemoveTime: 15, AllowLock: true, DrawLocks: false, Left: 100, AllowPose: ["Kneel", "LegsClosed", "Horse", "KneelingSpread", "Spread"], SetPose: ["BackElbowTouch"], Extended: true, DynamicAfterDraw: true,
 				DefaultColor: ["#888", "#801612", "#888", "#eee", "#801612", "#888"],
 				AllowType: ["Shorts", "ShortsAndStraps"],
 				Effect: ["Block", "Prone"],
@@ -2356,7 +2356,7 @@ var AssetFemale3DCG = [
 					{ Name: "Mesh", ParentGroup: null},
 					{ Name: "Display", ParentGroup: null},
 					{ Name: "Body", ParentGroup: null},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 					
 				]
 			},
@@ -2555,7 +2555,7 @@ var AssetFemale3DCG = [
 					{ Name: "Display" },
 					{ Name: "Band" },
 					{ Name: "Mesh",  HasType: false},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				]
 			},
 			{ Name: "LeatherChoker", Fetish: ["Leather"], DefaultColor: ["Default", "#000000"], Value: 10, Difficulty: 50, Time: 5, AllowLock: true, Layer: [
@@ -2755,7 +2755,7 @@ var AssetFemale3DCG = [
 					{ Name: "Ball", AllowColorize: true, HasType: false },
 					{ Name: "Mask" , AllowColorize: true, HasType: false },
 					{ Name: "Light" , AllowColorize: true, AllowTypes: ["", "LightBall", "Ball", "Plug", "Blink"]},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, ParentGroup: null},
 				]
 			},
 			{
@@ -2765,17 +2765,17 @@ var AssetFemale3DCG = [
 					{ Name: "Straps" , AllowColorize: true, HasType: false },
 					{ Name: "Mask" , AllowColorize: true, HasType: false },
 					{ Name: "Light" , AllowColorize: true, AllowTypes: ["", "LightBall", "Ball", "Plug", "Blink"]},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, ParentGroup: null},
 				]
 			},
 			{
-				Name: "FuturisticHarnessBallGag", Category: ["SciFi"], Fetish: ["Metal"], Value: -1, Difficulty: 6, Time: 15, Random: false, AllowLock: true, DrawLocks: false, DefaultColor: ["#50913C", "Default", "Default", "Default"], BuyGroup: "FuturisticPanelGag", Prerequisite: "GagFlat", Hide: ["Mouth"], Effect: ["BlockMouth"], AllowEffect: ["BlockMouth", "GagLight", "GagMedium", "GagTotal"], AllowType: ["LightBall", "Ball", "Plug", "AutoPunish", "AutoPunishUndoTime", "AutoPunishUndoTimeSetting", "OriginalSetting", "ChatMessage"], Extended: true, AlwaysExtend: true,DynamicScriptDraw: true,DynamicBeforeDraw: true, Audio: "FuturisticApply",
+				Name: "FuturisticHarnessBallGag", Category: ["SciFi"], Fetish: ["Metal"], Value: -1, Difficulty: 6, Time: 15, Random: false, AllowLock: true, DrawLocks: false, DefaultColor: ["#50913C", "Default", "Default", "Default"], BuyGroup: "FuturisticPanelGag", Prerequisite: "GagFlat", Hide: ["Mouth"], Effect: ["BlockMouth", "GagLight"], AllowEffect: ["BlockMouth", "GagLight", "GagMedium", "GagTotal"], AllowType: ["LightBall", "Ball", "Plug", "AutoPunish", "AutoPunishUndoTime", "AutoPunishUndoTimeSetting", "OriginalSetting", "ChatMessage"], Extended: true, AlwaysExtend: true,DynamicScriptDraw: true,DynamicBeforeDraw: true, Audio: "FuturisticApply",
 				Layer: [
 					{ Name: "Ball", AllowColorize: true, HasType: false },
 					{ Name: "Mask" , AllowColorize: true, HasType: false },
 					{ Name: "Straps" , AllowColorize: true, HasType: false },
 					{ Name: "Light" , AllowColorize: true, AllowTypes: ["", "LightBall", "Ball", "Plug", "Blink"]},
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, ParentGroup: null},
 					{ Name: "BallHighlights", AllowColorize: false, HasType: false },
 				]
 			},
@@ -3602,7 +3602,7 @@ var AssetFemale3DCG = [
 				Layer: [
 					{ Name: "Band" },
 					{ Name: "Display" },
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				]
 			},
 			{ 
@@ -3992,7 +3992,7 @@ var AssetFemale3DCG = [
 				Layer: [
 					{ Name: "Display", HasType: false },
 					{ Name: "Shoes", AllowTypes:["", "Heel"] },
-					{ Name: "Lock", AllowColorize: true, HasType: false, ParentGroup: null},
+					{ Name: "Lock", LockLayer: true,AllowColorize: true, HasType: false, ParentGroup: null},
 				]
 			},
 			{

@@ -353,8 +353,8 @@ function DialogHasKey(C, Item) {
 	if (InventoryGetItemProperty(Item, "SelfUnlock") == false && (!Player.CanInteract() || C.ID == 0)) return false;
 	if (C.IsOwnedByPlayer() && InventoryAvailable(Player, "OwnerPadlockKey", "ItemMisc") && Item.Asset.Enable) return true;
 	const lock = InventoryGetLock(Item);
-	if (lock && lock.Asset.ExclusiveUnlock && ((!Item.Property.MemberNumberListKeys && Item.Property.LockMemberNumber != Player.MemberNumber) || (Item.Property.MemberNumberListKeys && CommonConvertStringToArray("" + Item.Property.MemberNumberListKeys).indexOf(Player.MemberNumber) < 0))) return false;
 	if (C.IsLoverOfPlayer() && InventoryAvailable(Player, "LoversPadlockKey", "ItemMisc") && Item.Asset.Enable && Item.Property && !Item.Property.LockedBy.startsWith("Owner")) return true;
+	if (lock && lock.Asset.ExclusiveUnlock && ((!Item.Property.MemberNumberListKeys && Item.Property.LockMemberNumber != Player.MemberNumber) || (Item.Property.MemberNumberListKeys && CommonConvertStringToArray("" + Item.Property.MemberNumberListKeys).indexOf(Player.MemberNumber) < 0))) return false;
 
     if (lock && lock.Asset.ExclusiveUnlock) return true;
 
@@ -1908,7 +1908,7 @@ function DialogLockPickClick(C) {
 							}
 						} else {
 							// There is a chance we false set
-							if (Math.random() < false_set_chance) {
+							if (Math.random() < false_set_chance && DialogLockPickImpossiblePins.filter(x => x==P).length == 0) {
 								DialogLockPickSetFalse[P] = true
 							} else if (DialogLockPickSetFalse[P] == false) {
 							// Otherwise: fail
