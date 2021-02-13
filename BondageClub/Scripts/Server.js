@@ -487,6 +487,9 @@ function ServerAppearanceLoadFromBundle(C, AssetFamily, Bundle, SourceMemberNumb
 		const Limited = C.ID == 0 && InventoryIsPermissionLimited(C, Bundle[A].Name, Bundle[A].Group, Type) && (SourceMemberNumber != null) && SourceMemberNumber !== Player.MemberNumber && ((C.Ownership == null) || (C.Ownership.MemberNumber == null) || ((C.Ownership.MemberNumber != SourceMemberNumber))) && ((C.GetLoversNumbers().indexOf(SourceMemberNumber) < 0)) && ((C.ItemPermission > 3) || C.WhiteList.indexOf(SourceMemberNumber) < 0);
 		if ((InventoryIsPermissionBlocked(C, Bundle[A].Name, Bundle[A].Group, Type)  || Limited) && OnlineGameAllowBlockItems()) continue;
 
+		// Skip items if there's already an item in that slot
+		if (Appearance.find(item => item.Asset.Group.Family === AssetFamily && item.Asset.Group.Name === Bundle[A].Group)) continue;
+
 		// Cycles in all assets to find the correct item to add (do not add )
 		for (let I = 0; I < Asset.length; I++)
 			if ((Asset[I].Name == Bundle[A].Name) && (Asset[I].Group.Name == Bundle[A].Group) && (Asset[I].Group.Family == AssetFamily)) {
@@ -496,6 +499,9 @@ function ServerAppearanceLoadFromBundle(C, AssetFamily, Bundle, SourceMemberNumb
 
 				// LoverOnly items can only get update if it comes from lover
 				if (SourceMemberNumber != null && Asset[I].LoverOnly && (C.ID == 0) && !FromLoversOrOwner) break;
+
+				// Make sure we don't push an item that's disabled, coming from another player
+				if (!Asset[I].Enable && !Asset[I].OwnerOnly && !Asset[I].LoverOnly && (SourceMemberNumber != null) && (C.ID == 0)) break;
 
 				var ColorSchema = Asset[I].Group.ColorSchema;
 				var Color = Bundle[A].Color;
@@ -525,17 +531,8 @@ function ServerAppearanceLoadFromBundle(C, AssetFamily, Bundle, SourceMemberNumb
 					ServerValidateProperties(C, NA, { SourceMemberNumber: SourceMemberNumber, FromOwner: FromOwner, FromLoversOrOwner: FromLoversOrOwner });
 				}
 
-				// Make sure we don't push an item if there's already an item in that slot
-				var CanPush = true;
-				for (let P = 0; P < Appearance.length; P++)
-					if (Appearance[P].Asset.Group.Name == NA.Asset.Group.Name) {
-						CanPush = false;
-						break;
-					}
+				Appearance.push(NA);
 
-				// Make sure we don't push an item that's disabled, coming from another player
-				if (CanPush && !NA.Asset.Enable && !NA.Asset.OwnerOnly && !NA.Asset.LoverOnly && (SourceMemberNumber != null) && (C.ID == 0)) CanPush = false;
-				if (CanPush) Appearance.push(NA);
 				break;
 
 			}

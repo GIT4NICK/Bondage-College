@@ -177,6 +177,7 @@ function AssetAdd(NewAsset, ExtendedConfig) {
 		DrawLocks: typeof NewAsset.DrawLocks === 'boolean' ? NewAsset.DrawLocks : true,
 		AllowExpression: NewAsset.AllowExpression,
 		MirrorExpression: NewAsset.MirrorExpression,
+		FixedPosition: typeof NewAsset.FixedPosition === 'boolean' ? NewAsset.FixedPosition : false,
 	}
 	if (A.MinOpacity > A.Opacity) A.MinOpacity = A.Opacity;
 	if (A.MaxOpacity < A.Opacity) A.MaxOpacity = A.Opacity;

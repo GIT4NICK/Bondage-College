@@ -24,10 +24,6 @@ var DialogLeaveDueToItem = false;
 const DrawCacheImage = new Map;
 let DrawCacheLoadedImages = 0;
 let DrawCacheTotalImages = 0;
-var DrawScreenWidth = -1;
-var DrawScreenHeight = -1;
-
-window.addEventListener('resize', DrawWindowResize);
 
 /**
  * Converts a hex color string to a RGB color
@@ -82,11 +78,6 @@ function DrawLoad() {
 	MainCanvas.textAlign = "center";
 	MainCanvas.textBaseline = "middle";
 
-	// Deferred resize is necessary since some rare cases canvas gets oversized without this (especially on mobile)
-	setTimeout(DrawWindowResize, 1000);
-	setTimeout(DrawWindowResize, 3000);
-	setTimeout(DrawWindowResize, 5000);
-	if (CommonIsMobile) setTimeout(DrawWindowResize, 10000);
 }
 
 /**
@@ -417,7 +408,7 @@ function DrawImageZoomCanvas(Source, Canvas, SX, SY, SWidth, SHeight, X, Y, Widt
 	let Img = DrawGetImage(Source);
 	if (!Img.complete) return false;
 	if (!Img.naturalWidth) return true;
-	if (Invert) Img = DrawInvertImage(Img);
+	if (Invert) Img = DrawImageInvert(Img);
 	Canvas.drawImage(Img, SX, SY, Math.round(SWidth), Math.round(SHeight), X, Y, Width, Height);
 	return true;
 }
@@ -449,16 +440,24 @@ function DrawImageResize(Source, X, Y, Width, Height) {
  * @param {number} Opacity - The opacity at which to draw the image
  * @returns {boolean} - whether the image was complete or not
  */
-function DrawImageCanvas(Source, Canvas, X, Y, AlphaMasks, Opacity) {
+function DrawImageCanvas(Source, Canvas, X, Y, AlphaMasks, Opacity, Rotate) {
 	const Img = DrawGetImage(Source);
 	if (!Img.complete) return false;
 	if (!Img.naturalWidth) return true;
 	let SourceImage = Img;
-	if (AlphaMasks && AlphaMasks.length) {
+	if ((AlphaMasks && AlphaMasks.length) || Rotate) {
 		TempCanvas.canvas.width = Img.width;
 		TempCanvas.canvas.height = Img.height;
+		if (Rotate) {
+			TempCanvas.rotate(Math.PI);
+			TempCanvas.translate(-TempCanvas.canvas.width, -TempCanvas.canvas.height);
+			X = 500 - (X + TempCanvas.canvas.width);
+			Y -= TempCanvas.canvas.height;
+		}
 		TempCanvas.drawImage(Img, 0, 0);
-		AlphaMasks.forEach(([x, y, w, h]) => TempCanvas.clearRect(x - X, y - Y, w, h));
+		if (AlphaMasks && AlphaMasks.length) {
+			AlphaMasks.forEach(([x, y, w, h]) => TempCanvas.clearRect(x - X, y - Y, w, h));
+		}
 		SourceImage = TempCanvas.canvas;
 	}
 	Opacity = typeof Opacity === "number" ? Opacity : 1;
@@ -536,7 +535,7 @@ function DrawImage(Source, X, Y, Invert) {
 	let Img = DrawGetImage(Source);
 	if (!Img.complete) return false;
 	if (!Img.naturalWidth) return true;
-	if (Invert) Img = DrawInvertImage(Img);
+	if (Invert) Img = DrawImageInvert(Img);
 	MainCanvas.drawImage(Img, X, Y);
 	return true;
 }
@@ -554,7 +553,7 @@ function DrawImage(Source, X, Y, Invert) {
  * @param {number} Opacity - The opacity at which to draw the image
  * @returns {boolean} - whether the image was complete or not
  */
-function DrawImageCanvasColorize(Source, Canvas, X, Y, Zoom, HexColor, FullAlpha, AlphaMasks, Opacity) {
+function DrawImageCanvasColorize(Source, Canvas, X, Y, Zoom, HexColor, FullAlpha, AlphaMasks, Opacity, Rotate) {
 
 	// Make sure that the starting image is loaded
 	const Img = DrawGetImage(Source);
@@ -603,6 +602,15 @@ function DrawImageCanvasColorize(Source, Canvas, X, Y, Zoom, HexColor, FullAlpha
 	if (AlphaMasks && AlphaMasks.length) {
 		AlphaMasks.forEach(([x, y, w, h]) => ColorCanvas.clearRect(x - X, y - Y, w, h));
 	}
+
+	// Rotate the image 180 degrees
+	if (Rotate) {
+		ColorCanvas.rotate(Math.PI);
+		ColorCanvas.translate(-ColorCanvas.canvas.width, -ColorCanvas.canvas.height);
+		X = 500 - (X + ColorCanvas.canvas.width);
+		Y -= ColorCanvas.canvas.height;
+	}
+
 	Opacity = typeof Opacity === "number" ? Opacity : 1;
 	Canvas.save();
 	Canvas.globalAlpha = Opacity;
@@ -635,7 +643,7 @@ function DrawImageMirror(Source, X, Y) {
  * @param {HTMLImageElement} Img - The image to be inverted
  * @returns {HTMLCanvasElement} - Canvas with the inverted image
  */
-function DrawInvertImage(Img) {
+function DrawImageInvert(Img) {
 	TempCanvas.canvas.width = Img.width;
 	TempCanvas.canvas.height = Img.height;
 	TempCanvas.scale(1, -1);
@@ -1072,20 +1080,6 @@ function DrawProgressBar(X, Y, W, H, Progress) {
 	DrawRect(X, Y, W, H, "white");
 	DrawRect(X + 2, Y + 2, Math.floor((W - 4) * Progress / 100), H - 4, "#66FF66");
 	DrawRect(Math.floor(X + 2 + (W - 4) * Progress / 100), Y + 2, Math.floor((W - 4) * (100 - Progress) / 100), H - 4, "red");
-}
-
-function DrawWindowResize() {
-	if (!MainCanvas) return;
-
-	// Gets the Width and Height differently on mobile and regular browsers
-	const W = (CommonIsMobile) ? document.documentElement.clientWidth : window.innerWidth;
-	const H = (CommonIsMobile) ? document.documentElement.clientHeight : window.innerHeight;
-
-	// If we need to resize, we keep the 2x1 ratio
-	if ((DrawScreenWidth != W) || (DrawScreenHeight != H)) {
-		DrawScreenWidth = W;
-		DrawScreenHeight = H;
-	}
 }
 
 /**

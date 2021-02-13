@@ -127,7 +127,8 @@ const AssetType = {
 	DrawLocks: "Boolean",
 	AllowExpression: "[String]",
 	MirrorExpression: "String",
-	Layer: "[Object]",
+	FixedPosition: "Boolean",
+	Layer: "[Object]"
 };
 
 const AssetLayerType = {
