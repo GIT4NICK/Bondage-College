@@ -354,7 +354,7 @@ function ExtendedItemRequirementCheckMessage(Option, IsSelfBondage) {
 		return DialogText;
 	} else {
 		const OldEffect= DialogFocusItem && DialogFocusItem.Property && DialogFocusItem.Property.Effect;
-		if (OldEffect && OldEffect.includes("Lock") && Option.Property.AllowLock === false) {
+		if (OldEffect && OldEffect.includes("Lock") && Option.Property && Option.Property.AllowLock === false) {
 			DialogExtendedMessage = DialogFindPlayer("ExtendedItemUnlockBeforeChange");
 			return DialogExtendedMessage;
 		}
