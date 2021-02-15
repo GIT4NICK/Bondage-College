@@ -138,8 +138,10 @@ function InventoryItemVulvaFuturisticVibratorSetMode(C, Item, Option) {
 }
 
 function InventoryItemVulvaFuturisticVibratorHandleChat(C, Item, LastTime) {
-	if (!Item || !Item.Property || !Item.Property.TriggerValues) return;
-	var TriggerValues = Item.Property.TriggerValues.split(',')
+	if (!Item) return;
+	if (!Item.Property) VibratorModeSetProperty(Item, VibratorModeOptions[VibratorModeSet.STANDARD][0].Property);
+	var TriggerValues = Item.Property.TriggerValues && Item.Property.TriggerValues.split(',');
+	if (!TriggerValues) TriggerValues = ItemVulvaFuturisticVibratorTriggers;
 	for (let CH = 0; CH < ChatRoomChatLog.length; CH++) {
 		if (ChatRoomChatLog[CH].Time > LastTime) {
 			var msg = InventoryItemVulvaFuturisticVibratorDetectMsg(ChatRoomChatLog[CH].Chat.toUpperCase(), TriggerValues)

@@ -2030,6 +2030,7 @@ function DialogDrawLockpickProgress(C) {
 
 	DrawText(DialogFindPlayer("LockpickIntro"), X, 800, "white");
 	DrawText(DialogFindPlayer("LockpickIntro2"), X, 850, "white");
+	DrawText(DialogFindPlayer("LockpickIntro3"), X, 900, "white");
 
 	if (DialogLockPickSuccessTime != 0) {
 		if (CurrentTime > DialogLockPickSuccessTime) {
@@ -2039,7 +2040,7 @@ function DialogDrawLockpickProgress(C) {
 				var item = InventoryGet(C, C.FocusGroup.Name)
 				if (item) {
 					InventoryUnlock(C, item)
-					if (CurrentScreen == "ChatRoom") ChatRoomPublishAction(C, item, null, true, "ActionPick");
+					if (CurrentScreen == "ChatRoom") ChatRoomPublishAction(C, item, null, C.ID !== 0, "ActionPick");
 				}
 			}
 			SkillProgress("LockPicking", DialogLockPickProgressSkill);
