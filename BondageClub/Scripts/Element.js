@@ -247,8 +247,12 @@ function ElementRemove(ID) {
  * @returns {void} - Nothing
  */
 function ElementPosition(ElementID, X, Y, W, H) {
-
 	var E = document.getElementById(ElementID);
+
+	if (!E) {
+		console.warn("A call to ElementPosition was made on non-existent element with ID '" + ElementID + "'");
+		return;
+	}
 
 	// For a vertical slider, swap the width and the height (the transformation is handled by CSS)
 	if (E.tagName.toLowerCase() === "input" && E.getAttribute("type") === "range" && E.classList.contains("Vertical")) {
@@ -267,20 +271,16 @@ function ElementPosition(ElementID, X, Y, W, H) {
 	const Left = MainCanvas.canvas.offsetLeft + (X - W / 2) * WRatio;
 
 	// Sets the element style
-	if (E) {
-		Object.assign(E.style, {
-			fontSize: Font + "px",
-			fontFamily: CommonGetFontName(),
-			position: "fixed",
-			left: Left + "px",
-			top: Top + "px",
-			width: Width + "px",
-			height: Height + "px",
-			display: "inline"
-		});
-	} else {
-		console.warn("A call to ElementPosition was made on non-existent element with ID '" + ElementID + "'");
-	}
+	Object.assign(E.style, {
+		fontSize: Font + "px",
+		fontFamily: CommonGetFontName(),
+		position: "fixed",
+		left: Left + "px",
+		top: Top + "px",
+		width: Width + "px",
+		height: Height + "px",
+		display: "inline"
+	});
 }
 
 /**

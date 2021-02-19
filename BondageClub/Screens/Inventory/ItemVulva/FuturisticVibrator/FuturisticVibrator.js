@@ -15,48 +15,39 @@ function InventoryItemVulvaFuturisticVibratorLoad() {
 		ItemVulvaFuturisticVibratorTriggerValues = DialogFocusItem.Property.TriggerValues.split(',')
 
 		// Only create the inputs if the zone isn't blocked
-		if (!InventoryGroupIsBlocked(C, C.FocusGroup.Name)) {
-			for (let I = 0; I < ItemVulvaFuturisticVibratorTriggers.length; I++) {
-				ElementCreateInput("FuturisticVibe" + ItemVulvaFuturisticVibratorTriggers[I], "text", "", "12"); document.getElementById("FuturisticVibe" + ItemVulvaFuturisticVibratorTriggers[I]).placeholder = ItemVulvaFuturisticVibratorTriggerValues[I];
-			}
-		}
+		ItemVulvaFuturisticVibratorTriggers.forEach((trigger, i) => {
+			const input = ElementCreateInput("FuturisticVibe" + trigger, "text", "", "12");
+			if (input) input.placeholder = ItemVulvaFuturisticVibratorTriggerValues[i];
+		});
 	}
 }
 
 function InventoryItemVulvaFuturisticVibratorDraw() {
-	var C = (Player.FocusGroup != null) ? Player : CurrentCharacter;
+	var C = CharacterGetCurrent();
 	if (InventoryItemMouthFuturisticPanelGagValidate(C) !== "") {
 		InventoryItemMouthFuturisticPanelGagDrawAccessDenied()
 	} else {
+		// Draw the preview & current mode
 		DrawAssetPreview(1387, 50, DialogFocusItem.Asset);
-		for (let I = 0; I <= ItemVulvaFuturisticVibratorTriggers.length; I++) {
-				if (I < ItemVulvaFuturisticVibratorTriggers.length) {
-					MainCanvas.textAlign = "right";
-					DrawText(DialogFindPlayer("FuturisticVibrator" + ItemVulvaFuturisticVibratorTriggers[I]), 1400, 450+60*I, "white", "gray");
-					MainCanvas.textAlign = "center";
-					var mode = DialogFindPlayer("Off" )
-					if (DialogFocusItem.Property && DialogFocusItem.Property.Mode) {
-						mode = DialogFindPlayer(DialogFocusItem.Property.Mode)
-					}
-					DrawText(DialogFindPlayer("CurrentMode" ) + mode, 1500, 375, "white", "gray");
-					ElementPosition("FuturisticVibe" + ItemVulvaFuturisticVibratorTriggers[I], 1650, 450+60*I, 400);
-				} else
-					DrawButton(1325, 450+60*I, 350, 64, DialogFindPlayer("FuturisticVibratorSaveVoiceCommands"), "White", "");
-			}
-			
+		const mode = DialogFindPlayer(DialogFocusItem.Property.Mode || "Off");
+		DrawText(DialogFindPlayer("CurrentMode") + mode, 1500, 375, "white", "gray");
+		// Draw each of the triggers and position their inputs
+		ItemVulvaFuturisticVibratorTriggers.forEach((trigger, i) => {
+			MainCanvas.textAlign = "right";
+			DrawText(DialogFindPlayer("FuturisticVibrator" + trigger), 1400, 450 + 60 * i, "white", "gray");
+			MainCanvas.textAlign = "center";
+			ElementPosition("FuturisticVibe" + trigger, 1650, 450 + 60 * i, 400);
+		});
+		// Draw the save button
+		DrawButton(1325, 450 + 60 * ItemVulvaFuturisticVibratorTriggers.length, 350, 64, DialogFindPlayer("FuturisticVibratorSaveVoiceCommands"), "White", "");
 	}
 }
 
 function InventoryItemVulvaFuturisticVibratorClick() {
-	var C = (Player.FocusGroup != null) ? Player : CurrentCharacter;
-	if (InventoryItemMouthFuturisticPanelGagValidate(C) !== "") {
-		InventoryItemMouthFuturisticPanelGagClickAccessDenied()
-	} else {
-		
-		if ((MouseX >= 1885) && (MouseX <= 1975) && (MouseY >= 25) && (MouseY <= 110)) InventoryItemVulvaFuturisticVibratorExit();
-		
-		if (MouseIn(1325, 450+60*ItemVulvaFuturisticVibratorTriggers.length, 350, 64)) InventoryItemVulvaFuturisticVibratorClickSet();
-	}
+	var C = CharacterGetCurrent();
+	if (InventoryItemMouthFuturisticPanelGagValidate(C) !== "") InventoryItemMouthFuturisticPanelGagClickAccessDenied()
+	else if (MouseIn(1885, 25, 90, 90)) InventoryItemVulvaFuturisticVibratorExit();
+	else if (MouseIn(1325, 450 + 60 * ItemVulvaFuturisticVibratorTriggers.length, 350, 64)) InventoryItemVulvaFuturisticVibratorClickSet();
 }
 
 
