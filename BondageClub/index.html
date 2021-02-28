@@ -104,6 +104,7 @@
 <script src="Screens/Room/Nursery/Nursery.js"></script>
 <script src="Screens/Room/Cafe/Cafe.js"></script>
 <script src="Screens/MiniGame/HorseWalk/HorseWalk.js"></script>
+<script src="Screens/MiniGame/GetUp/GetUp.js"></script>
 <script src="Screens/MiniGame/Kidnap/Kidnap.js"></script>
 <script src="Screens/MiniGame/MaidDrinks/MaidDrinks.js"></script>
 <script src="Screens/MiniGame/MaidCleaning/MaidCleaning.js"></script>
@@ -339,6 +340,8 @@
 window.onload = function() {
 //	CheatImport();
 	ServerURL = "https://bondage-club-server.herokuapp.com/";
+	GameVersion = "R66Alpha";
+	console.log("Version: " + GameVersion + ", Server: " + ServerURL);
 	CommonIsMobile = CommonDetectMobile();
 	TranslationLoad();
 	DrawLoad();

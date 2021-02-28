@@ -462,6 +462,8 @@ HairFront,HairFront15,Style 15
 HairFront,HairFront16,Style 16
 HairFront,HairFront17,Style 17
 HairFront,HairFront17b,Style 17b
+HairFront,HairFront18,Style 18
+HairFront,HairFront19,Style 19
 HairBack,,Back Hair
 HairBack,HairNone,None
 HairBack,HairBack1,Style 1
@@ -504,6 +506,7 @@ HairBack,HairBack42,Style 37
 HairBack,HairBack43,Style 38
 HairBack,HairBack44,Style 39
 HairBack,HairBack45,Style 40
+HairBack,HairBack46,Style 41
 Eyes,,Left eye
 Eyes,Eyes1,Style 1
 Eyes,Eyes2,Style 2
