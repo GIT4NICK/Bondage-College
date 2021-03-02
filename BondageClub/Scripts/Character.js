@@ -272,7 +272,7 @@ function CharacterArchetypeClothes(C, Archetype, ForceColor) {
 		InventoryRemove(C, "HairAccessory3");
 		InventoryRemove(C, "Socks");
 	}
-
+	
 }
 
 /**

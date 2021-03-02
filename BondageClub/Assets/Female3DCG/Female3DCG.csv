@@ -154,6 +154,7 @@ Bra,Swimsuit3,Swimsuit style 3
 Bra,ClamShell,Clamshell Bra
 Bra,CowPrintedBra,Cow Printed Bra
 Bra,StuddedHarness,Studded Harness
+Bra,Camisole,Camisole
 Corset,,Corset
 Corset,Corset1,Corset + Garters
 Corset,Corset2,Corset
@@ -1075,6 +1076,7 @@ ItemHead,,Eyes
 ItemHead,ClothBlindfold,Cloth Blindfold
 ItemHead,LeatherBlindfold,Leather Blindfold
 ItemHead,InteractiveVisor,Interactive Visor
+ItemHead,InteractiveVRHeadset,VR Headset
 ItemHead,LeatherSlimMask,Slim Leather Mask
 ItemHead,LeatherSlimMaskOpenMouth,Open Mouth Slim Mask
 ItemHead,LeatherSlimMaskOpenEyes,Open Eyes Mouth Slim Mask

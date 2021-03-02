@@ -148,6 +148,7 @@ function AssetAdd(NewAsset, ExtendedConfig) {
 		Audio: NewAsset.Audio,
 		Category: NewAsset.Category,
 		Fetish: NewAsset.Fetish,
+		CustomBlindBackground: NewAsset.CustomBlindBackground,
 		ArousalZone: (NewAsset.ArousalZone == null) ? AssetCurrentGroup.Name : NewAsset.ArousalZone,
 		IsRestraint: (NewAsset.IsRestraint == null) ? ((AssetCurrentGroup.IsRestraint == null) ? false : AssetCurrentGroup.IsRestraint) : NewAsset.IsRestraint,
 		BodyCosplay: (NewAsset.BodyCosplay == null) ? ((AssetCurrentGroup.BodyCosplay == null) ? false : AssetCurrentGroup.BodyCosplay) : NewAsset.BodyCosplay,
@@ -330,7 +331,7 @@ function AssetBuildDescription(Family, CSV) {
 			if (map.has(`${line[0]}:${line[1]}`)) {
 				console.warn("Duplicate Asset Description: ", line);
 			}
-			map.set(`${line[0]}:${line[1]}`, line[2]);
+			map.set(`${line[0]}:${line[1]}`, line[2].trim());
 		} else {
 			console.warn("Bad Asset Description line: ", line);
 		}

@@ -133,6 +133,7 @@
 <script src="Screens/Online/Game/OnlineGame.js"></script>
 <script src="Screens/Online/GameLARP/GameLARP.js"></script>
 <script src="Screens/Inventory/ItemMouth/PumpGag/PumpGag.js"></script>
+<script src="Screens/Inventory/ItemHead/InteractiveVRHeadset/InteractiveVRHeadset.js"></script>
 <script src="Screens/Inventory/ItemVulva/VibratingEgg/VibratingEgg.js"></script>
 <script src="Screens/Inventory/ItemVulva/VibratingLatexPanties/VibratingLatexPanties.js"></script>
 <script src="Screens/Inventory/ItemVulva/WandBelt/WandBelt.js"></script>
@@ -342,6 +343,7 @@ window.onload = function() {
 	ServerURL = "https://bondage-club-server.herokuapp.com/";
 	GameVersion = "R66Alpha";
 	console.log("Version: " + GameVersion + ", Server: " + ServerURL);
+	if (!GameVersionFormat.test(GameVersion)) console.error("GameVersion is not valid!");
 	CommonIsMobile = CommonDetectMobile();
 	TranslationLoad();
 	DrawLoad();
