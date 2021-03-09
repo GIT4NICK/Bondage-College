@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html style="width:100%; height:100%; padding:0px; margin:0px;">
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
@@ -52,9 +52,9 @@
 <script src="Screens/Character/ItemColor/ItemColor.js"></script>
 <script src="Scripts/LZString.js"></script>
 <script src="Scripts/VibratorMode.js"></script>
-<script src="Scripts/socket.io/socket.io.js"></script>
+<script src="Scripts/socket.io/socket.io.min.js"></script>
 <script src="Scripts/DynamicDraw.js"></script>
-<script src="Scripts/Notifications.js"></script>
+<script src="Scripts/Notification.js"></script>
 <script src="Assets/Female3DCG/Female3DCG.js"></script>
 <script src="Assets/Female3DCG/Female3DCGExtended.js"></script>
 <script src="Screens/Character/Login/Login.js"></script>
@@ -147,6 +147,7 @@
 <script src="Screens/Inventory/ItemNeck/AutoShockCollar/AutoShockCollar.js"></script>
 <script src="Screens/Inventory/ItemNeckAccessories/CollarShockUnit/CollarShockUnit.js"></script>
 <script src="Screens/Inventory/ItemNeckAccessories/CollarAutoShockUnit/CollarAutoShockUnit.js"></script>
+<script src="Screens/Inventory/ItemArms/MetalCuffs/MetalCuffs.js"></script>
 <script src="Screens/Inventory/ItemArms/CeilingShackles/CeilingShackles.js"></script>
 <script src="Screens/Inventory/ItemArms/HempRope/HempRope.js"></script>
 <script src="Screens/Inventory/ItemArms/LeatherCuffs/LeatherCuffs.js"></script>
@@ -324,15 +325,15 @@
 <script src="Screens/Inventory/HairAccessory1/Halo/Halo.js"></script>
 <script src="Screens/Inventory/ItemArms/TransportJacket/TransportJacket.js"></script>
 <script src="Screens/Inventory/ItemDevices/Pole/Pole.js"></script>
+<script src="Screens/Inventory/Glasses/EyePatch1/EyePatch1.js"></script>
+<script src="Screens/Inventory/ItemFeet/SpreaderMetal/SpreaderMetal.js"></script>
 <script>
 
 /*
 
 	NEXT VERSION:
 
-	TO DO - Movie Studio - Add Maid role
-	TO DO - Bondage RPG - Patreon survey first
-	TO DO - Proof Read
+	TO DO - Bondage RPG - Single Player Side First
 	TO DO - Patreon Import/Update
 
 */
@@ -341,7 +342,7 @@
 window.onload = function() {
 //	CheatImport();
 	ServerURL = "https://bondage-club-server.herokuapp.com/";
-	GameVersion = "R66Alpha";
+	GameVersion = "R66Beta1";
 	console.log("Version: " + GameVersion + ", Server: " + ServerURL);
 	if (!GameVersionFormat.test(GameVersion)) console.error("GameVersion is not valid!");
 	CommonIsMobile = CommonDetectMobile();

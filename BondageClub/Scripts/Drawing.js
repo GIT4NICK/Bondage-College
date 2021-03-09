@@ -269,7 +269,7 @@ function DrawCharacter(C, X, Y, Zoom, IsHeightResizeAllowed) {
 
 		// If we must dark the Canvas characters
 		if ((C.ID != 0) && Player.IsBlind() && (CurrentScreen != "InformationSheet")) {
-			const DarkFactor = ( CurrentScreen == "KinkyDungeon") ? 1.0 : Math.min(CharacterGetDarkFactor(Player) * 2, 1);
+			const DarkFactor = Math.min(CharacterGetDarkFactor(Player) * 2, 1);
 			
 			CharacterCanvas.globalCompositeOperation = "copy";
 			CharacterCanvas.drawImage(Canvas, 0, 0);
@@ -775,12 +775,24 @@ function DrawTextWrap(Text, X, Y, Width, Height, ForeColor, BackColor, MaxLine) 
 function DrawTextFit(Text, X, Y, Width, Color, BackColor) {
 	if (!Text) return;
 
-	for (let S = 36; S >= 10; S = S - 2) {
+	// If it doesn't fit, test with smaller and smaller fonts until it fits
+	let S;
+	for (S = 36; S >= 10; S = S - 2) {
 		MainCanvas.font = CommonGetFont(S.toString());
 		const metrics = MainCanvas.measureText(Text);
 		if (metrics.width <= Width)
 			break;
 	}
+
+	// Cuts the text if it would go over the box
+    if (S <= 10) {
+        while (Text.length > 0) {
+            Text = Text.substr(1);
+            const metrics = MainCanvas.measureText(Text);
+            if (metrics.width <= Width)
+                break;
+        }
+    }
 
 	// Draw a back color relief text if needed
 	if ((BackColor != null) && (BackColor != "")) {
@@ -788,9 +800,11 @@ function DrawTextFit(Text, X, Y, Width, Color, BackColor) {
 		MainCanvas.fillText(Text, X + 1, Y + 1);
 	}
 
+	// Restores the font size
 	MainCanvas.fillStyle = Color;
 	MainCanvas.fillText(Text, X, Y);
 	MainCanvas.font = CommonGetFont(36);
+
 }
 
 /**
@@ -1232,6 +1246,50 @@ function DrawPreviewBox(X, Y, Path, Description, Options) {
 	if (Border) DrawEmptyRect(X, Y, 225, Height, Foreground);
 	const ImageX = Vibrating ? X + 1 + Math.floor(Math.random() * 3) : X + 2;
 	const ImageY = Vibrating ? Y + 1 + Math.floor(Math.random() * 3) : Y + 2;
-	DrawImageResize(Path, ImageX, ImageY, 221, 221);
+	if (Path !== "") DrawImageResize(Path, ImageX, ImageY, 221, 221);
 	if (Description) DrawTextFit(Description, X + 110, Y + 250, 221, Foreground);
+}
+
+/**
+ * Draws an item preview box using the provided canvas
+ * @param {number} X - Position of the preview box on the X axis
+ * @param {number} Y - Position of the preview box on the Y axis
+ * @param {HTMLCanvasElement} Canvas - The canvas element containing the image to draw
+ * @param {string} Description - The preview box description
+ * @param {object} Options - Additional optional drawing options
+ * @returns {void} - Nothing
+ */
+function DrawCanvasPreview(X, Y, Canvas, Description, Options) {
+	DrawPreviewBox(X, Y, "", Description, Options);
+	MainCanvas.drawImage(Canvas, X + 2, Y + 2, 221, 221);
+}
+
+/**
+ * Returns a rectangular subsection of a canvas
+ * @param {HTMLCanvasElement} Canvas - The source canvas to take a section of
+ * @param {number} Left - The starting X co-ordinate of the section
+ * @param {number} Top - The starting Y co-ordinate of the section
+ * @param {number} Width - The width of the section to take
+ * @param {number} Height - The height of the section to take
+ * @returns {HTMLCanvasElement} - The new canvas containing the section
+ */
+function DrawCanvasSegment(Canvas, Left, Top, Width, Height) {
+	TempCanvas.canvas.width = Width;
+	TempCanvas.canvas.height = Height;
+	TempCanvas.clearRect(0, 0, Width, Height);
+	TempCanvas.drawImage(Canvas, Left, Top, Width, Height, 0, 0, Width, Height);
+	return TempCanvas.canvas;
+}
+
+/**
+ * Returns a rectangular subsection of the character image
+ * @param {Character} C - The character to copy part of
+ * @param {number} Left - The starting X co-ordinate of the section
+ * @param {number} Top - The starting Y co-ordinate of the section
+ * @param {number} Width - The width of the section to take
+ * @param {number} Height - The height of the section to take
+ * @returns {HTMLCanvasElement} - The new canvas containing the section
+ */
+function DrawCharacterSegment(C, Left, Top, Width, Height) {
+	return DrawCanvasSegment(C.Canvas, Left, Top + CanvasUpperOverflow, Width, Height);
 }

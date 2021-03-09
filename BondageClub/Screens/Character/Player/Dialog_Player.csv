@@ -2,7 +2,8 @@ PlayerGagged,,,(You can use or remove items by selecting specific body regions o
 0,,,(You can use or remove items by selecting specific body regions on yourself.),,
 0,10,(Adjust your bondage skill.),"(By default, you restrain using your full bondage skill.  You can use less of your skill and make it easier for your victims to escape.)",,"DialogSkillGreater(""Bondage"", 1)"
 0,20,(Adjust your evasion skill.),"(By default, you struggle using your full evasion skill.  You can use less of your skill and make it harder for you to struggle free.)",,"DialogSkillGreater(""Evasion"", 1)"
-0,100,(Call the maids for help),"(The maids are not supposed to take room calls. This will result in punishment and public humiliation. Are you sure?)",,DialogCanCallMaids()
+0,100,(Call the maids for help),"(The maids are not supposed to take room calls. This will result in punishment and public humiliation. Are you sure?)",,DialogCanCallMaidsPunishmentOn()
+0,0,(Call the maids for help),"(The maids will be here shortly...)",DialogCallMaids(),DialogCanCallMaidsPunishmentOff()
 100,0,(Yes! Get me out of this room!),"(The maids will be here shortly...)",DialogCallMaids(),DialogCanCallMaids()
 100,0,"(No, don't call the maids.)","(You can use or remove items by selecting specific body regions on yourself.)",,
 0,30,(Room administrator action.),"(As a room administrator, you can take these actions.)",,DialogChatRoomPlayerIsAdmin()
@@ -568,6 +569,10 @@ ItemMiscExclusivePadlockIntro,,,"""Keeping you safe from yourself""",,
 ItemMiscExclusivePadlockDetail,,,Can be opened by anyone but the wearer,,
 ItemMiscPasswordPadlockIntro,,,"""Finders keepers""",,
 ItemMiscPasswordPadlockDetail,,,Can be opened only with the correct password,,
+MetalCuffsPoseInFront,,,In-front of body,,
+MetalCuffsPoseBehindBack,,,Behind back,,
+MetalCuffsRestrainInFront,,,SourceCharacter cuffs DestinationCharacter hands in-front of their body.,,
+MetalCuffsRestrainBehindBack,,,SourceCharacter cuffs DestinationCharacter hands behind their back.,,
 CeilingShacklesPoseHeadLevel,,,On head level,,
 CeilingShacklesPoseOverhead,,,Over the head,,
 CeilingShacklesRestrainHeadLevel,,,SourceCharacter lowers the ceiling shackles on TargetCharacter a bit.,,
@@ -1885,3 +1890,16 @@ PoleTypeUntied,,,Untie from pole,,
 PoleTypeTied,,,Tie to pole,,
 DevicesPoleSetUntied,,,SourceCharacter ties TargetCharacter to the pole.,,
 DevicesPoleSetTied,,,SourceCharacter unties TargetCharacter from the pole.,,
+SelectEyePatchType,,,Select an eyepatch style.
+EyePatchTypeLeft,,,Left,,
+EyePatchTypeRight,,,Right,,
+SelectSpreaderType,,,Select leg spreader width.,,
+SpreaderMetalPoseNarrow,,,Narrow,,
+SpreaderMetalPoseWide,,,Wide,,
+NotificationTitleChatMessage,,,Chat Message,,
+NotificationTitleChatJoin,,,Joined Room,,
+NotificationTitleBeep,,,Beep,,
+NotificationTitleDisconnect,,,Disconnected,,
+NotificationTitleTest,,,Test Notification,,
+NotificationTitleFromRoom,,, from ChatRoomName,,
+NotificationTitleLarp,,,LARP - Your turn,,
