@@ -67,7 +67,7 @@ const ChatRoomArousalMsg_ChanceGagMod = {
 	"Walk" : 0,
 	"StruggleFail" : 0,
 	"StruggleAction" : 0,
-	"Gag" : 0.1,
+	"Gag" : 0.3,
 	} 
 var ChatRoomPinkFlashTime = 0;
 var ChatRoomHideIconState = 0;
@@ -463,14 +463,14 @@ function ChatRoomClearAllElements() {
 	ElementRemove("InputEmailOld");
 	ElementRemove("InputEmailNew");
 	ElementRemove("InputCharacterLabelColor");
+	PreferenceSubscreen = "";
 	
 	// Profile
     ElementRemove("DescriptionInput");
 	
 	// Wardrobe
 	ElementRemove("InputWardrobeName"); 
-	
-	
+	CharacterAppearanceMode = "";
 }
 
 /**
@@ -1257,6 +1257,7 @@ function ChatRoomMenuClick() {
           } else if (ChatRoomGetUpTimer == 0 && (ChatRoomCanAttemptStand() || ChatRoomCanAttemptKneel())) { // If the player can theoretically get up, we start a minigame!
             var diff = 0
             if (Player.IsBlind()) diff += 1
+            if (Player.IsKneeling()) diff += 2
             if (Player.IsDeaf()) diff += 1
             if (InventoryGet(Player, "ItemTorso") || InventoryGroupIsBlocked(Player, "ItemTorso")) diff += 1
             if (InventoryGroupIsBlocked(Player, "ItemHands")) diff += 1
@@ -1796,6 +1797,12 @@ function ChatRoomMessage(data) {
 
 			// Prepares the HTML tags
 			if (data.Type != null) {
+				const HideOthersMessages = Player.ImmersionSettings.SenseDepMessages
+					&& (Player.GameplaySettings.SensDepChatLog === "SensDepExtreme" || Player.GameplaySettings.SensDepChatLog === "SensDepTotal")
+					&& PreferenceIsPlayerInSensDep()
+					&& SenderCharacter.ID !== 0
+					&& Player.GetDeafLevel() >= 4;
+					
 				if (data.Type == "Chat" || data.Type == "Whisper") {
 					msg = '<span class="ChatMessageName" style="color:' + (SenderCharacter.LabelColor || 'gray');
 					if (data.Type == "Whisper") msg += '; font-style: italic';
@@ -1819,10 +1826,18 @@ function ChatRoomMessage(data) {
 					if (ChatRoomChatLog.length > 6) { // Keep it short
 						ChatRoomChatLog.splice(0, 1)
 					}
-					
+
+					if (HideOthersMessages && data.Type === "Chat") {
+						return;
+					}
+
 					ChatRoomNotificationRaiseChatMessage(SenderCharacter, chatMsg, false);
 				}
 				else if (data.Type == "Emote") {
+					if (HideOthersMessages && !msg.toLowerCase().includes(Player.Name.toLowerCase())) {
+						return;
+					}
+						
 					if (msg.indexOf("*") == 0) msg = msg + "*";
 					else if ((msg.indexOf("'") == 0) || (msg.indexOf(",") == 0)) msg = "*" + SenderCharacter.Name + msg + "*";
 					else if (PreferenceIsPlayerInSensDep() && SenderCharacter.MemberNumber != Player.MemberNumber) {
@@ -1879,32 +1894,22 @@ function ChatRoomMessage(data) {
 					ChatRoomNotificationRaiseChatMessage(SenderCharacter, msg, true);
 			}
 
-			if (!(
-					Player.ImmersionSettings.SenseDepMessages && (Player.GameplaySettings.SensDepChatLog == "SensDepExtreme" || Player.GameplaySettings.SensDepChatLog == "SensDepTotal") && PreferenceIsPlayerInSensDep() && SenderCharacter.ID != 0 && (Player.GetDeafLevel() >= 4)
-						&& (
-								data.Type == "Chat" ||
-								(data.Type == "Emote" && !msg.toLowerCase().includes(Player.Name.toLowerCase()))
-						)
-				)) {
+			// Adds the message and scrolls down unless the user has scrolled up
+			var div = document.createElement("div");
+			div.setAttribute('class', 'ChatMessage ChatMessage' + data.Type + MsgEnterLeave);
+			div.setAttribute('data-time', ChatRoomCurrentTime());
+			div.setAttribute('data-sender', data.Sender);
+			if (data.Type == "Emote" || data.Type == "Action" || data.Type == "Activity")
+				div.setAttribute('style', 'background-color:' + ChatRoomGetTransparentColor(SenderCharacter.LabelColor) + ';');
+			div.innerHTML = msg;
 
-				// Adds the message and scrolls down unless the user has scrolled up
-				var div = document.createElement("div");
-				div.setAttribute('class', 'ChatMessage ChatMessage' + data.Type + MsgEnterLeave);
-				div.setAttribute('data-time', ChatRoomCurrentTime());
-				div.setAttribute('data-sender', data.Sender);
-				if (data.Type == "Emote" || data.Type == "Action" || data.Type == "Activity")
-					div.setAttribute('style', 'background-color:' + ChatRoomGetTransparentColor(SenderCharacter.LabelColor) + ';');
-				div.innerHTML = msg;
-
-				// Returns the focus on the chat box
-				var Refocus = document.activeElement.id == "InputChat";
-				var ShouldScrollDown = ElementIsScrolledToEnd("TextAreaChatLog");
-				if (document.getElementById("TextAreaChatLog") != null) {
-					document.getElementById("TextAreaChatLog").appendChild(div);
-					if (ShouldScrollDown) ElementScrollToEnd("TextAreaChatLog");
-					if (Refocus) ElementFocus("InputChat");
-				}
-				
+			// Returns the focus on the chat box
+			var Refocus = document.activeElement.id == "InputChat";
+			var ShouldScrollDown = ElementIsScrolledToEnd("TextAreaChatLog");
+			if (document.getElementById("TextAreaChatLog") != null) {
+				document.getElementById("TextAreaChatLog").appendChild(div);
+				if (ShouldScrollDown) ElementScrollToEnd("TextAreaChatLog");
+				if (Refocus) ElementFocus("InputChat");
 			}
 		}
 	}
@@ -2843,7 +2848,7 @@ function ChatRoomNotificationReset() {
 	if (CurrentScreen !== "ChatRoom" || ChatRoomNotificationNewMessageVisible()) {
 		NotificationReset(NotificationEventType.CHATMESSAGE);
 	}
-	NotificationReset(NotificationEventType.CHATJOIN);
+	if (document.hasFocus()) NotificationReset(NotificationEventType.CHATJOIN);
 }
 
 /**
