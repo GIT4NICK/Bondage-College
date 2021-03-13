@@ -7,7 +7,6 @@ var FriendListMode = ["Friends", "Beeps", "Delete"];
 var FriendListModeIndex = 0;
 /** @type {FriendListBeepLogMessage[]} */
 var FriendListBeepLog = [];
-let FriendListNextCheck = null;
 /** @type {number|null} MemberNumber of the player to send beep to */
 let FriendListBeepTarget = null;
 
@@ -60,8 +59,6 @@ function FriendListRun() {
 	}
 	DrawButton(1865, 5, 60, 60, "", "White", "Icons/Small/Next.png");
 	DrawButton(1935, 5, 60, 60, "", "White", "Icons/Small/Exit.png");
-	if ((FriendListNextCheck !== null) && (CurrentTime >= FriendListNextCheck))
-		ServerSend("AccountQuery", { Query: "OnlineFriends" });
 }
 
 /** 
@@ -188,9 +185,6 @@ function FriendListExit() {
  * @returns {void} - Nothing
  */
 function FriendListLoadFriendList(data) {
-
-	// Refresh the friend list automatically again in 30 seconds
-	FriendListNextCheck = CurrentTime + 30000;
 
 	// Loads the header caption
 	const BeepCaption = DialogFindPlayer("Beep");
